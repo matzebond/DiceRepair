@@ -10,6 +10,7 @@ var rng = RandomNumberGenerator.new()
 
 
 var mouse_inside = false
+onready var pre_drag_pos = self.position
 var dragging = false
 
 # Called when the node enters the scene tree for the first time.
@@ -50,6 +51,7 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT:
         if mouse_inside and !dragging and event.pressed:
             dragging = true
+            pre_drag_pos = self.position
             
 func check_dropables():
     
@@ -67,4 +69,8 @@ func check_dropables():
         
     if not min_area == null:
         min_area.drop(self)
+    else:
+        snap_back()
         
+func snap_back():
+    self.position = pre_drag_pos
