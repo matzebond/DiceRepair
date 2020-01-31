@@ -9,6 +9,8 @@ var job
 
 var dice = []
 
+var has_inited = false
+
 func init(job):
     self.job = job
     
@@ -27,8 +29,20 @@ func update_work():
             work_left -= die_value
         else:
             pass # TODO symbols
-    $Sprite/Label.text = str(work_left)
+    if has_inited:
+        var a = int($Sprite/Label.text)
+        var b = work_left
+        if $Tween.is_active():
+            $Tween.stop(self, "set_text")
+        $Tween.interpolate_method(self, "set_text", a, b, abs(a-b)*0.1)
+        $Tween.start()
+    else:
+        set_text(work_left)
+    has_inited = true
 
+func set_text(val):
+    $Sprite/Label.text = str(round(val))
+    
 func _on_DropArea_drop_item(die):
     dice.push_back(die)
     update_work()
