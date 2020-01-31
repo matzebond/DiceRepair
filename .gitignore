@@ -11,4 +11,8 @@ export_presets.cfg
 # Mono-specific ignores
 .mono/
 
+# Angelo-specific ignores
+.DS_STORE
+psd
+
 # End of https://www.gitignore.io/api/godot
