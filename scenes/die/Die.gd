@@ -54,6 +54,7 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
             dragging = true
             emit_signal("undrop_item", self)
             pre_drag_pos = self.position
+            play_tween_make_opaque()
 
 func check_dropables():
     
@@ -71,8 +72,23 @@ func check_dropables():
         
     if not min_area == null:
         min_area.drop(self)
+        play_tween_make_trans()
     else:
         snap_back()
         
 func snap_back():
     self.position = pre_drag_pos
+    
+func play_tween_make_trans():
+    var c = modulate
+    var c_a = Color(c.r, c.g, c.b, 1)
+    var c_b = Color(c.r, c.g, c.b, 0.65)
+    $Tween.interpolate_property(self, "modulate", c_a, c_b, 0.4, Tween.EASE_IN_OUT, Tween.TRANS_SINE)
+    $Tween.start()
+    
+func play_tween_make_opaque():
+    var c = modulate
+    var c_a = Color(c.r, c.g, c.b, 1)
+    var c_b = Color(c.r, c.g, c.b, 0.65)
+    $Tween.interpolate_property(self, "modulate", c_b, c_a, 0.4, Tween.EASE_IN_OUT, Tween.TRANS_SINE)
+    $Tween.start()
