@@ -4,19 +4,20 @@ extends Sprite
 # Declare member variables here. Examples:
 onready var label = $Label
 
+signal undrop_item(die)
+
 var faces = []
 var state
 var rng = RandomNumberGenerator.new()
-
 
 var mouse_inside = false
 var dragging = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    faces = [1, 2, 3, 4, 5, 6, "H", "S"]
-    roll()
+    faces = [1, 2, 3, 4, 5, 6]
     rng.randomize()
+    roll()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -50,7 +51,8 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT:
         if mouse_inside and !dragging and event.pressed:
             dragging = true
-            
+            emit_signal("undrop_item", self)
+    
 func check_dropables():
     
     var min_area = null
