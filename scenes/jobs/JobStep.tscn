@@ -28,3 +28,4 @@ __meta__ = {
 
 [node name="DropArea" parent="." instance=ExtResource( 4 )]
 scale = Vector2( 1.1, 1.1 )
+[connection signal="drop_item" from="DropArea" to="." method="_on_DropArea_drop_item"]
