@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="DiceRepair"
-run/main_scene="res://scenes/screens/GameScene.tscn"
+run/main_scene="res://scenes/screens/RootNode.tscn"
 
 [display]
 

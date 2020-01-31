@@ -9,6 +9,7 @@ extents = Vector2( 48.0739, 48.0923 )
 
 [node name="Die" type="Sprite"]
 modulate = Color( 0.0980392, 0.776471, 0.505882, 1 )
+z_index = 100
 texture = ExtResource( 2 )
 script = ExtResource( 1 )
 
@@ -31,7 +32,6 @@ __meta__ = {
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-z_index = 100
 shape = SubResource( 1 )
 [connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
