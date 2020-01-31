@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/jobs/Job.tscn" type="PackedScene" id=1]
+
+[node name="JobTestScene" type="Node2D"]
+position = Vector2( 339.401, 88.4971 )
+
+[node name="Job" parent="." instance=ExtResource( 1 )]
+position = Vector2( -225.634, -38.3437 )
+
+[node name="Job2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 6.79193, -38.3437 )
+color = Color( 0.0705882, 0.247059, 0.105882, 1 )
+
+[node name="Job3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 235.328, -39.3162 )
+color = Color( 0.0705882, 0.172549, 0.733333, 1 )
