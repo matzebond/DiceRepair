@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/img/ui/bg.png" type="Texture" id=1]
+
+[node name="GameScene" type="Node2D"]
+
+[node name="bg" type="Sprite" parent="."]
+position = Vector2( 640, 400 )
+texture = ExtResource( 1 )

@@ -16,6 +16,13 @@ _global_script_class_icons={
 [application]
 
 config/name="DiceRepair"
+run/main_scene="res://scenes/screens/GameScene.tscn"
+
+[display]
+
+window/size/width=1280
+window/size/height=800
+window/stretch/mode="2d"
 
 [rendering]
 
