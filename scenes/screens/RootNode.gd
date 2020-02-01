@@ -13,7 +13,10 @@ onready var scene_map = {
    }
 var active_scene
 var dice = [Dice.D6(), Dice.D8(), Dice.D12()]
+var game_running = false
+var time = 0
 var money = 10
+signal money_changed(money)
 
 
 func _ready():
@@ -31,7 +34,8 @@ func load_scene(Scene):
     # instance and add new
     active_scene = Scene.instance()
     add_child(active_scene)
-    active_scene.start_scene(dice, money)
+    active_scene.start_scene(dice)
+    emit_signal("money_changed", money)
     
 func end_scene():
     active_scene.end_scene()
@@ -51,11 +55,16 @@ func tween_complete(_obj, _key):
         print("Switching to '" + next_scene_name + "'")
     else:
         printerr("Invalid scene name '" + next_scene_name + "'")
-        
-    
+
+
+func add_money(delta):
+    money += delta
+    emit_signal("money_changed", money)
+
 func can_pay(amount):
     if money >= amount:
         money -= amount
+        emit_signal("money_changed", money)
         return true
     else:
         return false

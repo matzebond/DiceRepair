@@ -75,7 +75,7 @@ func enable(enable):
 
 
 func _process(delta):
-    if is_waiting and get_tree().current_scene.active_scene.name == "GameScene" and get_tree().current_scene.active_scene.game_running:
+    if is_waiting and get_tree().current_scene.game_running:
         if wait_base > 0:
             wait_base = max(0, wait_base - delta * WAIT_FACTOR_BASE)
         else:
@@ -91,7 +91,7 @@ func _process(delta):
     
 func is_done():
     
-    var scene = get_tree().current_scene.active_scene
+    var scene = get_tree().current_scene
     
     scene.add_money(money_reward)
     
@@ -109,9 +109,10 @@ func is_done():
     
     
     for die in dice:
-        scene.add_die(die)
+        scene.active_scene.add_die(die)
 
-    
+    get_tree().current_scene.add_money(money_reward)
+
 func tween_complete(_obj, _key):
     self.queue_free()
     

@@ -2,9 +2,9 @@ extends Label
 
 func _process(delta):
     
-    var scene = get_tree().current_scene.active_scene
+    var scene = get_tree().current_scene
     
-    if scene.name == "GameScene" and scene.game_running:
+    if scene.game_running:
         scene.time = max(0, scene.time - delta)
         if scene.time <= 0:
             get_tree().current_scene.end_scene()
@@ -12,7 +12,7 @@ func _process(delta):
 
 
 func update_text():
-    var scene = get_tree().current_scene.active_scene
+    var scene = get_tree().current_scene
     var time = scene.time
     if time > 1:
         time = ceil(time)

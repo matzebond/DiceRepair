@@ -3,23 +3,17 @@ const Die = preload("res://scenes/die/Die.tscn")
 
 const ROUND_TIME = 20
 
-signal money_changed(money)
 
-var game_running = false
-var time = 0
-var money
 
 
 func end_scene():
-    game_running = false
-    time = 0
+    get_tree().current_scene.game_running = false
+    get_tree().current_scene.time = 0
 
 
-func start_scene(dice, money):
-    game_running = true
-    time = ROUND_TIME
-    self.money = money
-    emit_signal("money_changed", money)
+func start_scene(dice):
+    get_tree().current_scene.game_running = true
+    get_tree().current_scene.time = ROUND_TIME
     for die in dice:
         var die_inst = Die.instance().init(die)
         self.add_die(die_inst)
@@ -41,7 +35,3 @@ func random_die_pos():
 
 func get_next_scene():
     return "Upgrade"
-
-func add_money(delta):
-    money += delta
-    emit_signal("money_changed", money)

@@ -6,7 +6,7 @@ signal money_changed(money)
 func _on_StartButton_pressed():
     get_tree().current_scene.end_scene()
     
-func start_scene(dice, money):
+func start_scene(dice):
     for die in dice:
         var die_inst = Die.instance().init(die)
         self.add_die(die_inst)

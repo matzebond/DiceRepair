@@ -49,7 +49,7 @@ func update_tool():
 func current_step_done():
     current_step += 1
     if current_step >= steps:
-        get_tree().current_scene.active_scene.add_money(money_reward)
+        get_tree().current_scene.add_money(money_reward)
     enable_step(current_step)
     
     
