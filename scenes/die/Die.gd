@@ -1,13 +1,26 @@
 extends Sprite
 
+# static shit
+
+
+static func D6(col = null):
+    if not col:
+        col = random_color()
+    return [load("res://assets/img/dice/dice_quad.png"), [1,2,3,4,5,6], col]
+    
+static func random_color():
+    return Color(randf(),randf(), randf(), 1)
+
+
 
 enum {Default, Taken, Snapping, Dragging, Rolling}
-var state
+var state = Default
 # Declare member variables here. Examples:
 onready var label = $Label
 
 signal undrop_item(die)
 
+var sprite
 var faces = []
 var face_index
 var rng = RandomNumberGenerator.new()
@@ -20,15 +33,27 @@ const SNAP_BACK_SPEED = 0.0002
 var last_roll_time = -1
 const ANIM_ROLLS = 20
 
+#func _init():
+    
+    
+func init(sprite, faces, col):
+    self.texture = sprite
+    self.faces = faces
+    self.modulate = col
+    return self
+
 func _ready():
-    faces = [1, 2, 3, 4, 5, 6, "F"]
     rng.randomize()
-    roll()
+    if not faces or faces.empty():
+        faces = [1, 2, 3, 4, 5, 6]
+        roll()
+
 
 func _process(delta):
     if state == Snapping and self.position == pre_drag_pos:
         state = Default
-    
+
+
 func _unhandled_input(event):
     if event is InputEventMouseMotion and state == Dragging:
         self.position = event.position + drag_offset

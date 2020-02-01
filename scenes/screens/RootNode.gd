@@ -1,5 +1,7 @@
 extends Node2D
 
+const Dice = preload("res://scenes/die/Die.gd")
+
 var dragging_die = false
 
 onready var GameScene = preload("GameScene.tscn")
@@ -9,6 +11,7 @@ onready var scene_map = {
     "Upgrade": UpgradeScene,
    }
 var active_scene
+var dice = [Dice.D6(), Dice.D6()]
 
 
 func _ready():
@@ -26,7 +29,7 @@ func load_scene(Scene):
     # instance and add new
     active_scene = Scene.instance()
     add_child(active_scene)
-    active_scene.start_scene()
+    active_scene.start_scene(dice)
     
 func end_scene():
     active_scene.end_scene()
