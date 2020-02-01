@@ -2,6 +2,7 @@ extends Node2D
 
 const Dice = preload("res://scenes/die/Die.gd")
 
+const TRANS_TIME = 1
 var dragging_die = false
 
 onready var GameScene = preload("GameScene.tscn")
@@ -19,7 +20,7 @@ func _ready():
     
 func load_scene(Scene):
     # hide Fader
-    $Tween.interpolate_property($Background, "modulate:a", 1, 0, 3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+    $Tween.interpolate_property($Background, "modulate:a", 1, 0, TRANS_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
     
     # clear previous
@@ -39,7 +40,7 @@ func end_scene():
     
     $Tween.stop_all()
     $Tween.connect("tween_completed", self, "tween_complete", [], CONNECT_ONESHOT)
-    $Tween.interpolate_property($Background, "modulate:a", 0, 1, 3, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+    $Tween.interpolate_property($Background, "modulate:a", 0, 1, TRANS_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
     
 func tween_complete(_obj, _key):
