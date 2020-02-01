@@ -15,9 +15,11 @@ var dragging = false
 onready var pre_drag_pos = self.position
 var drag_offset = Vector2()
 
+const SNAP_BACK_SPEED = 0.0002
+
 
 func _ready():
-    faces = [1, 2, 3, 4, 5, 6]
+    faces = [1, 2, 3, 4, 5, 6, "F"]
     rng.randomize()
     roll()
 
@@ -34,8 +36,6 @@ func _unhandled_input(event):
             dragging = true
             get_tree().current_scene.dragging_die = true
             start_drag()
-            #print(faces[state])
-            
 
 
 func _on_Area2D_mouse_entered():
@@ -51,7 +51,8 @@ func _on_Area2D_input_event(viewport, event, shape_idx):
         roll()
         
     return
-    
+
+
 func roll():
     state = rng.randi_range(0, len(faces) - 1)
     label.text = str(faces[state])
@@ -95,7 +96,9 @@ func drop():
 
 
 func snap_back():
-    self.position = pre_drag_pos
+    var dist = (pre_drag_pos - position).length()
+    $Tween.interpolate_property(self, "position", position, pre_drag_pos, dist*SNAP_BACK_SPEED, Tween.TRANS_EXPO, Tween.EASE_IN)
+    $Tween.start()
     
 func play_tween_make_trans():
     var c = modulate
