@@ -26,8 +26,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DropArea" parent="." instance=ExtResource( 4 )]
-scale = Vector2( 1.1, 0.74 )
+[node name="Tools" type="Node2D" parent="."]
+position = Vector2( 60, 0 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="DropArea" parent="." instance=ExtResource( 4 )]
+visible = false
+scale = Vector2( 1.1, 0.74 )
 [connection signal="drop_item" from="DropArea" to="." method="_on_DropArea_drop_item"]

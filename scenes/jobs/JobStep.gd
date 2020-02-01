@@ -1,10 +1,13 @@
 extends Node2D
+const Die = preload("res://scenes/die/Die.gd")
+
 
 export var work_min:int = 1
 export var work_max:int = 8
 
 var work_req:int
 var work_cur:int
+var tools = []
 
 var is_waiting = false
 var wait_base
@@ -27,13 +30,27 @@ func init(job):
     
     $Sprite.modulate = job.color
     
+    for tuul in Die.TOOLS:
+        if randf() > 0.9:
+            tools.append(tuul)
+    
+    var i = 0
+    for tuul in tools:
+        var tex = Sprite.new()
+        tex.texture = Die.tool_sprite(tuul)
+
+        $Tools.add_child(tex)
+
+        tex.position.y =  -50 + (100/len(tools)/2.0) + i * (100.0 / len(tools))
+        tex.scale = Vector2(1.0/len(tools), 1.0/len(tools))
+        i += 1
+    
     work_req = rand_range(work_min, work_max+1)
     update_work()
     
     return self
     
 func update_work():
-    
     var last_work_cur = work_cur
     # calculate current work
     work_cur = 0
@@ -41,8 +58,13 @@ func update_work():
         var die_value = die.faces[die.face_index].value
         if die_value is int:
             work_cur += die_value
-        else:
-            pass # TODO symbols
+    
+    #skip if tool present
+    for die in dice:
+        for tuul in tools:
+            print(die.viz_state.cur_face().type)
+            if die.viz_state.cur_face().type == tuul:
+                work_cur = work_req
       
     # start wait time      
     if work_cur >= work_req:

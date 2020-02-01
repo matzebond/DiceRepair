@@ -2,11 +2,19 @@ extends Sprite
 
 
 enum {Number, Hammer, Drill, Ratchet, Saw}
+const TOOLS = [Hammer, Drill, Ratchet, Saw]
 
 const hammer_sprite = preload("res://assets/img/tools/hammer.png")
 const drill_sprite = preload("res://assets/img/tools/drill.png")
 const ratchet_sprite = preload("res://assets/img/tools/ratchet.png")
 const saw_sprite = preload("res://assets/img/tools/saw.png")
+
+static func tool_sprite(tuul):
+    match tuul:
+            Hammer: return hammer_sprite
+            Drill: return drill_sprite
+            Ratchet: return ratchet_sprite
+            Saw: return saw_sprite
 
 class Face:
     var type = Number
@@ -15,13 +23,6 @@ class Face:
     func _init(type, value = null):
         self.type = type
         self.value = value
-
-    func sprite():
-        match type:
-            Hammer: return hammer_sprite
-            Drill: return drill_sprite
-            Ratchet: return ratchet_sprite
-            Saw: return saw_sprite
 
 class DieState:
     var sprite
@@ -35,7 +36,10 @@ class DieState:
         self.faces = dic.faces
         self.cost = dic.cost
         self.color = dic.color
-        self.face_index = dic.color
+        self.face_index = 0
+        
+    func cur_face():
+        return faces[face_index]
 
 
 static func D6(col = null):
@@ -73,7 +77,8 @@ static func random_color():
 enum {Default, Taken, Blocked, Snapping, Dragging, Rolling}
 var state = Default
 var is_dummy = false
-var viz_state
+var viz_state: DieState
+
 onready var number = $Number
 onready var tools = $Tool
 
@@ -182,7 +187,7 @@ func render_face():
         number.visible = true
         tools.visible = false
     else:
-        tools.texture = faces[face_index].sprite()
+        tools.texture = tool_sprite(faces[face_index].type)
         tools.visible = true
         number.visible = false
         
