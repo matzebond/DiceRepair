@@ -72,6 +72,7 @@ static func random_color():
 
 enum {Default, Taken, Blocked, Snapping, Dragging, Rolling}
 var state = Default
+var is_dummy = false
 var viz_state
 onready var number = $Number
 onready var tools = $Tool
@@ -103,6 +104,7 @@ func init(state: DieState):
 
 func _ready():
     rng.randomize()
+    render_face()
 
 func _process(delta):
     if state == Snapping and self.position == pre_drag_pos:
@@ -125,6 +127,7 @@ func _unhandled_input(event):
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
         if mouse_inside and state == Default and get_tree().current_scene.can_pay(roll_cost):
+            position = get_tree().current_scene.active_scene.random_die_pos()
             roll()
 
 
@@ -167,20 +170,22 @@ func rolling(time):
     if time > last_roll_time:
         last_roll_time = time
         face_index = rng.randi_range(0, len(faces) - 1)
-        if faces[face_index].type == Number:
-            number.text = str(faces[face_index].value)
-            number.visible = true
-            tools.visible = false
-        else:
-            tools.texture = faces[face_index].sprite()
-            tools.visible = true
-            number.visible = false
-            
+        render_face()
             
         if time == ANIM_ROLLS:
             state = Default
             $Tween.stop(self, "rolling")
- 
+
+func render_face():
+    if faces[face_index].type == Number:
+        number.text = str(faces[face_index].value)
+        number.visible = true
+        tools.visible = false
+    else:
+        tools.texture = faces[face_index].sprite()
+        tools.visible = true
+        number.visible = false
+        
 func start_drag():
     emit_signal("undrop_item", self)
     drag_offset = self.position - get_tree().root.get_mouse_position()
