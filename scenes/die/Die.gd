@@ -11,28 +11,30 @@ var state
 var rng = RandomNumberGenerator.new()
 
 var mouse_inside = false
-onready var pre_drag_pos = self.position
 var dragging = false
+onready var pre_drag_pos = self.position
 var drag_offset = Vector2()
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
     faces = [1, 2, 3, 4, 5, 6]
     rng.randomize()
     roll()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#    pass
 
     
 func _unhandled_input(event):
     if event is InputEventMouseMotion and dragging :
         self.position = event.position + drag_offset    
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT:
-        if dragging and !event.pressed:
+        if !event.pressed and dragging:
             dragging = false
+            get_tree().current_scene.dragging_die = false
             drop()
+        if event.pressed and mouse_inside and !get_tree().current_scene.dragging_die:
+            dragging = true
+            get_tree().current_scene.dragging_die = true
+            start_drag()
+            #print(faces[state])
             
 
 
@@ -56,12 +58,10 @@ func roll():
 
  
 func start_drag():
-    dragging = true
     emit_signal("undrop_item", self)
     drag_offset = self.position - get_tree().root.get_mouse_position()
     pre_drag_pos = self.position
     play_tween_make_opaque()
-    #self.z_index = 99
     move_to_top()
 
 
@@ -92,7 +92,6 @@ func drop():
         play_tween_make_trans()
     else:
         snap_back()
-    #self.z_index = 10
 
 
 func snap_back():
