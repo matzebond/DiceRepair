@@ -24,7 +24,8 @@ func start_scene(dice):
         
 func add_die(die):
     die.position = random_die_pos()
-    self.add_child(die)
+    if die.get_parent() == null:
+        self.add_child(die)
     die.roll()
     
 func random_die_pos():

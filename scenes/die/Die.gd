@@ -95,6 +95,7 @@ func _on_Area2D_mouse_exited():
 func roll():
     last_roll_time = -1
     state = Rolling
+    play_tween_make_opaque()
     $Tween.interpolate_method(self, "rolling", 0, ANIM_ROLLS, 2 + randf(), Tween.TRANS_EXPO, Tween.EASE_OUT)
     $Tween.start()
 
@@ -161,15 +162,9 @@ func snap_back():
     $Tween.start()
     
 func play_tween_make_trans():
-    var c = modulate
-    var c_a = Color(c.r, c.g, c.b, 1)
-    var c_b = Color(c.r, c.g, c.b, 0.65)
-    $Tween.interpolate_property(self, "modulate", c_a, c_b, 0.4, Tween.EASE_IN_OUT, Tween.TRANS_SINE)
+    $Tween.interpolate_property(self, "modulate:a", 1, .65, 0.4, Tween.EASE_IN_OUT, Tween.TRANS_SINE)
     $Tween.start()
     
 func play_tween_make_opaque():
-    var c = modulate
-    var c_a = Color(c.r, c.g, c.b, 1)
-    var c_b = Color(c.r, c.g, c.b, 0.65)
-    $Tween.interpolate_property(self, "modulate", c_b, c_a, 0.4, Tween.EASE_IN_OUT, Tween.TRANS_SINE)
+    $Tween.interpolate_property(self, "modulate:a", .65, 1, 0.4, Tween.EASE_IN_OUT, Tween.TRANS_SINE)
     $Tween.start()
