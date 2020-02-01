@@ -8,6 +8,16 @@ static func D6(col = null):
         col = random_color()
     return [load("res://assets/img/dice/dice_quad.png"), [1,2,3,4,5,6], col]
     
+static func D8(col = null):
+    if not col:
+        col = random_color()
+    return [load("res://assets/img/dice/dice_tri.png"), [1,2,3,4,5,6,7,8], col]
+    
+static func D12(col = null):
+    if not col:
+        col = random_color()
+    return [load("res://assets/img/dice/dice_quint.png"), [1,2,3,4,5,6,7,8,9,10,11,12], col]
+    
 static func random_color():
     return Color(randf(),randf(), randf(), 1)
 
@@ -22,7 +32,7 @@ signal undrop_item(die)
 
 var sprite
 var faces = []
-var face_index
+var face_index = 0
 var rng = RandomNumberGenerator.new()
 
 var mouse_inside = false

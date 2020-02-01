@@ -12,7 +12,7 @@ onready var scene_map = {
     "Upgrade": UpgradeScene,
    }
 var active_scene
-var dice = [Dice.D6(), Dice.D6()]
+var dice = [Dice.D6(), Dice.D8(), Dice.D12()]
 
 
 func _ready():
