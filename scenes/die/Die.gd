@@ -1,31 +1,69 @@
 extends Sprite
 
-# static shit
+
+enum {Number, Hammer, Drill, Ratchet, Saw}
+
+const hammer_sprite = preload("res://assets/img/tools/hammer.png")
+const drill_sprite = preload("res://assets/img/tools/drill.png")
+const ratchet_sprite = preload("res://assets/img/tools/ratchet.png")
+const saw_sprite = preload("res://assets/img/tools/saw.png")
+
+class Face:
+    var type = Number
+    var value = 1
+    
+    func _init(type, value = null):
+        self.type = type
+        self.value = value
+
+    func sprite():
+        match type:
+            Hammer: return hammer_sprite
+            Drill: return drill_sprite
+            Ratchet: return ratchet_sprite
+            Saw: return saw_sprite
+
+class DieState:
+    var sprite
+    var faces
+    var cost
+    var color
+    var face_index
+
+    func _init(dic):
+        self.sprite = dic.sprite
+        self.faces = dic.faces
+        self.cost = dic.cost
+        self.color = dic.color
+        self.face_index = dic.color
 
 
 static func D6(col = null):
     if not col:
         col = random_color()
-    return {"sprite": load("res://assets/img/dice/dice_quad.png"), 
-            "faces": [1,2,3,4,5,6],
+    return DieState.new({
+            "sprite": load("res://assets/img/dice/dice_quad.png"), 
+            "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6)],
             "cost":  6, 
-            "color": col}
+            "color": col})
     
 static func D8(col = null):
     if not col:
         col = random_color()
-    return {"sprite": load("res://assets/img/dice/dice_tri.png"), 
-            "faces": [1,2,3,4,5,6,7,8],
+    return DieState.new({
+            "sprite": load("res://assets/img/dice/dice_tri.png"), 
+            "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6),Face.new(Number, 7),Face.new(Number, 8)],
             "cost":  8, 
-            "color": col}
+            "color": col})
     
 static func D12(col = null):
     if not col:
         col = random_color()
-    return {"sprite": load("res://assets/img/dice/dice_quint.png"), 
-            "faces": [1,2,3,4,5,6,7,8,9,10,11,12],
+    return DieState.new({
+            "sprite": load("res://assets/img/dice/dice_quint.png"), 
+            "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6),Face.new(Number, 7),Face.new(Number, 8),Face.new(Number, 9),Face.new(Number, 10),Face.new(Number, 11),Face.new(Number, 12)],
             "cost":  12, 
-            "color": col}
+            "color": col})
     
 static func random_color():
     return Color(randf(),randf(), randf(), 1)
@@ -34,8 +72,9 @@ static func random_color():
 
 enum {Default, Taken, Snapping, Dragging, Rolling}
 var state = Default
-# Declare member variables here. Examples:
-onready var label = $Label
+var viz_state
+onready var number = $Number
+onready var tools = $Tool
 
 signal undrop_item(die)
 
@@ -53,10 +92,8 @@ const SNAP_BACK_SPEED = 0.0002
 var last_roll_time = -1
 const ANIM_ROLLS = 20
 
-#func _init():
-    
-    
-func init(state):
+func init(state: DieState):
+    viz_state = state
     self.texture = state.sprite
     self.faces = state.faces
     self.roll_cost = state.cost
@@ -65,11 +102,6 @@ func init(state):
 
 func _ready():
     rng.randomize()
-    if not faces or faces.empty():
-        faces = [1, 2, 3, 4, 5, 6]
-        roll_cost = 6
-        roll()
-
 
 func _process(delta):
     if state == Snapping and self.position == pre_drag_pos:
@@ -116,7 +148,16 @@ func rolling(time):
     if time > last_roll_time:
         last_roll_time = time
         face_index = rng.randi_range(0, len(faces) - 1)
-        label.text = str(faces[face_index])
+        if faces[face_index].type == Number:
+            number.text = str(faces[face_index].value)
+            number.visible = true
+            tools.visible = false
+        else:
+            tools.texture = faces[face_index].sprite()
+            tools.visible = true
+            number.visible = false
+            
+            
         if time == ANIM_ROLLS:
             state = Default
             $Tween.stop(self, "rolling")
