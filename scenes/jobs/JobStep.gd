@@ -65,6 +65,7 @@ func _on_DropArea_drop_item(die):
     update_work()
     
     die.connect("undrop_item", self, "_on_DropArea_undrop_item", [], CONNECT_ONESHOT)
+    die.taken_by_area()
     
 func _on_DropArea_undrop_item(die):
     dice.erase(die)

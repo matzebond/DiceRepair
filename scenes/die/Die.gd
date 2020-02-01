@@ -90,9 +90,13 @@ func drop():
         
     if not min_area == null:
         min_area.drop(self)
-        play_tween_make_trans()
     else:
         snap_back()
+        
+# dropped into & used by a drop area
+# DieArea does not "take" die
+func taken_by_area():
+    play_tween_make_trans()
 
 
 func snap_back():
