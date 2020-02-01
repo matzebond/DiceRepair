@@ -39,5 +39,11 @@ func update_tool():
         # add
         $Steps.add_child(jobStep)
         
+    enable_step(steps-1)
+    
+func enable_step(id):
+    for i in range($Steps.get_child_count()):
+        $Steps.get_child(i).enable(id == i)
+        
         
     

@@ -43,6 +43,10 @@ func update_work():
 func set_text(val):
     $Sprite/Label.text = str(round(val))
     
+func enable(enable):
+    $DropArea.is_active = enable
+    $Sprite.self_modulate = Color(1,1,1,1) if enable else Color(0.8,0.8,0.8,0.6)
+    
 func _on_DropArea_drop_item(die):
     dice.push_back(die)
     update_work()

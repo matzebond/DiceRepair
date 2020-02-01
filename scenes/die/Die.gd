@@ -65,6 +65,8 @@ func check_dropables():
         
         if not candidate.is_in_group("DropArea"):
             continue
+        if not candidate.is_active:
+            continue
         var dst = $Area2D.position.distance_squared_to(candidate.position)
         if dst < min_dst:
             min_area = candidate
