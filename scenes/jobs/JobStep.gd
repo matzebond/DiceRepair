@@ -7,7 +7,10 @@ var work_req:int
 var work_cur:int
 
 var is_waiting = false
-var time_to_wait_left
+var wait_base
+var wait_overshoot
+const WAIT_FACTOR_BASE = 4
+const WAIT_FACTOR_OVERSHOOT = 0.7
 
 var job
 
@@ -46,7 +49,8 @@ func update_work():
         is_waiting = true
         $Sprite.texture = sprite_done
         $DropArea.is_active = false
-        time_to_wait_left = work_cur
+        wait_base = work_req
+        wait_overshoot = work_cur - work_req
             
     # update view
     if has_inited: # dont animate the first time
@@ -71,23 +75,45 @@ func enable(enable):
 
 
 func _process(delta):
-    if is_waiting:
-        time_to_wait_left -= delta
-        set_text(str(round(time_to_wait_left)))
-        if time_to_wait_left <= 0:
-            is_done()
-            is_waiting = false # prevent duplicate calls
-        
+    if is_waiting and get_tree().current_scene.active_scene.name == "GameScene" and get_tree().current_scene.active_scene.game_running:
+        if wait_base > 0:
+            wait_base = max(0, wait_base - delta * WAIT_FACTOR_BASE)
+        else:
+            if wait_overshoot > 0:
+                wait_overshoot = max(0, wait_overshoot - delta * WAIT_FACTOR_OVERSHOOT)
+            else:
+                is_done()
+                is_waiting = false # prevent duplicate calls
+        var a = round(wait_overshoot + wait_base)
+        var b = round(wait_base)
+        set_text(str(a) + "/" + str(b))
     
     
 func is_done():
+    
+    var scene = get_tree().current_scene.active_scene
+    
+    scene.add_money(money_reward)
+    
+    
+    var pos = global_position
+    get_parent().remove_child(self)
+    scene.add_child(self)
+    global_position = pos
+    move_to_top()
+    $Tween.connect("tween_completed", self, "tween_complete", [], CONNECT_ONESHOT)
+    $Tween.interpolate_property(self, "position:x", position.x, position.x + 1000, 1.2, Tween.TRANS_CUBIC, Tween.EASE_IN)
+    $Tween.start()
+    
     job.current_step_done()
-
-    get_tree().current_scene.active_scene.add_money(money_reward)
-
-    self.queue_free()
+    
+    
     for die in dice:
-        get_tree().current_scene.active_scene.add_die(die)
+        scene.add_die(die)
+
+    
+func tween_complete(_obj, _key):
+    self.queue_free()
     
 func _on_DropArea_drop_item(die):
     dice.push_back(die)
@@ -99,3 +125,10 @@ func _on_DropArea_drop_item(die):
 func _on_DropArea_undrop_item(die):
     dice.erase(die)
     update_work()
+    
+func move_to_top():
+    var p = get_parent()
+    if p != null:
+        var count = p.get_child_count()
+        if p.get_child(count - 1) != self:
+            p.move_child(self, count - 1)
