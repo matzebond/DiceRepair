@@ -13,6 +13,7 @@ var rng = RandomNumberGenerator.new()
 var mouse_inside = false
 onready var pre_drag_pos = self.position
 var dragging = false
+var drag_offset = Vector2()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,18 +25,16 @@ func _ready():
 #func _process(delta):
 #    pass
 
-func roll():
-    state = rng.randi_range(0, len(faces) - 1)
-    label.text = str(faces[state])
     
 func _unhandled_input(event):
+    if event is InputEventMouseMotion and dragging :
+        self.position = event.position + drag_offset    
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT:
         if dragging and !event.pressed:
             dragging = false
-            check_dropables()
+            drop()
             
-    elif event is InputEventMouseMotion and dragging:
-        self.position = event.position
+
 
 func _on_Area2D_mouse_entered():
     mouse_inside = true
@@ -48,27 +47,43 @@ func _on_Area2D_mouse_exited():
 func _on_Area2D_input_event(viewport, event, shape_idx):
     if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
         roll()
+        
+    return
     
-    if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT:
-        if mouse_inside and !dragging and event.pressed:
-            dragging = true
-            emit_signal("undrop_item", self)
-            pre_drag_pos = self.position
-            play_tween_make_opaque()
+func roll():
+    state = rng.randi_range(0, len(faces) - 1)
+    label.text = str(faces[state])
 
-func check_dropables():
-    
+ 
+func start_drag():
+    dragging = true
+    emit_signal("undrop_item", self)
+    drag_offset = self.position - get_tree().root.get_mouse_position()
+    pre_drag_pos = self.position
+    play_tween_make_opaque()
+    #self.z_index = 99
+    move_to_top()
+
+
+func move_to_top():
+    var p = get_parent()
+    if p != null:
+        var count = p.get_child_count()
+        if p.get_child(count - 1) != self:
+            p.move_child(self, count - 1)
+
+
+func drop():
     var min_area = null
     var min_dst = 10000000
     
     for candidate in $Area2D.get_overlapping_areas():
-        
         if not candidate.is_in_group("DropArea"):
             continue
         if not candidate.is_active:
             continue
         var dst = $Area2D.position.distance_squared_to(candidate.position)
-        if dst < min_dst:
+        if min_area == null or (dst < min_dst and candidate.z_index >= min_area.z_index):
             min_area = candidate
             min_dst = dst
         
@@ -77,7 +92,9 @@ func check_dropables():
         play_tween_make_trans()
     else:
         snap_back()
-        
+    #self.z_index = 10
+
+
 func snap_back():
     self.position = pre_drag_pos
     
