@@ -70,7 +70,7 @@ static func random_color():
 
 
 
-enum {Default, Taken, Snapping, Dragging, Rolling}
+enum {Default, Taken, Blocked, Snapping, Dragging, Rolling}
 var state = Default
 var viz_state
 onready var number = $Number
@@ -91,6 +91,7 @@ const SNAP_BACK_SPEED = 0.0002
 
 var last_roll_time = -1
 const ANIM_ROLLS = 20
+const ANIM_DIST = 250
 
 func init(state: DieState):
     viz_state = state
@@ -140,8 +141,26 @@ func roll():
     last_roll_time = -1
     state = Rolling
     play_tween_make_opaque()
-    $Tween.interpolate_method(self, "rolling", 0, ANIM_ROLLS, 2 + randf(), Tween.TRANS_EXPO, Tween.EASE_OUT)
+    
+    var anim_time = 2 + randf()
+    
+    $Tween.interpolate_property(self, "scale", Vector2(1.8, 1.8), Vector2(1, 1), anim_time, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+    $Tween.interpolate_property(self, "modulate:a", 0, 1, anim_time/3, Tween.TRANS_SINE, Tween.EASE_OUT)
+    $Tween.interpolate_property(self, "rotation", (2*randf()-1)*2*PI, 0, anim_time, Tween.TRANS_SINE, Tween.EASE_OUT)
+    
+    $Tween.interpolate_property(self, "position", calc_roll_start_pos(), position, anim_time, Tween.TRANS_SINE, Tween.EASE_OUT)
     $Tween.start()
+    
+    
+    $Tween.interpolate_method(self, "rolling", 0, ANIM_ROLLS, anim_time, Tween.TRANS_EXPO, Tween.EASE_OUT)
+    $Tween.start()
+
+func calc_roll_start_pos():
+    var end = position
+    var angle = randf()*2*PI
+    var end_to_start = Vector2(ANIM_DIST, 0).rotated(angle)
+    var start = end + end_to_start
+    return start
 
 func rolling(time):
     time = ceil(time)
@@ -199,7 +218,10 @@ func drop():
         min_area.drop(self)
     else:
         snap_back()
-        
+
+func block():
+    state = Blocked
+    
 # dropped into & used by a drop area
 # DieArea does not "take" die
 func taken_by_area(make_trans = true):
