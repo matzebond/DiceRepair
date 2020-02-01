@@ -27,7 +27,8 @@ func _ready():
     
 func _unhandled_input(event):
     if event is InputEventMouseMotion and dragging :
-        self.position = event.position + drag_offset    
+        self.position = event.position + drag_offset
+
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT:
         if !event.pressed and dragging:
             dragging = false
@@ -38,6 +39,11 @@ func _unhandled_input(event):
             get_tree().current_scene.dragging_die = true
             start_drag()
 
+    if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+        if mouse_inside and !taken and !dragging:
+            roll()
+
+
 
 func _on_Area2D_mouse_entered():
     mouse_inside = true
@@ -45,14 +51,6 @@ func _on_Area2D_mouse_entered():
 
 func _on_Area2D_mouse_exited():
     mouse_inside = false
-
-
-func _on_Area2D_input_event(viewport, event, shape_idx):
-    if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
-        if !taken and !dragging and event.pressed:
-            roll()
-        
-    return
 
 
 func roll():
