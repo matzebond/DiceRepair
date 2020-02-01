@@ -23,8 +23,16 @@ func start_scene(dice):
         
         
 func add_die(die):
+    die.position = random_die_pos()
     self.add_child(die)
     die.roll()
+    
+func random_die_pos():
+    var area = Rect2($DieArea.global_position, $DieArea.scale * Vector2(100,100))
+    area.position -= area.size / 2
+    var x = area.position.x + rand_range(0, area.size.x)
+    var y = area.position.y + rand_range(0, area.size.y)
+    return Vector2(x,y)
 
 
 func get_next_scene():
