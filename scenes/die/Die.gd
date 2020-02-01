@@ -101,7 +101,7 @@ func drop():
             continue
         if not candidate.is_active:
             continue
-        var dst = $Area2D.position.distance_squared_to(candidate.position)
+        var dst = position.distance_squared_to(candidate.global_position)
         if min_area == null or (dst < min_dst and candidate.z_index >= min_area.z_index):
             min_area = candidate
             min_dst = dst
