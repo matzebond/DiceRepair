@@ -26,7 +26,7 @@ func update_work():
     # calculate work left
     var work_left = work
     for die in dice:
-        var die_value = die.faces[die.state]
+        var die_value = die.faces[die.face_index]
         if die_value is int:
             work_left -= die_value
         else:

@@ -1,24 +1,24 @@
 extends Sprite
 
 
+enum {Default, Taken, Snapping, Dragging, Rolling}
+var state
 # Declare member variables here. Examples:
 onready var label = $Label
 
 signal undrop_item(die)
 
 var faces = []
-var state
+var face_index
 var rng = RandomNumberGenerator.new()
 
 var mouse_inside = false
-var dragging = false
-var snapping = false
 onready var pre_drag_pos = self.position
 var drag_offset = Vector2()
 const SNAP_BACK_SPEED = 0.0002
 
-var taken = false
-
+var last_roll_time = -1
+const ANIM_ROLLS = 20
 
 func _ready():
     faces = [1, 2, 3, 4, 5, 6, "F"]
@@ -26,25 +26,25 @@ func _ready():
     roll()
 
 func _process(delta):
-    if snapping and self.position == pre_drag_pos:
-        snapping = false
+    if state == Snapping and self.position == pre_drag_pos:
+        state = Default
     
 func _unhandled_input(event):
-    if event is InputEventMouseMotion and dragging :
+    if event is InputEventMouseMotion and state == Dragging:
         self.position = event.position + drag_offset
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT:
-        if !event.pressed and dragging:
-            dragging = false
+        if !event.pressed and state == Dragging:
+            state = Default
             get_tree().current_scene.dragging_die = false
             drop()
-        if event.pressed and mouse_inside and !get_tree().current_scene.dragging_die:
-            dragging = true
+        if event.pressed and mouse_inside and (state == Default or state == Taken) and !get_tree().current_scene.dragging_die:
+            state = Dragging
             get_tree().current_scene.dragging_die = true
             start_drag()
 
     if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
-        if mouse_inside and !taken and !dragging:
+        if mouse_inside and state == Default:
             roll()
 
 
@@ -58,18 +58,28 @@ func _on_Area2D_mouse_exited():
 
 
 func roll():
-    state = rng.randi_range(0, len(faces) - 1)
-    label.text = str(faces[state])
+    last_roll_time = -1
+    state = Rolling
+    $Tween.interpolate_method(self, "rolling", 0, ANIM_ROLLS, 2 + randf(), Tween.TRANS_EXPO, Tween.EASE_OUT)
+    $Tween.start()
 
+func rolling(time):
+    time = ceil(time)
+    if time > last_roll_time:
+        last_roll_time = time
+        face_index = rng.randi_range(0, len(faces) - 1)
+        label.text = str(faces[face_index])
+        if time == ANIM_ROLLS:
+            state = Default
+            $Tween.stop(self, "rolling")
  
 func start_drag():
     emit_signal("undrop_item", self)
     drag_offset = self.position - get_tree().root.get_mouse_position()
-    if snapping and self.position == pre_drag_pos:
+    if state == Snapping and self.position == pre_drag_pos:
         pre_drag_pos = self.position
     else:
         $Tween.stop(self, "position")
-    self.taken = false
     play_tween_make_opaque()
     move_to_top()
 
@@ -103,14 +113,15 @@ func drop():
         
 # dropped into & used by a drop area
 # DieArea does not "take" die
-func taken_by_area():
-    self.taken = true
-    play_tween_make_trans()
+func taken_by_area(make_trans = true):
+    state = Taken
+    if make_trans:
+        play_tween_make_trans()
 
 
 func snap_back():
     var dist = (pre_drag_pos - position).length()
-    snapping = true
+    state = Snapping
     $Tween.interpolate_property(self, "position", position, pre_drag_pos, dist*SNAP_BACK_SPEED, Tween.TRANS_EXPO, Tween.EASE_IN)
     $Tween.start()
     
