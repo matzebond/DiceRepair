@@ -112,7 +112,7 @@ func _unhandled_input(event):
     if event is InputEventMouseMotion and state == Dragging:
         self.position = event.position + drag_offset
 
-    if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT:
+    if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
         if !event.pressed and state == Dragging:
             state = Default
             get_tree().current_scene.dragging_die = false
@@ -122,7 +122,7 @@ func _unhandled_input(event):
             get_tree().current_scene.dragging_die = true
             start_drag()
 
-    if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+    if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
         if mouse_inside and state == Default and get_tree().current_scene.can_pay(roll_cost):
             roll()
 
