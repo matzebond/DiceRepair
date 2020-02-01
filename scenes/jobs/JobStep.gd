@@ -55,7 +55,7 @@ func update_work():
     # calculate current work
     work_cur = 0
     for die in dice:
-        var die_value = die.faces[die.face_index].value
+        var die_value = die.cur_face().value
         if die_value is int:
             work_cur += die_value
     

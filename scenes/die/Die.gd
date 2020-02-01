@@ -27,19 +27,20 @@ class Face:
 class DieState:
     var sprite
     var faces
-    var cost
+    var roll_cost
     var color
     var face_index
 
     func _init(dic):
         self.sprite = dic.sprite
         self.faces = dic.faces
-        self.cost = dic.cost
+        self.roll_cost = dic.roll_cost
         self.color = dic.color
         self.face_index = 0
         
     func cur_face():
         return faces[face_index]
+        
 
 
 static func D6(col = null):
@@ -48,7 +49,7 @@ static func D6(col = null):
     return DieState.new({
             "sprite": load("res://assets/img/dice/dice_quad.png"), 
             "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6)],
-            "cost":  6, 
+            "roll_cost":  6, 
             "color": col})
     
 static func D8(col = null):
@@ -57,7 +58,7 @@ static func D8(col = null):
     return DieState.new({
             "sprite": load("res://assets/img/dice/dice_tri.png"), 
             "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6),Face.new(Number, 7),Face.new(Number, 8)],
-            "cost":  8, 
+            "roll_cost":  8, 
             "color": col})
     
 static func D12(col = null):
@@ -66,7 +67,7 @@ static func D12(col = null):
     return DieState.new({
             "sprite": load("res://assets/img/dice/dice_quint.png"), 
             "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6),Face.new(Number, 7),Face.new(Number, 8),Face.new(Number, 9),Face.new(Number, 10),Face.new(Number, 11),Face.new(Number, 12)],
-            "cost":  12, 
+            "roll_cost":  12, 
             "color": col})
     
 static func random_color():
@@ -84,11 +85,7 @@ onready var tools = $Tool
 
 signal undrop_item(die)
 
-var sprite
-var faces = []
-var face_index = 0
 var rng = RandomNumberGenerator.new()
-var roll_cost
 
 var mouse_inside = false
 onready var pre_drag_pos = self.position
@@ -102,8 +99,6 @@ const ANIM_DIST = 250
 func init(state: DieState):
     viz_state = state
     self.texture = state.sprite
-    self.faces = state.faces
-    self.roll_cost = state.cost
     self.modulate = state.color
     return self
 
@@ -131,7 +126,7 @@ func _unhandled_input(event):
             start_drag()
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
-        if mouse_inside and state == Default and get_tree().current_scene.can_pay(roll_cost):
+        if mouse_inside and state == Default and get_tree().current_scene.can_pay(viz_state.roll_cost):
             position = get_tree().current_scene.active_scene.random_die_pos()
             roll()
 
@@ -174,20 +169,23 @@ func rolling(time):
     time = ceil(time)
     if time > last_roll_time:
         last_roll_time = time
-        face_index = rng.randi_range(0, len(faces) - 1)
+        viz_state.face_index = rng.randi_range(0, len(viz_state.faces) - 1)
         render_face()
             
         if time == ANIM_ROLLS:
             state = Default
             $Tween.stop(self, "rolling")
+            
+func cur_face():
+    return viz_state.cur_face()
 
 func render_face():
-    if faces[face_index].type == Number:
-        number.text = str(faces[face_index].value)
+    if cur_face().type == Number:
+        number.text = str(cur_face().value)
         number.visible = true
         tools.visible = false
     else:
-        tools.texture = tool_sprite(faces[face_index].type)
+        tools.texture = tool_sprite(cur_face().type)
         tools.visible = true
         number.visible = false
         

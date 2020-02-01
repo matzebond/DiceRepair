@@ -11,13 +11,13 @@ var dummy_dice = []
 
 func init(die):
     var Die = load("res://scenes/die/Die.tscn")
-    faces = len(die.faces)
+    faces = len(die.viz_state.faces)
     dummy_dice = []
     for i in range(faces):
         var dupl = Die.instance()
         dupl.init(die.viz_state)
         dupl.block()
-        dupl.face_index = i
+        dupl.viz_state.face_index = i
         dupl.is_dummy = true
         add_child(dupl)
         dummy_dice.push_back(dupl)
