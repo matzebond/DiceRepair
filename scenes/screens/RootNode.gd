@@ -13,6 +13,7 @@ onready var scene_map = {
    }
 var active_scene
 var dice = [Dice.D6(), Dice.D8(), Dice.D12()]
+var money = 10
 
 
 func _ready():
@@ -30,7 +31,7 @@ func load_scene(Scene):
     # instance and add new
     active_scene = Scene.instance()
     add_child(active_scene)
-    active_scene.start_scene(dice)
+    active_scene.start_scene(dice, money)
     
 func end_scene():
     active_scene.end_scene()

@@ -6,17 +6,26 @@ extends Sprite
 static func D6(col = null):
     if not col:
         col = random_color()
-    return [load("res://assets/img/dice/dice_quad.png"), [1,2,3,4,5,6], col]
+    return {"sprite": load("res://assets/img/dice/dice_quint.png"), 
+            "faces": [1,2,3,4,5,6],
+            "cost":  6, 
+            "color": col}
     
 static func D8(col = null):
     if not col:
         col = random_color()
-    return [load("res://assets/img/dice/dice_tri.png"), [1,2,3,4,5,6,7,8], col]
+    return {"sprite": load("res://assets/img/dice/dice_quint.png"), 
+            "faces": [1,2,3,4,5,6,7,8],
+            "cost":  8, 
+            "color": col}
     
 static func D12(col = null):
     if not col:
         col = random_color()
-    return [load("res://assets/img/dice/dice_quint.png"), [1,2,3,4,5,6,7,8,9,10,11,12], col]
+    return {"sprite": load("res://assets/img/dice/dice_quint.png"), 
+            "faces": [1,2,3,4,5,6,7,8,9,10,11,12],
+            "cost":  12, 
+            "color": col}
     
 static func random_color():
     return Color(randf(),randf(), randf(), 1)
@@ -34,6 +43,7 @@ var sprite
 var faces = []
 var face_index = 0
 var rng = RandomNumberGenerator.new()
+var roll_cost
 
 var mouse_inside = false
 onready var pre_drag_pos = self.position
@@ -46,16 +56,18 @@ const ANIM_ROLLS = 20
 #func _init():
     
     
-func init(sprite, faces, col):
-    self.texture = sprite
-    self.faces = faces
-    self.modulate = col
+func init(state):
+    self.texture = state.sprite
+    self.faces = state.faces
+    self.roll_cost = state.cost
+    self.modulate = state.color
     return self
 
 func _ready():
     rng.randomize()
     if not faces or faces.empty():
         faces = [1, 2, 3, 4, 5, 6]
+        roll_cost = 6
         roll()
 
 

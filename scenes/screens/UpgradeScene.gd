@@ -1,13 +1,14 @@
 extends Node2D
-
 const Die = preload("res://scenes/die/Die.tscn")
+
+signal money_changed(money)
 
 func _on_StartButton_pressed():
     get_tree().current_scene.end_scene()
     
-func start_scene(dice):
+func start_scene(dice, money):
     for die in dice:
-        var die_inst = Die.instance().init(die[0], die[1], die[2])
+        var die_inst = Die.instance().init(die)
         self.add_die(die_inst)
         
         

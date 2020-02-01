@@ -7,7 +7,7 @@ signal money_changed(money)
 
 var game_running = false
 var time = 0
-var money = 10
+var money
 
 
 func end_scene():
@@ -15,12 +15,13 @@ func end_scene():
     time = 0
 
 
-func start_scene(dice):
+func start_scene(dice, money):
     game_running = true
     time = ROUND_TIME
+    self.money = money
     emit_signal("money_changed", money)
     for die in dice:
-        var die_inst = Die.instance().init(die[0], die[1], die[2])
+        var die_inst = Die.instance().init(die)
         self.add_die(die_inst)
         
         
