@@ -1,6 +1,6 @@
 extends Node2D
 
-const Dice = preload("res://scenes/die/Die.gd")
+const Die = preload("res://scenes/die/Die.gd")
 
 const TRANS_TIME = 1
 var dragging_die = false
@@ -12,14 +12,32 @@ onready var scene_map = {
     "Upgrade": UpgradeScene,
    }
 var active_scene
-var dice = [Dice.D6(), Dice.D8(), Dice.D12()]
+var dice = [Die.D6(), Die.D8(), Die.D12()]
 var game_running = false
 var time = 0
-var money = 10
+var money = 100
 signal money_changed(money)
 
 
 func _ready():
+    var rng = RandomNumberGenerator.new()
+    rng.randomize()
+    var face_sum = 0
+    for die in dice:
+        face_sum += len(die.faces)
+    for tuul in [Die.Hammer, Die.Saw, Die.Ratchet, Die.Drill]:
+        var tuul_placed = false
+        while not tuul_placed:
+            var index = rng.randi_range(0, face_sum-1)
+            var die_index = 0
+            for die in dice:
+                if index >= len(die.faces):
+                    index -= len(die.faces)
+                elif die.faces[index].type == Die.Number:
+                    die.faces[index] = Die.Face.new(tuul)
+                    tuul_placed = true
+                    break
+        
     load_scene(GameScene)
     
 func load_scene(Scene):
