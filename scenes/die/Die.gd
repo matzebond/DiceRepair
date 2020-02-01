@@ -12,6 +12,7 @@ var rng = RandomNumberGenerator.new()
 
 var mouse_inside = false
 var dragging = false
+var snapping = false
 onready var pre_drag_pos = self.position
 var drag_offset = Vector2()
 const SNAP_BACK_SPEED = 0.0002
@@ -24,6 +25,9 @@ func _ready():
     rng.randomize()
     roll()
 
+func _process(delta):
+    if snapping and self.position == pre_drag_pos:
+        snapping = false
     
 func _unhandled_input(event):
     if event is InputEventMouseMotion and dragging :
@@ -61,7 +65,10 @@ func roll():
 func start_drag():
     emit_signal("undrop_item", self)
     drag_offset = self.position - get_tree().root.get_mouse_position()
-    pre_drag_pos = self.position
+    if snapping and self.position == pre_drag_pos:
+        pre_drag_pos = self.position
+    else:
+        $Tween.stop(self, "position")
     self.taken = false
     play_tween_make_opaque()
     move_to_top()
@@ -103,6 +110,7 @@ func taken_by_area():
 
 func snap_back():
     var dist = (pre_drag_pos - position).length()
+    snapping = true
     $Tween.interpolate_property(self, "position", position, pre_drag_pos, dist*SNAP_BACK_SPEED, Tween.TRANS_EXPO, Tween.EASE_IN)
     $Tween.start()
     
