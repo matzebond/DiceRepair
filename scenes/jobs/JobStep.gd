@@ -35,7 +35,7 @@ func init(job):
 func update_work():
     
     var last_work_cur = work_cur
-    # calculate work left
+    # calculate current work
     work_cur = 0
     for die in dice:
         var die_value = die.faces[die.face_index]
@@ -51,6 +51,8 @@ func update_work():
         $DropArea.is_active = false
         wait_base = work_req
         wait_overshoot = work_cur - work_req
+        for die in dice:
+            die.block()
             
     # update view
     if has_inited: # dont animate the first time
@@ -118,10 +120,11 @@ func tween_complete(_obj, _key):
     
 func _on_DropArea_drop_item(die):
     dice.push_back(die)
-    update_work()
     
     die.connect("undrop_item", self, "_on_DropArea_undrop_item", [], CONNECT_ONESHOT)
     die.taken_by_area()
+    
+    update_work()
     
 func _on_DropArea_undrop_item(die):
     dice.erase(die)

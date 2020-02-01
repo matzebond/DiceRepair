@@ -32,7 +32,7 @@ static func random_color():
 
 
 
-enum {Default, Taken, Snapping, Dragging, Rolling}
+enum {Default, Taken, Blocked, Snapping, Dragging, Rolling}
 var state = Default
 # Declare member variables here. Examples:
 onready var label = $Label
@@ -177,7 +177,10 @@ func drop():
         min_area.drop(self)
     else:
         snap_back()
-        
+
+func block():
+    state = Blocked
+    
 # dropped into & used by a drop area
 # DieArea does not "take" die
 func taken_by_area(make_trans = true):
