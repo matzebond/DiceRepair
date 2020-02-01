@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/img/ui/bg.png" type="Texture" id=1]
-[ext_resource path="res://scenes/die/Die.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/UbuntuMono-R.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://scenes/drop_area/DropArea.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/screens/ToolBench.gd" type="Script" id=5]
@@ -50,20 +49,5 @@ position = Vector2( -799.078, -351.625 )
 [node name="DieArea" parent="." instance=ExtResource( 4 )]
 position = Vector2( 490.154, 626.457 )
 scale = Vector2( 4.7, 1.5 )
-
-[node name="Die" parent="." instance=ExtResource( 2 )]
-position = Vector2( 128.74, 116.964 )
-
-[node name="Die2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 124.902, 244.533 )
-
-[node name="Die3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 126.88, 363.345 )
-
-[node name="Die4" parent="." instance=ExtResource( 2 )]
-position = Vector2( 129.261, 484.352 )
-
-[node name="Die5" parent="." instance=ExtResource( 2 )]
-position = Vector2( 141.029, 623.409 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="drop_item" from="ToolBench/DropArea" to="ToolBench" method="_on_DropArea_drop_item"]
