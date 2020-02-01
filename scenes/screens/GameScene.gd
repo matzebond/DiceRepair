@@ -1,6 +1,8 @@
 extends Node2D
 const Die = preload("res://scenes/die/Die.tscn")
 
+const ROUND_TIME = 20
+
 signal money_changed(money)
 
 var game_running = false
@@ -15,7 +17,7 @@ func end_scene():
 
 func start_scene(dice):
     game_running = true
-    time = 20
+    time = ROUND_TIME
     emit_signal("money_changed", money)
     for die in dice:
         var die_inst = Die.instance().init(die[0], die[1], die[2])
