@@ -1,11 +1,12 @@
 extends Node2D
 
-
 export var work_min:int = 1
 export var work_max:int = 8
 var work:int
 
 var job
+
+var money_reward = 5
 
 var dice = []
 
@@ -58,6 +59,7 @@ func enable(enable):
     
 func is_done():
     job.current_step_done()
+    get_tree().current_scene.active_scene.add_money(money_reward)
     pass
     
 func _on_DropArea_drop_item(die):

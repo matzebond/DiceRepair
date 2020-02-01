@@ -5,6 +5,8 @@ export var color:Color = Color(0.8, 0.6, 0.12)
 const PADDING = Vector2(0, 5)
 const JOB_STEP_SIZE = Vector2(0, 224)
 
+var money_reward = 5
+
 export var steps_min:int = 1
 export var steps_max:int = 3
 var steps:int
@@ -47,7 +49,7 @@ func update_tool():
 func current_step_done():
     current_step += 1
     if current_step >= steps:
-        print("REWARD") # TODO add reward
+        get_tree().current_scene.active_scene.add_money(money_reward)
     enable_step(current_step)
     
     
