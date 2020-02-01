@@ -6,7 +6,7 @@ extends Sprite
 static func D6(col = null):
     if not col:
         col = random_color()
-    return {"sprite": load("res://assets/img/dice/dice_quint.png"), 
+    return {"sprite": load("res://assets/img/dice/dice_quad.png"), 
             "faces": [1,2,3,4,5,6],
             "cost":  6, 
             "color": col}
@@ -14,7 +14,7 @@ static func D6(col = null):
 static func D8(col = null):
     if not col:
         col = random_color()
-    return {"sprite": load("res://assets/img/dice/dice_quint.png"), 
+    return {"sprite": load("res://assets/img/dice/dice_tri.png"), 
             "faces": [1,2,3,4,5,6,7,8],
             "cost":  8, 
             "color": col}
