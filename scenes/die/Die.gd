@@ -14,8 +14,9 @@ var mouse_inside = false
 var dragging = false
 onready var pre_drag_pos = self.position
 var drag_offset = Vector2()
-
 const SNAP_BACK_SPEED = 0.0002
+
+var taken = false
 
 
 func _ready():
@@ -47,8 +48,9 @@ func _on_Area2D_mouse_exited():
 
 
 func _on_Area2D_input_event(viewport, event, shape_idx):
-    if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
-        roll()
+    if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
+        if !taken and !dragging and event.pressed:
+            roll()
         
     return
 
@@ -62,6 +64,7 @@ func start_drag():
     emit_signal("undrop_item", self)
     drag_offset = self.position - get_tree().root.get_mouse_position()
     pre_drag_pos = self.position
+    self.taken = false
     play_tween_make_opaque()
     move_to_top()
 
@@ -96,6 +99,7 @@ func drop():
 # dropped into & used by a drop area
 # DieArea does not "take" die
 func taken_by_area():
+    self.taken = true
     play_tween_make_trans()
 
 
