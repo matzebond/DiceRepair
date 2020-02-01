@@ -8,6 +8,7 @@ const JOB_STEP_SIZE = Vector2(0, 224)
 export var steps_min:int = 1
 export var steps_max:int = 3
 var steps:int
+var current_step = 0
 
 onready var JobStep = preload("JobStep.tscn")
 
@@ -38,12 +39,21 @@ func update_tool():
         
         # add
         $Steps.add_child(jobStep)
-        
-    enable_step(steps-1)
+    
+    current_step = 0
+    enable_step(0)
+    
+    
+func current_step_done():
+    current_step += 1
+    if current_step >= steps:
+        print("REWARD") # TODO add reward
+    enable_step(current_step)
+    
     
 func enable_step(id):
     for i in range($Steps.get_child_count()):
-        $Steps.get_child(i).enable(id == i)
+        $Steps.get_child(i).enable((steps-1-id) == i)
         
         
     
