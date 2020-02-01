@@ -59,8 +59,12 @@ func enable(enable):
     
 func is_done():
     job.current_step_done()
+
     get_tree().current_scene.active_scene.add_money(money_reward)
-    pass
+
+    self.queue_free()
+    for die in dice:
+        die.queue_free()
     
 func _on_DropArea_drop_item(die):
     dice.push_back(die)
