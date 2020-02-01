@@ -91,7 +91,7 @@ func _unhandled_input(event):
             start_drag()
 
     if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
-        if mouse_inside and state == Default:
+        if mouse_inside and state == Default and get_tree().current_scene.can_pay(roll_cost):
             roll()
 
 

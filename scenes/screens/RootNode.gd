@@ -51,9 +51,11 @@ func tween_complete(_obj, _key):
         print("Switching to '" + next_scene_name + "'")
     else:
         printerr("Invalid scene name '" + next_scene_name + "'")
+        
     
-    
-    
-    
-
-
+func can_pay(amount):
+    if money >= amount:
+        money -= amount
+        return true
+    else:
+        return false
