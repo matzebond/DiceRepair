@@ -12,4 +12,4 @@ modulate = Color( 0.737255, 0.47451, 0.466667, 1 )
 texture = ExtResource( 1 )
 
 [node name="Steps" type="Node2D" parent="."]
-position = Vector2( 0, 48 )
+position = Vector2( 0, 32 )

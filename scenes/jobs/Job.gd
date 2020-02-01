@@ -2,12 +2,12 @@ extends Node2D
 
 export var color:Color = Color(0.8, 0.6, 0.12)
 
-const PADDING = Vector2(0, 5)
-const JOB_STEP_SIZE = Vector2(0, 224)
+const PADDING = Vector2(0, 7)
+const JOB_STEP_SIZE = Vector2(0, 152)
 
 var money_reward = 5
 
-export var steps_min:int = 1
+export var steps_min:int = 2
 export var steps_max:int = 3
 var steps:int
 var current_step = 0
