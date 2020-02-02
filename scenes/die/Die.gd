@@ -137,8 +137,7 @@ func _unhandled_input(event):
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
         if mouse_inside and state == Default and get_tree().current_scene.can_pay(viz_state.roll_cost):
-            position = get_tree().current_scene.active_scene.random_die_pos()
-            roll()
+            get_tree().current_scene.active_scene.add_die(self)
             get_tree().set_input_as_handled()
 
 
