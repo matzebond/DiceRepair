@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/jobstep_done.png-a97c1a007dc00816935df24c61e745f3.stex"
+path="res://.import/jobstep_active.png-ec86757e24eb0a129ecc1a94dccf71bc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/img/jobs/jobstep_done.png"
-dest_files=[ "res://.import/jobstep_done.png-a97c1a007dc00816935df24c61e745f3.stex" ]
+source_file="res://assets/img/jobs/jobstep_active.png"
+dest_files=[ "res://.import/jobstep_active.png-ec86757e24eb0a129ecc1a94dccf71bc.stex" ]
 
 [params]
 
