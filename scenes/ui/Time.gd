@@ -18,4 +18,4 @@ func update_text():
         time = ceil(time)
     else:
         time = round(time * 10) / 10
-    self.text = "Time: " + str(time)
+    self.text = str(time)

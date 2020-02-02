@@ -23,7 +23,9 @@ var dice = []
 
 var has_inited = false
 
-onready var sprite_done = preload("res://assets/img/jobs/jobstep_done.png")
+onready var sprite_inactive = preload("res://assets/img/jobs/jobstep_inactive.png")
+onready var sprite = preload("res://assets/img/jobs/jobstep.png")
+onready var sprite_active = preload("res://assets/img/jobs/jobstep_active.png")
 
 func init(job):
     self.job = job
@@ -69,7 +71,7 @@ func update_work():
     # start wait time      
     if work_cur >= work_req:
         is_waiting = true
-        $Sprite.texture = sprite_done
+        $Sprite.texture = sprite_active
         $DropArea.is_active = false
         wait_base = work_req
         wait_overshoot = work_cur - work_req
@@ -95,7 +97,7 @@ func set_text(text):
     
 func enable(enable):
     $DropArea.is_active = enable
-    $Sprite.self_modulate = Color(1,1,1,1) if enable else Color(0.8,0.8,0.8,0.6)
+    $Sprite.texture = sprite if enable else sprite_inactive
 
 
 func _process(delta):

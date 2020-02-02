@@ -1,9 +1,9 @@
 extends Node2D
 
-export var color:Color = Color(0.8, 0.6, 0.12)
+export var color:Color = Color(1, 1, 1)
 
-const PADDING = Vector2(0, 7)
-const JOB_STEP_SIZE = Vector2(0, 152)
+const PADDING = Vector2(0, -8)
+const JOB_STEP_SIZE = Vector2(0, 164)
 
 var money_reward = 5
 
@@ -27,7 +27,7 @@ func update_tool():
     
     # add JobSteps
     steps = rand_range(steps_min, steps_max+1)
-    var cur_pos = Vector2(0,0)
+    var cur_pos = Vector2(2,0)
     for i in range(steps):
         
         # init
@@ -35,13 +35,17 @@ func update_tool():
         jobStep.init(self)
         
         # calc pos
-        cur_pos += PADDING
-        jobStep.position = cur_pos + JOB_STEP_SIZE / 2
-        cur_pos += JOB_STEP_SIZE
+        
+        jobStep.position = cur_pos
+        cur_pos -= JOB_STEP_SIZE
+        cur_pos -= PADDING
         
         # add
         $Steps.add_child(jobStep)
-    
+        
+    $Sprite.position = cur_pos
+    #position.y -= cur_pos.y
+    position.y -= JOB_STEP_SIZE.y/2
     current_step = 0
     enable_step(0)
     
@@ -55,7 +59,7 @@ func current_step_done():
     
 func enable_step(id):
     for i in range($Steps.get_child_count()):
-        $Steps.get_child(i).enable((steps-1-id) == i)
+        $Steps.get_child(i).enable((id) == i)
         
         
     
