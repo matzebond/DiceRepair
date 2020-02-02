@@ -54,7 +54,12 @@ func current_step_done():
     current_step += 1
     if current_step >= steps:
         get_tree().current_scene.add_money(money_reward)
-    enable_step(current_step)
+    
+    $Tween.interpolate_property(self, "position:y", position.y, position.y+JOB_STEP_SIZE.y+PADDING.y, 0.6, Tween.TRANS_EXPO, Tween.EASE_IN, 0.6)
+    $Tween.start()
+    
+    if $Steps.get_child_count() > 0:
+        $Steps.get_child(0).enable(true)
     
     
 func enable_step(id):
