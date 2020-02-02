@@ -5,9 +5,11 @@ const Die = preload("res://scenes/die/Die.gd")
 const TRANS_TIME = 1
 var dragging_die = false
 
+onready var TutorialScene = preload("TutorialScene.tscn")
 onready var GameScene = preload("GameScene.tscn")
 onready var UpgradeScene = preload("UpgradeScene.tscn")
 onready var scene_map = {
+    "Tutorial": TutorialScene,
     "Game": GameScene,
     "Upgrade": UpgradeScene,
    }
@@ -38,7 +40,7 @@ func _ready():
                     tuul_placed = true
                     break
         
-    load_scene(GameScene)
+    load_scene(TutorialScene)
     
 func load_scene(Scene):
     # hide Fader
