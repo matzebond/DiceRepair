@@ -5,7 +5,7 @@
 [ext_resource path="res://assets/fonts/UbuntuMono-R.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://scenes/drop_area/DropArea.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/screens/ToolBench.gd" type="Script" id=5]
-[ext_resource path="res://scenes/screens/UpgradeScene.gd" type="Script" id=6]
+[ext_resource path="res://scenes/screens/UpgradeScript.gd" type="Script" id=6]
 [ext_resource path="res://scenes/ui/Money.gd" type="Script" id=7]
 
 [sub_resource type="DynamicFont" id=1]
