@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/die/Die.gd" type="Script" id=1]
 [ext_resource path="res://assets/img/dice/dice_quad.png" type="Texture" id=2]
 [ext_resource path="res://scenes/die/DieFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://assets/img/tools/ratchet.png" type="Texture" id=4]
+[ext_resource path="res://assets/sounds/roll1.ogg" type="AudioStream" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 48.0739, 48.0923 )
@@ -11,7 +12,7 @@ extents = Vector2( 48.0739, 48.0923 )
 [node name="Die" type="Sprite" groups=[
 "die",
 ]]
-self_modulate = Color( 0.160784, 0.423529, 0.121569, 1 )
+modulate = Color( 0.0980392, 0.776471, 0.505882, 1 )
 z_index = 10
 texture = ExtResource( 2 )
 script = ExtResource( 1 )
@@ -24,7 +25,7 @@ margin_top = -55.0
 margin_right = -55.0
 margin_bottom = -55.0
 custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "6"
 align = 1
 valign = 1
@@ -43,5 +44,8 @@ texture = ExtResource( 4 )
 shape = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]

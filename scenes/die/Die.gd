@@ -1,5 +1,10 @@
 extends Sprite
 
+const roll1 = preload("res://assets/sounds/roll1.ogg")
+const roll2 = preload("res://assets/sounds/roll2.ogg")
+const roll3 = preload("res://assets/sounds/roll3.ogg")
+const ROLLS = [roll1, roll2]
+
 
 enum {Number, Hammer, Drill, Ratchet, Saw}
 const TOOLS = [Hammer, Drill, Ratchet, Saw]
@@ -165,9 +170,12 @@ func roll():
     $Tween.interpolate_property(self, "position", calc_roll_start_pos(), position, anim_time, Tween.TRANS_SINE, Tween.EASE_OUT)
     $Tween.start()
     
-    
     $Tween.interpolate_method(self, "rolling", 0, ANIM_ROLLS, anim_time, Tween.TRANS_EXPO, Tween.EASE_OUT)
     $Tween.start()
+    
+    yield(get_tree().create_timer(randf() * 0.1), "timeout")
+    $AudioStreamPlayer.stream = ROLLS[get_tree().current_scene.rng.randi_range(0, len(ROLLS)-1)]
+    $AudioStreamPlayer.play()
 
 func calc_roll_start_pos():
     var end = position

@@ -15,6 +15,7 @@ func start_scene(dice):
         var die_inst = Die.instance().init(die)
         self.add_die(die_inst)
         dice_inst.append(die_inst)
+        yield(get_tree().create_timer(1), "timeout")
         
     yield(get_tree().create_timer(3.0), "timeout")
     
