@@ -39,7 +39,7 @@ func _ready():
                     tuul_placed = true
                     break
         
-    load_scene(GameScene)
+    load_scene(TutorialScene)
     
 func load_scene(Scene):
     # hide Fader

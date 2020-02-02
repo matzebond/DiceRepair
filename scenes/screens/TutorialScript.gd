@@ -22,7 +22,7 @@ func start_scene(dice):
 
     for die in dice_inst:
         var preview = DiePreview.instance()
-        # die.state = DieScript.Taken
+        die.state = DieScript.Blocked
         die.add_child(preview)
         preview.init(die)
         preview.global_position = die.global_position + Vector2(0, -50)
@@ -34,9 +34,21 @@ func start_scene(dice):
     for die in dice_inst:
         previews[die.name].destroy()
         previews.erase(die.name)
+        die.state = DieScript.Default
         yield(get_tree().create_timer(0.1), "timeout")
     
+    yield(get_tree().create_timer(2.0), "timeout")
+    
+    for die in dice_inst:
+        add_die(die)
+        yield(get_tree().create_timer(0.1), "timeout")
+        
+    yield(get_tree().create_timer(0.5), "timeout")
     get_tree().current_scene.end_scene()
+    
+func _input(event):
+    if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_cancel"):
+        get_tree().current_scene.end_scene()
 
         
 func add_die(die):

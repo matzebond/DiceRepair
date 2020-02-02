@@ -64,8 +64,8 @@ __meta__ = {
 }
 
 [node name="DieArea" parent="." instance=ExtResource( 4 )]
-position = Vector2( 375, 1067 )
-scale = Vector2( 3, 1 )
+position = Vector2( 375, 1065 )
+scale = Vector2( 3, 0.9 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="drop_item" from="ToolBench/DropArea" to="ToolBench" method="_on_DropArea_drop_item"]
 [connection signal="pressed" from="ToolBench/UpgradeButton" to="ToolBench" method="_on_UpgradeButton_pressed"]
