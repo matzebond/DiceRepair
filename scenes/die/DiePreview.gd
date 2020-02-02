@@ -27,6 +27,7 @@ func init(die, selectable = false):
         dupl.is_dummy = true
         add_child(dupl)
         dummy_dice.push_back(dupl)
+        dupl.modulate.a = 0
         $Tween.interpolate_property(dupl, "position:x", 0, (i+1) * DIE_DST, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
         $Tween.interpolate_property(dupl, "modulate:a", 0, 1, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
