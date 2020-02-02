@@ -3,7 +3,7 @@ const Die = preload("res://scenes/die/Die.gd")
 
 
 export var work_min:int = 1
-export var work_max:int = 8
+export var work_max:int = 13
 
 var work_req:int
 var work_cur:int
