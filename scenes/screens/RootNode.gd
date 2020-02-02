@@ -1,9 +1,9 @@
 extends Node2D
 const Die = preload("res://scenes/die/Die.gd")
-onready var TutorialScene = preload("TutorialScene.tscn")
-onready var GameScene = preload("GameScene.tscn")
-onready var UpgradeScene = preload("UpgradeScene.tscn")
-onready var scene_map = {
+const TutorialScene = preload("TutorialScene.tscn")
+const GameScene = preload("GameScene.tscn")
+const UpgradeScene = preload("UpgradeScene.tscn")
+const scene_map = {
     "Tutorial": TutorialScene,
     "Game": GameScene,
     "Upgrade": UpgradeScene,
@@ -12,6 +12,7 @@ var active_scene
 
 const TRANS_TIME = 1
 
+var rng = RandomNumberGenerator.new()
 var dice = [Die.D6(), Die.D8(), Die.D12()]
 var game_running = false
 var dragging_die = false
@@ -21,7 +22,6 @@ signal money_changed(money)
 
 
 func _ready():
-    var rng = RandomNumberGenerator.new()
     rng.randomize()
     var face_sum = 0
     for die in dice:

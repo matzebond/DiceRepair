@@ -45,26 +45,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="UpgradeButton" type="Button" parent="."]
-margin_left = 445.122
-margin_top = 306.333
-margin_right = 1055.12
-margin_bottom = 413.333
+[node name="ToolBench" type="Node2D" parent="."]
+position = Vector2( 650, 150 )
+script = ExtResource( 5 )
+
+[node name="UpgradeButton" type="Button" parent="ToolBench"]
+margin_left = -324.614
+margin_top = 158.413
+margin_right = 260.386
+margin_bottom = 270.413
 custom_fonts/font = SubResource( 1 )
-text = "Ugrade/Repair"
+text = "Upgrade"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ToolBench" type="Node2D" parent="."]
-position = Vector2( 999, 569 )
-script = ExtResource( 5 )
-
 [node name="DropArea" parent="ToolBench" instance=ExtResource( 4 )]
-position = Vector2( -799.078, -351.625 )
+position = Vector2( -491, 0 )
+scale = Vector2( 0.4, 0.7 )
 
 [node name="DieArea" parent="." instance=ExtResource( 4 )]
 position = Vector2( 490.154, 626.457 )
 scale = Vector2( 4.7, 1.5 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="ToolBench/UpgradeButton" to="ToolBench" method="_on_UpgradeButton_pressed"]
 [connection signal="drop_item" from="ToolBench/DropArea" to="ToolBench" method="_on_DropArea_drop_item"]

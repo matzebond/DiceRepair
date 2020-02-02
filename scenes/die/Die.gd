@@ -131,6 +131,9 @@ func _unhandled_input(event):
             state = Dragging
             get_tree().current_scene.dragging_die = true
             start_drag()
+        if event.pressed and mouse_inside and state == Blocked:
+            get_parent().select(self)
+            get_tree().set_input_as_handled()
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
         if mouse_inside and state == Default and get_tree().current_scene.can_pay(viz_state.roll_cost):
