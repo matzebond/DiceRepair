@@ -1,10 +1,5 @@
 extends Node2D
-
 const Die = preload("res://scenes/die/Die.gd")
-
-const TRANS_TIME = 1
-var dragging_die = false
-
 onready var TutorialScene = preload("TutorialScene.tscn")
 onready var GameScene = preload("GameScene.tscn")
 onready var UpgradeScene = preload("UpgradeScene.tscn")
@@ -14,8 +9,12 @@ onready var scene_map = {
     "Upgrade": UpgradeScene,
    }
 var active_scene
+
+const TRANS_TIME = 1
+
 var dice = [Die.D6(), Die.D8(), Die.D12()]
 var game_running = false
+var dragging_die = false
 var time = 0
 var money = 100
 signal money_changed(money)
@@ -56,6 +55,7 @@ func load_scene(Scene):
     add_child(active_scene)
     active_scene.start_scene(dice)
     emit_signal("money_changed", money)
+    dragging_die = false
     
 func end_scene():
     active_scene.end_scene()
