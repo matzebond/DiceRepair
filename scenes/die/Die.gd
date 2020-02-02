@@ -30,6 +30,7 @@ class DieState:
     var roll_cost
     var color
     var face_index
+    var sprite_scale
 
     func _init(dic):
         self.sprite = dic.sprite
@@ -37,6 +38,7 @@ class DieState:
         self.roll_cost = dic.roll_cost
         self.color = dic.color
         self.face_index = 0
+        self.sprite_scale = dic.sprite_scale
         
     func cur_face():
         return faces[face_index]
@@ -50,7 +52,8 @@ static func D6(col = null):
             "sprite": load("res://assets/img/dice/dice_quad.png"), 
             "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6)],
             "roll_cost":  6, 
-            "color": col})
+            "color": col,
+            "sprite_scale": 0.73})
     
 static func D8(col = null):
     if not col:
@@ -59,7 +62,8 @@ static func D8(col = null):
             "sprite": load("res://assets/img/dice/dice_tri.png"), 
             "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6),Face.new(Number, 7),Face.new(Number, 8)],
             "roll_cost":  8, 
-            "color": col})
+            "color": col,
+            "sprite_scale": 0.47})
     
 static func D12(col = null):
     if not col:
@@ -68,7 +72,8 @@ static func D12(col = null):
             "sprite": load("res://assets/img/dice/dice_quint.png"), 
             "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6),Face.new(Number, 7),Face.new(Number, 8),Face.new(Number, 9),Face.new(Number, 10),Face.new(Number, 11),Face.new(Number, 12)],
             "roll_cost":  12, 
-            "color": col})
+            "color": col,
+            "sprite_scale": 0.76})
     
 static func random_color():
     return Color(randf(),randf(), randf(), 1)
@@ -104,6 +109,8 @@ func init(state: DieState):
 
 func _ready():
     rng.randomize()
+    var s = viz_state.sprite_scale
+    $Tool.scale = Vector2(s, s)
     render_face()
 
 func _process(delta):

@@ -31,7 +31,7 @@ func random_die_pos():
     var iter = 0
     var pos
     while pos_ok and iter < 1000:
-        var area = Rect2($DieArea.global_position, $DieArea.scale * Vector2(100,100))
+        var area = Rect2($DieArea.global_position, 2 * $DieArea.scale * Vector2(100,100))
         area.position -= area.size / 2
         var x = area.position.x + rand_range(0, area.size.x)
         var y = area.position.y + rand_range(0, area.size.y)
