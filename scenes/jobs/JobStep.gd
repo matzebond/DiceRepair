@@ -37,14 +37,15 @@ func init(job):
             tools.append(tuul)
     
     var i = 0
+    var width = 196.0
     for tuul in tools:
         var tex = Sprite.new()
         tex.texture = Die.tool_sprite(tuul)
 
         $Tools.add_child(tex)
-
-        tex.position.y =  -50 + (100/len(tools)/2.0) + i * (100.0 / len(tools))
-        tex.scale = Vector2(1.0/len(tools), 1.0/len(tools))
+    
+        tex.position.x =  -width/2 + (width/len(tools)/2.0) + i * (width / len(tools))
+        tex.scale = Vector2(0.5, 0.5)#Vector2(1.0/len(tools), 1.0/len(tools))
         i += 1
     
     work_req = rand_range(work_min, work_max+1)
