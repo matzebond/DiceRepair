@@ -10,6 +10,7 @@ var work_cur:int
 var tools = []
 
 var is_waiting = false
+var wait_base_start
 var wait_base
 var wait_overshoot
 const WAIT_FACTOR_BASE = 4
@@ -33,7 +34,7 @@ func init(job):
     $Sprite.modulate = job.color
     
     for tuul in Die.TOOLS:
-        if randf() > 0.9:
+        if randf() > 0.82:
             tools.append(tuul)
     
     var i = 0
@@ -75,12 +76,21 @@ func update_work():
         $Sprite.texture = sprite_active
         $DropArea.is_active = false
         wait_base = work_req
+        wait_base_start = work_req
         wait_overshoot = work_cur - work_req
+        $ProgressBar.rect_size.x = 0
+        $ProgressBar.modulate.a = 1
         for die in dice:
             die.block()
-            
+        
+        $Label.add_font_override("font", $Label.get_font("font").duplicate(true))
+        
+        $Tween.connect("tween_completed", self, "font_space_done", [], CONNECT_ONESHOT)
+        $Tween.interpolate_method(self, "set_font_space", 0, -34, 0.5, Tween.TRANS_CUBIC, Tween.EASE_IN)
+        $Tween.start()
+        
     # update view
-    if has_inited: # dont animate the first time
+    if has_inited and not is_waiting: # dont animate the first time
         if $Tween.is_active():
             $Tween.stop(self, "set_text")
         $Tween.interpolate_method(self, "set_text_work_cur", last_work_cur, work_cur, abs(last_work_cur-work_cur)*0.1)
@@ -88,10 +98,18 @@ func update_work():
     else:
         set_text_work_cur(0)
     has_inited = true
+
+func set_font_space(val):
+    $Label.get_font("font").extra_spacing_char = int(round(val))
+    print("Yfds")
+func font_space_done(_obj, _key):
+    set_text(str(round(wait_overshoot)))
+    set_font_space(0)
     
 
 func set_text_work_cur(val):
-    set_text(str(round(val)) + "/" + str(work_req))
+    if not is_waiting:
+        set_text(str(round(val)) + "/" + str(work_req))
 
 func set_text(text):
     $Label.text = text
@@ -105,19 +123,20 @@ func _process(delta):
     if is_waiting and get_tree().current_scene.game_running:
         if wait_base > 0:
             wait_base = max(0, wait_base - delta * WAIT_FACTOR_BASE)
+            $ProgressBar.rect_size.x = 172*(1 - wait_base/wait_base_start)
         else:
             if wait_overshoot > 0:
                 wait_overshoot = max(0, wait_overshoot - delta * WAIT_FACTOR_OVERSHOOT)
             else:
                 is_done()
                 is_waiting = false # prevent duplicate calls
-        var a = round(wait_overshoot + wait_base)
-        var b = round(wait_base)
-        set_text(str(a) + "/" + str(b))
-    
+
+            set_text(str(round(wait_overshoot)))
+        
     
 func is_done():
     
+    $Sprite.texture = sprite
     var scene = get_tree().current_scene
     
     scene.add_money(money_reward)
