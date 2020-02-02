@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/screens/TutorialScript.gd" type="Script" id=2]
@@ -6,12 +6,15 @@
 [ext_resource path="res://scenes/drop_area/DropArea.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/ui/TimeFont.tres" type="DynamicFont" id=5]
 [ext_resource path="res://scenes/ui/Time.gd" type="Script" id=6]
+[ext_resource path="res://assets/img/ui/fader.png" type="Texture" id=7]
 [ext_resource path="res://scenes/ui/Money.gd" type="Script" id=8]
 
 [node name="TutorialScene" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Background" parent="." instance=ExtResource( 1 )]
+position = Vector2( 375, 666.758 )
+texture = ExtResource( 7 )
 
 [node name="Time" type="Label" parent="."]
 visible = false
@@ -47,6 +50,11 @@ visible = false
 position = Vector2( 655.561, 39.2213 )
 color = Color( 0.580392, 0.905882, 0.054902, 1 )
 
+[node name="DieArea2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 375, 950 )
+scale = Vector2( 3, 3 )
+
 [node name="DieArea" parent="." instance=ExtResource( 4 )]
-position = Vector2( 270, 390 )
-scale = Vector2( 2, 2 )
+position = Vector2( 375, 1170 )
+rotation = 3.14159
+scale = Vector2( 3, 0.5 )

@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://assets/img/ui/bg.png" type="Texture" id=1]
+[ext_resource path="res://assets/img/ui/upgrade.png" type="Texture" id=1]
 [ext_resource path="res://scenes/ui/TimeFont.tres" type="DynamicFont" id=2]
 [ext_resource path="res://assets/fonts/UbuntuMono-R.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://scenes/drop_area/DropArea.tscn" type="PackedScene" id=4]
@@ -9,21 +9,21 @@
 [ext_resource path="res://scenes/ui/Money.gd" type="Script" id=7]
 
 [sub_resource type="DynamicFont" id=1]
-size = 80
+size = 30
 font_data = ExtResource( 3 )
 
 [node name="UpgradeScreen" type="Node2D"]
 script = ExtResource( 6 )
 
 [node name="bg" type="Sprite" parent="."]
-position = Vector2( 640, 400 )
+position = Vector2( 375, 667 )
 texture = ExtResource( 1 )
 
 [node name="Money" type="Label" parent="."]
-margin_left = 1089.83
-margin_top = 20.3467
-margin_right = 1253.83
-margin_bottom = 71.3467
+margin_left = 529.55
+margin_top = 1234.7
+margin_right = 693.55
+margin_bottom = 1285.7
 rect_pivot_offset = Vector2( 621.451, 310.514 )
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -35,10 +35,10 @@ __meta__ = {
 }
 
 [node name="StartButton" type="Button" parent="."]
-margin_left = 1000.76
-margin_top = 569.0
-margin_right = 1234.76
-margin_bottom = 692.0
+margin_left = 552.0
+margin_top = 840.0
+margin_right = 710.0
+margin_bottom = 899.0
 custom_fonts/font = SubResource( 1 )
 text = "Start"
 __meta__ = {
@@ -46,27 +46,27 @@ __meta__ = {
 }
 
 [node name="ToolBench" type="Node2D" parent="."]
-position = Vector2( 650, 150 )
+position = Vector2( 387.456, 773.045 )
 script = ExtResource( 5 )
 
+[node name="DropArea" parent="ToolBench" instance=ExtResource( 4 )]
+position = Vector2( -99.4556, -5.04541 )
+scale = Vector2( 2, 0.8 )
+
 [node name="UpgradeButton" type="Button" parent="ToolBench"]
-margin_left = -324.614
-margin_top = 158.413
-margin_right = 260.386
-margin_bottom = 270.413
+margin_left = 165.0
+margin_top = -11.292
+margin_right = 323.0
+margin_bottom = 48.0
 custom_fonts/font = SubResource( 1 )
 text = "Upgrade"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DropArea" parent="ToolBench" instance=ExtResource( 4 )]
-position = Vector2( -491, 0 )
-scale = Vector2( 0.4, 0.7 )
-
 [node name="DieArea" parent="." instance=ExtResource( 4 )]
-position = Vector2( 490.154, 626.457 )
-scale = Vector2( 4.7, 1.5 )
+position = Vector2( 375, 1067 )
+scale = Vector2( 3, 1 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
-[connection signal="pressed" from="ToolBench/UpgradeButton" to="ToolBench" method="_on_UpgradeButton_pressed"]
 [connection signal="drop_item" from="ToolBench/DropArea" to="ToolBench" method="_on_DropArea_drop_item"]
+[connection signal="pressed" from="ToolBench/UpgradeButton" to="ToolBench" method="_on_UpgradeButton_pressed"]

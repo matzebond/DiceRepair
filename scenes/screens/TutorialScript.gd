@@ -1,18 +1,15 @@
 extends Node2D
 const Die = preload("res://scenes/die/Die.tscn")
+const DieScript = preload("res://scenes/die/Die.gd")
 const DiePreview = preload("res://scenes/die/DiePreview.tscn")
 
-const ROUND_TIME = 20
 const DICE_MIN_DST = 120
-
 
 func end_scene():
     pass
 
 
 func start_scene(dice):
-    get_tree().current_scene.game_running = true
-    get_tree().current_scene.time = ROUND_TIME
     var dice_inst = []
     for die in dice:
         var die_inst = Die.instance().init(die)
@@ -25,9 +22,10 @@ func start_scene(dice):
 
     for die in dice_inst:
         var preview = DiePreview.instance()
+        # die.state = DieScript.Taken
         die.add_child(preview)
         preview.init(die)
-        preview.global_position = die.global_position + Vector2(50, 0)
+        preview.global_position = die.global_position + Vector2(0, -50)
         previews[die.name] = preview
         yield(get_tree().create_timer(0.2), "timeout")
     

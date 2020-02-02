@@ -28,7 +28,7 @@ func init(die, selectable = false):
         add_child(dupl)
         dummy_dice.push_back(dupl)
         dupl.modulate.a = 0
-        $Tween.interpolate_property(dupl, "position:x", 0, (i+1) * DIE_DST, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+        $Tween.interpolate_property(dupl, "position:y", 0, -(i+1) * DIE_DST, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
         $Tween.interpolate_property(dupl, "modulate:a", 0, 1, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
     return self
@@ -39,7 +39,7 @@ func destroy():
     $Tween.connect("tween_completed", self, "destroy_completed", [], CONNECT_ONESHOT)
     for i in range(faces):
         var dice = dummy_dice[i]
-        $Tween.interpolate_property(dice, "position:x", dice.position.x, 0, CONTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+        $Tween.interpolate_property(dice, "position:y", dice.position.y, 0, CONTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
         $Tween.interpolate_property(dice, "modulate:a", dice.modulate.a, 0, CONTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
     
