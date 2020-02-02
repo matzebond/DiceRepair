@@ -81,7 +81,7 @@ func add_money(delta):
     money += delta
     emit_signal("money_changed", money)
 
-func can_pay(amount):
+func try_pay(amount):
     if money >= amount:
         money -= amount
         emit_signal("money_changed", money)
