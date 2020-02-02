@@ -101,7 +101,7 @@ func update_work():
 
 func set_font_space(val):
     $Label.get_font("font").extra_spacing_char = int(round(val))
-    print("Yfds")
+    
 func font_space_done(_obj, _key):
     set_text(str(round(wait_overshoot)))
     set_font_space(0)

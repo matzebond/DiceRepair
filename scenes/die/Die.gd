@@ -104,7 +104,7 @@ const ANIM_DIST = 250
 func init(state: DieState):
     viz_state = state
     self.texture = state.sprite
-    self.modulate = state.color
+    self.self_modulate = state.color
     return self
 
 func _ready():
