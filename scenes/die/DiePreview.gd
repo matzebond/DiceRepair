@@ -1,7 +1,7 @@
 extends Node2D
 
 const Die = preload("res://scenes/die/Die.tscn")
-const DIE_DST = 80
+const DIE_DST = 50
 const EXTRACT_TIME = 0.8
 const CONTRACT_TIME = 0.4
 
@@ -28,7 +28,9 @@ func init(die, selectable = false):
         add_child(dupl)
         dummy_dice.push_back(dupl)
         dupl.modulate.a = 0
-        $Tween.interpolate_property(dupl, "position:y", 0, -(i+1) * DIE_DST, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+        
+        var target_pos = Vector2(28 * (-1 if i%2==0 else 1), -(i+1)*DIE_DST)
+        $Tween.interpolate_property(dupl, "position", Vector2(), target_pos, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
         $Tween.interpolate_property(dupl, "modulate:a", 0, 1, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
     return self

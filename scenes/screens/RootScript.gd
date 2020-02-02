@@ -13,7 +13,7 @@ var active_scene
 const TRANS_TIME = 1
 
 var rng = RandomNumberGenerator.new()
-var dice = [Die.D6(), Die.D8(), Die.D12()]
+var dice = [Die.D6(), Die.D8(), Die.D8(), Die.D12()]
 var game_running = false
 var dragging_die = false
 var time = 0
