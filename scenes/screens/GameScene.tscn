@@ -57,4 +57,4 @@ __meta__ = {
 
 [node name="DieArea" parent="." instance=ExtResource( 4 )]
 position = Vector2( 375, 1035 )
-scale = Vector2( 3.35, 1.6 )
+scale = Vector2( 3, 1.1 )

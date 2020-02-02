@@ -131,12 +131,12 @@ func _unhandled_input(event):
             state = Dragging
             get_tree().current_scene.dragging_die = true
             start_drag()
-        if event.pressed and mouse_inside and state == Blocked:
+        if event.pressed and mouse_inside and is_dummy:
             get_parent().select(self)
             get_tree().set_input_as_handled()
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
-        if mouse_inside and state == Default and get_tree().current_scene.can_pay(viz_state.roll_cost):
+        if mouse_inside and state == Default and get_tree().current_scene.try_pay(viz_state.roll_cost):
             get_tree().current_scene.active_scene.add_die(self)
             get_tree().set_input_as_handled()
 

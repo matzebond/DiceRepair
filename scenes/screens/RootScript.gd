@@ -39,7 +39,7 @@ func _ready():
                     tuul_placed = true
                     break
         
-    load_scene(GameScene)
+    load_scene(TutorialScene)
     
 func load_scene(Scene):
     # hide Fader
@@ -81,7 +81,7 @@ func add_money(delta):
     money += delta
     emit_signal("money_changed", money)
 
-func can_pay(amount):
+func try_pay(amount):
     if money >= amount:
         money -= amount
         emit_signal("money_changed", money)

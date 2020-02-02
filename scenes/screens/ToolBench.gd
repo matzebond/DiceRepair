@@ -30,6 +30,9 @@ func _on_UpgradeButton_pressed():
         var face = preview.selected_face()
         if face:
             selected_faces.append([face, preview])
+            
+    if not get_tree().current_scene.try_pay(20):
+        return
 
     match len(selected_faces):
         1:  # randomize face
@@ -38,9 +41,17 @@ func _on_UpgradeButton_pressed():
             if not face:
                 return
             if face.type == Die.Number:
-                face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
+                if randf() < 0.8:
+                    face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
+                else:
+                    face.type = Die.TOOLS[get_tree().current_scene.rng.randi_range(0, len(Die.TOOLS) - 1)]
             else:
-                face.type = Die.TOOLS[get_tree().current_scene.rng.randi_range(0, len(Die.TOOLS) - 1)]
+                if randf() < 0.8:
+                    face.type = Die.TOOLS[get_tree().current_scene.rng.randi_range(0, len(Die.TOOLS) - 1)]
+                else:
+                    face.type = Die.Number
+                    face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
+
         
         2: # swap faces
             var face_a = selected_faces[0][0]
