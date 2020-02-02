@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/img/ui/fader.png" type="Texture" id=1]
 [ext_resource path="res://scenes/screens/RootScript.gd" type="Script" id=2]
 
 [node name="RootNode" type="Node2D"]
@@ -8,5 +8,6 @@ script = ExtResource( 2 )
 
 [node name="Tween" type="Tween" parent="."]
 
-[node name="Background" parent="." instance=ExtResource( 1 )]
-z_index = 4096
+[node name="Fader" type="Sprite" parent="."]
+position = Vector2( 375, 667 )
+texture = ExtResource( 1 )

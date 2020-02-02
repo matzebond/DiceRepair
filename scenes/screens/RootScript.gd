@@ -39,11 +39,11 @@ func _ready():
                     tuul_placed = true
                     break
         
-    load_scene(TutorialScene)
+    load_scene(GameScene)
     
 func load_scene(Scene):
     # hide Fader
-    $Tween.interpolate_property($Background, "modulate:a", 1, 0, TRANS_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+    $Tween.interpolate_property($Fader, "modulate:a", 1, 0, TRANS_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
     
     # clear previous
@@ -60,12 +60,12 @@ func load_scene(Scene):
 func end_scene():
     active_scene.end_scene()
     
-    $Background.z_index = 4096
-    $Background.modulate.a = 0
+    $Fader.z_index = 4096
+    $Fader.modulate.a = 0
     
     $Tween.stop_all()
     $Tween.connect("tween_completed", self, "tween_complete", [], CONNECT_ONESHOT)
-    $Tween.interpolate_property($Background, "modulate:a", 0, 1, TRANS_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+    $Tween.interpolate_property($Fader, "modulate:a", 0, 1, TRANS_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
     
 func tween_complete(_obj, _key):
