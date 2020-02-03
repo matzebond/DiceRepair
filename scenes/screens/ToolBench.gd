@@ -40,17 +40,23 @@ func _on_UpgradeButton_pressed():
             var face = selected_faces[0][0]
             if not face:
                 return
-            if face.type == Die.Number:
-                if randf() < 0.8:
-                    face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
-                else:
-                    face.type = Die.TOOLS[get_tree().current_scene.rng.randi_range(0, len(Die.TOOLS) - 1)]
-            else:
-                if randf() < 0.8:
-                    face.type = Die.TOOLS[get_tree().current_scene.rng.randi_range(0, len(Die.TOOLS) - 1)]
-                else:
-                    face.type = Die.Number
-                    face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
+            match face.type:
+                Die.Number:
+                    if randf() < 0.8:
+                        face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
+                    else:
+                        face.type = Die.Tool
+                        face.value = Die.TOOLS[get_tree().current_scene.rng.randi_range(0, len(Die.TOOLS) - 1)]
+                Die.Tool:
+                    if randf() < 0.8:
+                        face.type = Die.TOOLS[get_tree().current_scene.rng.randi_range(0, len(Die.TOOLS) - 1)]
+                    else:
+                        face.type = Die.Number
+                        face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
+                _:
+                    if randf() < 0.5:
+                        face.type = Die.Number
+                        face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
 
         
         2: # swap faces

@@ -37,7 +37,7 @@ func _ready():
                 if index >= len(die.faces):
                     index -= len(die.faces)
                 elif die.faces[index].type == Die.Number:
-                    die.faces[index] = Die.Face.new(tuul)
+                    die.faces[index] = Die.Face.new(Die.Tool, tuul)
                     tuul_placed = true
                     break
         

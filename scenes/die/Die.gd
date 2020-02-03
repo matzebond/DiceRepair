@@ -6,7 +6,8 @@ const roll3 = preload("res://assets/sounds/roll3.ogg")
 const ROLLS = [roll1, roll2]
 
 
-enum {Number, Hammer, Drill, Ratchet, Saw}
+enum { Number, Tool, Broken }
+enum { Hammer, Drill, Ratchet, Saw }
 const TOOLS = [Hammer, Drill, Ratchet, Saw]
 
 const hammer_sprite = preload("res://assets/img/tools/hammer.png")
@@ -25,7 +26,7 @@ class Face:
     var type = Number
     var value = 1
     
-    func _init(type, value = null):
+    func _init(type, value):
         self.type = type
         self.value = value
 
@@ -199,14 +200,19 @@ func cur_face():
     return viz_state.cur_face()
 
 func render_face():
-    if cur_face().type == Number:
-        number.text = str(cur_face().value)
+    var face = cur_face()
+    if face.type == Number:
+        number.text = str(face.value)
         number.visible = true
         tools.visible = false
-    else:
-        tools.texture = tool_sprite(cur_face().type)
+    elif face.type == Tool:
+        tools.texture = tool_sprite(face.value)
         tools.visible = true
         number.visible = false
+    else:
+        number.text = "X"
+        number.visible = false
+        tools.visible = false
         
 func start_drag():
     emit_signal("undrop_item", self)

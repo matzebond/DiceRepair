@@ -66,7 +66,7 @@ func update_work():
     #skip if tool present
     for die in dice:
         for tuul in tools:
-            if die.viz_state.cur_face().type == tuul:
+            if die.cur_face().type == Die.Tool and die.cur_face().value == tuul:
                 work_cur = work_req
       
     # start wait time      
@@ -134,7 +134,6 @@ func _process(delta):
         
     
 func is_done():
-    
     $Sprite.texture = sprite_default
     var scene = get_tree().current_scene
     
