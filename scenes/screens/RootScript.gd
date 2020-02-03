@@ -16,7 +16,7 @@ var rng = RandomNumberGenerator.new()
 var dice = [Die.D6(), Die.D8(), Die.D8(), Die.D12()]
 var game_running = false
 var dragging_die = false
-var money = 100
+var money = 20
 signal money_changed(money)
 
 
@@ -32,13 +32,14 @@ func _ready():
         var tuul_placed = false
         while not tuul_placed:
             var index = rng.randi_range(0, face_sum-1)
-            var die_index = 0
             for die in dice:
                 if index >= len(die.faces):
                     index -= len(die.faces)
                 elif die.faces[index].type == Die.Number:
                     die.faces[index] = Die.Face.new(Die.Tool, tuul)
                     tuul_placed = true
+                    break
+                else:
                     break
         
     load_scene(TutorialScene)
