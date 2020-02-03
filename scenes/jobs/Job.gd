@@ -1,9 +1,12 @@
 extends Node2D
+const JobStepScene = preload("JobStep.tscn")
 
-export var color:Color = Color(1, 1, 1)
+signal completed
 
 const PADDING = Vector2(0, -8)
 const JOB_STEP_SIZE = Vector2(0, 164)
+
+export var color:Color = Color(1, 1, 1)
 
 var money_reward = 5
 
@@ -12,10 +15,9 @@ export var steps_max:int = 3
 var steps:int
 var current_step = 0
 
-onready var JobStep = preload("JobStep.tscn")
+
 
 func _ready():
-    randomize()
     update_tool()
 
 func update_tool():
@@ -29,19 +31,14 @@ func update_tool():
     steps = rand_range(steps_min, steps_max+1)
     var cur_pos = Vector2(2,0)
     for i in range(steps):
-        
-        # init
-        var jobStep = JobStep.instance()
-        jobStep.init(self)
-        
-        # calc pos
-        
-        jobStep.position = cur_pos
+        var jobStep = JobStepScene.instance()
+        jobStep.init(cur_pos, color)
+        jobStep.connect("done", self, "_on_JobStep_done")
+        $Steps.add_child(jobStep)
+
+    # calc next pos
         cur_pos -= JOB_STEP_SIZE
         cur_pos -= PADDING
-        
-        # add
-        $Steps.add_child(jobStep)
         
     $Sprite.position = cur_pos
     #position.y -= cur_pos.y
@@ -50,7 +47,7 @@ func update_tool():
     enable_step(0)
     
     
-func current_step_done():
+func _on_JobStep_done(jobstep):
     current_step += 1
     if current_step >= steps:
         get_tree().current_scene.add_money(money_reward)
@@ -60,11 +57,10 @@ func current_step_done():
     
     if $Steps.get_child_count() > 0:
         $Steps.get_child(0).enable(true)
+    else:
+        emit_signal("completed")
     
     
 func enable_step(id):
     for i in range($Steps.get_child_count()):
         $Steps.get_child(i).enable((id) == i)
-        
-        
-    

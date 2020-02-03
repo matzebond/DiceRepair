@@ -22,7 +22,10 @@ signal money_changed(money)
 
 
 func _ready():
+    randomize()
     rng.randomize()
+    
+    #place tools on number faces
     var face_sum = 0
     for die in dice:
         face_sum += len(die.faces)

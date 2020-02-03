@@ -1,9 +1,10 @@
 extends Node2D
 const Die = preload("res://scenes/die/Die.gd")
 
+export var work_min:int = 2
+export var work_max:int = 12
 
-export var work_min:int = 3
-export var work_max:int = 14
+signal done
 
 var work_req:int
 var work_cur:int
@@ -24,14 +25,13 @@ var dice = []
 
 var has_inited = false
 
-onready var sprite_inactive = preload("res://assets/img/jobs/jobstep_inactive.png")
-onready var sprite = preload("res://assets/img/jobs/jobstep.png")
-onready var sprite_active = preload("res://assets/img/jobs/jobstep_active.png")
+const sprite_inactive = preload("res://assets/img/jobs/jobstep_inactive.png")
+const sprite_default = preload("res://assets/img/jobs/jobstep.png")
+const sprite_active = preload("res://assets/img/jobs/jobstep_active.png")
 
-func init(job):
-    self.job = job
-    
-    $Sprite.modulate = job.color
+func init(pos, color):
+    position = pos
+    $Sprite.modulate = color
     
     for tuul in Die.TOOLS:
         if randf() > 0.82:
@@ -115,7 +115,7 @@ func set_text(text):
     
 func enable(enable):
     $DropArea.is_active = enable
-    $Sprite.texture = sprite if enable else sprite_inactive
+    $Sprite.texture = sprite_default if enable else sprite_inactive
 
 
 func _process(delta):
@@ -135,12 +135,10 @@ func _process(delta):
     
 func is_done():
     
-    $Sprite.texture = sprite
+    $Sprite.texture = sprite_default
     var scene = get_tree().current_scene
     
-    scene.add_money(money_reward)
-    
-    
+    #anim out
     var pos = global_position
     get_parent().remove_child(self)
     scene.add_child(self)
@@ -150,13 +148,12 @@ func is_done():
     $Tween.interpolate_property(self, "position:x", position.x, position.x + 1000, 1.2, Tween.TRANS_CUBIC, Tween.EASE_IN)
     $Tween.start()
     
-    job.current_step_done()
-    
+    emit_signal("done", self)
     
     for die in dice:
         scene.active_scene.add_die(die)
 
-    get_tree().current_scene.add_money(money_reward)
+    scene.add_money(money_reward)
 
 func tween_complete(_obj, _key):
     self.queue_free()
