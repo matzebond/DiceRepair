@@ -9,6 +9,7 @@ const scene_map = {
     "Upgrade": UpgradeScene,
    }
 var active_scene
+var next_scene_name
 
 const TRANS_TIME = 1
 
@@ -23,15 +24,26 @@ signal money_changed(money)
 func _ready():
     randomize()
     rng.randomize()
+    restart()
     
-    #place tools on number faces
-    var face_sum = 0
+func restart():
+    dice = [Die.D6(), Die.D8(), Die.D8(), Die.D12()]
+    game_running = false
+    dragging_die = false
+    money = 20
+    place_tools()
+    load_scene(TutorialScene)
+    
+func place_tools():
+      #place tools on number faces
+    var face_len = 0
     for die in dice:
-        face_sum += len(die.faces)
+        face_len += len(die.faces)
+        
     for tuul in [Die.Hammer, Die.Saw, Die.Ratchet, Die.Drill]:
         var tuul_placed = false
         while not tuul_placed:
-            var index = rng.randi_range(0, face_sum-1)
+            var index = rng.randi_range(0, face_len-1)
             for die in dice:
                 if index >= len(die.faces):
                     index -= len(die.faces)
@@ -41,8 +53,6 @@ func _ready():
                     break
                 else:
                     break
-        
-    load_scene(TutorialScene)
     
 func load_scene(Scene):
     # hide Fader
@@ -60,7 +70,10 @@ func load_scene(Scene):
     emit_signal("money_changed", money)
     dragging_die = false
     
-func end_scene():
+func end_scene(next_scene_name=null):
+    self.next_scene_name = next_scene_name
+    if not next_scene_name:
+        self.next_scene_name = active_scene.get_next_scene()
     active_scene.end_scene()
     
     $Fader.z_index = 4096
@@ -72,7 +85,6 @@ func end_scene():
     $Tween.start()
     
 func tween_complete(_obj, _key):
-    var next_scene_name = active_scene.get_next_scene()
     if scene_map.has(next_scene_name):
         load_scene(scene_map[next_scene_name])
         print("Switching to '" + next_scene_name + "'")
@@ -91,3 +103,9 @@ func try_pay(amount):
         return true
     else:
         return false
+
+func can_pay_reroll():
+    for die in dice:
+        if money >= die.roll_cost:
+            return true
+    return false

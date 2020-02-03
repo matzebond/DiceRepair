@@ -59,7 +59,12 @@ func _on_JobStep_done(jobstep):
         $Steps.get_child(0).enable(true)
     else:
         emit_signal("completed")
-    
+        
+func can_finish_step(dice):
+    if $Steps.get_child_count() > 0:
+        return $Steps.get_child(0).can_finish(dice)
+    else:
+        return true
     
 func enable_step(id):
     for i in range($Steps.get_child_count()):

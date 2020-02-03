@@ -13,6 +13,9 @@ func start_scene(dice):
         var die_inst = Die.instance().init(die)
         self.add_die(die_inst)
         
+func end_scene():
+    pass
+        
         
 func add_die(die):
     var area = Rect2($DieArea.global_position, $DieArea.scale * 2 * Vector2(100,100))
@@ -38,9 +41,6 @@ func random_die_pos(area):
         iter += 1
     return pos
 
-    
-func end_scene():
-    pass
 
 func get_next_scene():
     return "Game"

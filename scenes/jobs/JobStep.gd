@@ -5,8 +5,8 @@ const sprite_inactive = preload("res://assets/img/jobs/jobstep_inactive.png")
 const sprite_default = preload("res://assets/img/jobs/jobstep.png")
 const sprite_active = preload("res://assets/img/jobs/jobstep_active.png")
 
-const WORK_TIME_FACTOR = 0.2
-const SURPLUS_WAIT_FACTOR = 1
+const WORK_TIME_FACTOR = 0.1
+const EXCESS_WAIT_FACTOR = 1
 
 signal done
 
@@ -52,7 +52,7 @@ func _process(delta):
     pass
 
 
-func calc_work():
+func calc_work(dice):
     var work = 0
     for die in dice:
         var face = die.cur_face()
@@ -64,10 +64,13 @@ func calc_work():
                     return work_req
     return work
     
+func can_finish(dice):
+    return calc_work(dice) >= work_req
+    
 func update_work():
     var last_work_req = cur_work_req
     # calculate current work
-    cur_work_req = work_req - calc_work()
+    cur_work_req = work_req - calc_work(self.dice)
            
     # update view
     if $Tween.is_active():
@@ -76,9 +79,9 @@ func update_work():
     $Tween.interpolate_method(self, "set_text_work_cur", last_work_req, cur_work_req, abs(work_dif)*WORK_TIME_FACTOR)
     $Tween.start()
     
-    # start surplus      
+    # start excess
     if cur_work_req < 0:
-        $Tween.connect("tween_completed", self, "start_surplus", [cur_work_req], CONNECT_ONESHOT)
+        $Tween.connect("tween_completed", self, "start_excess", [cur_work_req], CONNECT_ONESHOT)
         for die in dice:
             die.block()
         $DropArea.is_active = false
@@ -93,10 +96,10 @@ func enable(enable):
     $DropArea.is_active = enable
     $Sprite.texture = sprite_default if enable else sprite_inactive
         
-func start_surplus(_obj, _key, surplus):
-    for i in range(abs(surplus)):
+func start_excess(_obj, _key, excess):
+    for i in range(abs(excess)):
         break_face()
-    $Tween.interpolate_method(self, "set_text_work_cur", surplus, 0, -surplus * SURPLUS_WAIT_FACTOR)
+    $Tween.interpolate_method(self, "set_text_work_cur", excess, 0, -excess * EXCESS_WAIT_FACTOR)
     $Tween.connect("tween_completed", self, "is_done", [], CONNECT_ONESHOT)
     $Tween.start()
     
@@ -125,8 +128,7 @@ func is_done(_obj, _key):
     
     emit_signal("done", self)
     
-    for die in dice:
-        scene.active_scene.add_die(die)
+    scene.active_scene.add_die(dice)
 
     scene.add_money(money_reward)
     

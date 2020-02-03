@@ -86,9 +86,8 @@ static func random_color():
 
 
 
-enum {Default, Taken, Blocked, Snapping, Dragging, Rolling}
+enum { Default, Taken, Blocked, Snapping, Dragging, Rolling, Preview, Dummy }
 var state = Default
-var is_dummy = false
 var viz_state: DieState
 
 onready var number = $Number
@@ -137,7 +136,7 @@ func _unhandled_input(event):
             state = Dragging
             get_tree().current_scene.dragging_die = true
             start_drag()
-        if event.pressed and mouse_inside and is_dummy:
+        if event.pressed and mouse_inside and state == Dummy:
             get_parent().select(self)
             get_tree().set_input_as_handled()
 
@@ -159,6 +158,8 @@ func _on_Area2D_mouse_exited():
 
 func roll():
     last_roll_time = -1
+    # target index
+    viz_state.face_index = rng.randi_range(0, len(viz_state.faces) - 1)
     state = Rolling
     play_tween_make_opaque()
     
@@ -171,7 +172,8 @@ func roll():
     $Tween.interpolate_property(self, "position", calc_roll_start_pos(), position, anim_time, Tween.TRANS_SINE, Tween.EASE_OUT)
     $Tween.start()
     
-    $Tween.interpolate_method(self, "rolling", 0, ANIM_ROLLS, anim_time, Tween.TRANS_EXPO, Tween.EASE_OUT)
+    $Tween.interpolate_method(self, "rolling", 0, ANIM_ROLLS, anim_time, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+    $Tween.connect("tween_completed", self, "rolling_complete")
     $Tween.start()
     
     yield(get_tree().create_timer(randf() * 0.1), "timeout")
@@ -189,18 +191,21 @@ func rolling(time):
     time = ceil(time)
     if time > last_roll_time:
         last_roll_time = time
-        viz_state.face_index = rng.randi_range(0, len(viz_state.faces) - 1)
+        render_face(rng.randi_range(0, len(viz_state.faces) - 1))
+        
+func rolling_complete(_key, _value):
+    if _value == ":rolling":
+        state = Default
         render_face()
-            
-        if time == ANIM_ROLLS:
-            state = Default
-            $Tween.stop(self, "rolling")
+        $Tween.disconnect("tween_completed", self, "rolling_complete")
             
 func cur_face():
     return viz_state.cur_face()
 
-func render_face():
-    var face = cur_face()
+func render_face(index=null):
+    if not index:
+        index = viz_state.face_index
+    var face = viz_state.faces[index]
     if face.type == Number:
         number.text = str(face.value)
         number.visible = true
@@ -211,7 +216,7 @@ func render_face():
         number.visible = false
     else:
         number.text = "X"
-        number.visible = false
+        number.visible = true
         tools.visible = false
         
 func start_drag():
@@ -254,6 +259,9 @@ func drop():
 
 func block():
     state = Blocked
+
+func dummy():
+    state = Dummy
     
 # dropped into & used by a drop area
 # DieArea does not "take" die

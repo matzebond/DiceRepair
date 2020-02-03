@@ -54,9 +54,8 @@ func _on_UpgradeButton_pressed():
                         face.type = Die.Number
                         face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
                 _:
-                    if randf() < 0.5:
-                        face.type = Die.Number
-                        face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
+                    face.type = Die.Number
+                    #face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
 
         
         2: # swap faces
@@ -74,4 +73,3 @@ func _on_UpgradeButton_pressed():
     for obj in selected_faces:
             obj[1].update()
             obj[1].select(null)
-        
