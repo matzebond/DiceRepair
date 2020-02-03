@@ -16,7 +16,6 @@ var rng = RandomNumberGenerator.new()
 var dice = [Die.D6(), Die.D8(), Die.D8(), Die.D12()]
 var game_running = false
 var dragging_die = false
-var time = 0
 var money = 100
 signal money_changed(money)
 
