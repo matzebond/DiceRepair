@@ -66,7 +66,6 @@ func update_work():
     #skip if tool present
     for die in dice:
         for tuul in tools:
-            print(die.viz_state.cur_face().type)
             if die.viz_state.cur_face().type == tuul:
                 work_cur = work_req
       
