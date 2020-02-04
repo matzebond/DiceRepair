@@ -28,7 +28,7 @@ position = Vector2( 610, 835 )
 position = Vector2( 375, 438 )
 texture = ExtResource( 2 )
 
-[node name="Time" type="Label" parent="."]
+[node name="Round" type="Label" parent="."]
 margin_left = 99.4089
 margin_top = 1239.01
 margin_right = 299.409

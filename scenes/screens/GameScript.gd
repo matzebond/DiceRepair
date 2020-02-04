@@ -18,6 +18,7 @@ func end_scene():
 
 func start_scene(dice):
     get_tree().current_scene.game_running = true
+    $Round.text = str(get_tree().current_scene.game_round+1)
     for die in dice:
         var die_inst = Die.instance().init(die)
         self.add_die([die_inst])
