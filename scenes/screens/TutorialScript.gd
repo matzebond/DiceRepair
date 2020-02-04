@@ -26,7 +26,7 @@ func start_scene(dice):
         die.state = DieScript.Blocked
         die.add_child(preview)
         preview.init(die)
-        preview.global_position = die.global_position + Vector2(0, -50)
+        preview.global_position = die.global_position
         previews[die.name] = preview
         yield(get_tree().create_timer(0.2), "timeout")
     

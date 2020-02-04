@@ -13,7 +13,7 @@ func _on_DropArea_drop_item(item):
     var preview = DiePreview.instance()
     add_child(preview)
     preview.init(item, true)
-    preview.global_position = item.global_position + Vector2(0, -50)
+    preview.global_position = item.global_position
     previews[item.name] = preview
     
     item.connect("undrop_item", self, "_on_DropArea_undrop_item", [], CONNECT_ONESHOT)

@@ -2,8 +2,8 @@ extends Node2D
 
 const Die = preload("res://scenes/die/Die.tscn")
 const DIE_DST = 50
-const EXTRACT_TIME = 0.8
-const CONTRACT_TIME = 0.4
+const EXTRACT_TIME = 0.4
+const CONTRACT_TIME = 0.2
 
 var faces = 0
 var dummy_dice = []
@@ -18,6 +18,8 @@ func init(die, selectable = false):
     self.die = die
     self.selectable = selectable
     faces = len(die.viz_state.faces)
+    var angle = 2*PI / faces
+    var cur_angle = 0
     dummy_dice = []
     for i in range(faces):
         var dupl = Die.instance()
@@ -27,8 +29,9 @@ func init(die, selectable = false):
         add_child(dupl)
         dummy_dice.push_back(dupl)
         dupl.modulate.a = 0
-        
-        var target_pos = Vector2(28 * (-1 if i%2==0 else 1), -(i+1)*DIE_DST)
+        dupl.scale = 0.6 * Vector2(1,1)
+        var target_pos = polar2cartesian(DIE_DST*2, cur_angle)
+        cur_angle += angle
         $Tween.interpolate_property(dupl, "position", Vector2(), target_pos, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
         $Tween.interpolate_property(dupl, "modulate:a", 0, 1, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
@@ -40,7 +43,7 @@ func destroy():
     $Tween.connect("tween_completed", self, "destroy_completed", [], CONNECT_ONESHOT)
     for i in range(faces):
         var dice = dummy_dice[i]
-        $Tween.interpolate_property(dice, "position:y", dice.position.y, 0, CONTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+        $Tween.interpolate_property(dice, "position", dice.position, Vector2(), CONTRACT_TIME, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
         $Tween.interpolate_property(dice, "modulate:a", dice.modulate.a, 0, CONTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
     

@@ -35,7 +35,7 @@ func restart():
     load_scene(TutorialScene)
     
 func place_tools():
-      #place tools on number faces
+    #place tools on number faces
     var face_len = 0
     for die in dice:
         face_len += len(die.faces)
