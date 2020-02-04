@@ -71,10 +71,22 @@ func is_finish_possible():
             return true
     return false
     
+var game_ending = false
+var time_to_end
 func _on_Job_completed():
     cur_num_jobs -= 1
     if cur_num_jobs <= 0:
-        get_tree().current_scene.end_scene()
+        game_ending = true
+        time_to_end = 1.5
+        
+func _process(delta):
+    if game_ending:
+        time_to_end -= delta
+        if time_to_end <= 0:
+            get_tree().current_scene.end_scene()
+            game_ending = false
+            
+
 
 func get_next_scene():
     return "Upgrade"
