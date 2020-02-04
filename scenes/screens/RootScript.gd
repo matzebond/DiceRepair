@@ -18,6 +18,7 @@ var dice = [Die.D6(), Die.D8(), Die.D8(), Die.D12()]
 var game_running = false
 var dragging_die = false
 var money = 20
+var game_round = 0
 signal money_changed(money)
 
 
@@ -31,6 +32,7 @@ func restart():
     game_running = false
     dragging_die = false
     money = 20
+    game_round = 0
     place_tools()
     load_scene(TutorialScene)
     

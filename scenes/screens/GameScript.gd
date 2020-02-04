@@ -14,7 +14,7 @@ func _ready():
 
 func end_scene():
     get_tree().current_scene.game_running = false
-
+    get_tree().current_scene.game_round += 1
 
 func start_scene(dice):
     get_tree().current_scene.game_running = true
