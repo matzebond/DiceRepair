@@ -148,6 +148,13 @@ func tween_complete(_obj, _key):
     self.queue_free()
     
 func _on_DropArea_drop_item(die):
+    # reject illegal dice
+    var new_dice = dice.duplicate()
+    new_dice.append(die)
+    if calc_work(dice) == calc_work(new_dice):
+        die.snap_back()
+        return
+
     dice.push_back(die)
     
     die.connect("undrop_item", self, "_on_DropArea_undrop_item", [], CONNECT_ONESHOT)
