@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/img/dice/dice_quad.png" type="Texture" id=1]
+[ext_resource path="res://scenes/particles/MoneyParticles.gd" type="Script" id=2]
+
+[node name="MoneyParticles" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="pos1" type="Sprite" parent="."]
+visible = false
+position = Vector2( 67.7045, 63.1492 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 1 )
+
+[node name="pos2" type="Sprite" parent="."]
+visible = false
+position = Vector2( 67.7045, 63.1492 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 1 )
