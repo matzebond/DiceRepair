@@ -16,6 +16,7 @@ var selected_face_id = -1
 
 func init(die, selectable = false):
     self.die = die
+    self.global_position = die.global_position
     self.selectable = selectable
     faces = len(die.viz_state.faces)
     var angle = 2*PI / faces
@@ -58,6 +59,10 @@ func select(die):
         return
     if selected:
         selected.modulate -= Color(0.2, 0.2, 0.2)
+    if die == selected:
+        selected = null
+        selected_face_id = -1
+        return
     selected = die
     selected_face_id = get_children().find(die) - 1
     if selected:
