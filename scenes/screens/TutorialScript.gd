@@ -3,7 +3,7 @@ const Die = preload("res://scenes/die/Die.tscn")
 const DieScript = preload("res://scenes/die/Die.gd")
 const DiePreview = preload("res://scenes/die/DiePreview.tscn")
 
-const DICE_MIN_DST = 120
+const DICE_MIN_DST = 260
 
 func end_scene():
     pass

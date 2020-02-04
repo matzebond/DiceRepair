@@ -12,11 +12,6 @@ script = ExtResource( 2 )
 position = Vector2( 375, 666.758 )
 texture = ExtResource( 7 )
 
-[node name="DieArea2" parent="." instance=ExtResource( 4 )]
-position = Vector2( 375, 950 )
-scale = Vector2( 3, 3 )
-
 [node name="DieArea" parent="." instance=ExtResource( 4 )]
-position = Vector2( 375, 1170 )
-rotation = 3.14159
-scale = Vector2( 3, 0.5 )
+position = Vector2( 375, 900 )
+scale = Vector2( 2.6, 3.1 )
