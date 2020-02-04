@@ -29,12 +29,14 @@ func _on_UpgradeButton_pressed():
         var face = preview.selected_face()
         if face:
             selected_faces.append([face, preview])
-            
-    if not get_tree().current_scene.try_pay(20):
+
+    if len(selected_faces) == 0:
         return
 
     match len(selected_faces):
         1:  # randomize face
+            if not get_tree().current_scene.try_pay(20, selected_faces[0][1].global_position):
+                return
             var preview = selected_faces[0][1]
             var face = selected_faces[0][0]
             if not face:
@@ -58,6 +60,8 @@ func _on_UpgradeButton_pressed():
 
         
         2: # swap faces
+            if not get_tree().current_scene.try_pay(10, selected_faces[0][1].global_position):
+                return
             var face_a = selected_faces[0][0]
             var face_b = selected_faces[1][0]
             if not face_a or not face_b:

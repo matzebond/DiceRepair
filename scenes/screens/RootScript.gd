@@ -108,11 +108,12 @@ func coin_arrived():
     money += 1
     emit_signal("money_changed", money)
 
-func try_pay(amount, position, then_object, then_method):
+func try_pay(amount, pos=null, then_object=null, then_method=null):
     if money >= amount:
         money -= amount
-        add_child(MoneyParticles.instance().init(
-            $MoneyParticlePos.position, position, abs(amount), null, null, then_object, then_method))
+        if pos:
+            add_child(MoneyParticles.instance().init(
+                $MoneyParticlePos.position, pos, abs(amount), null, null, then_object, then_method))
         emit_signal("money_changed", money)
         return true
     else:
