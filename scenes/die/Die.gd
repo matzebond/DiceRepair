@@ -119,8 +119,7 @@ func _ready():
     render_face()
 
 func _process(delta):
-    if state == Snapping and self.position == pre_drag_pos:
-        state = Default
+    pass
 
 
 func _unhandled_input(event):
@@ -129,11 +128,9 @@ func _unhandled_input(event):
 
     if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
         if !event.pressed and state == Dragging:
-            state = Default
             get_tree().current_scene.dragging_die = false
             drop()
-        if event.pressed and mouse_inside and (state == Default or state == Taken) and !get_tree().current_scene.dragging_die:
-            state = Dragging
+        if event.pressed and mouse_inside and (state == Default or state == Taken or state == Snapping) and !get_tree().current_scene.dragging_die:
             get_tree().current_scene.dragging_die = true
             start_drag()
         if event.pressed and mouse_inside and state == Dummy:
@@ -222,13 +219,14 @@ func render_face(index=null):
 func start_drag():
     emit_signal("undrop_item", self)
     drag_offset = self.position - get_tree().root.get_mouse_position()
-    if state == Snapping and self.position == pre_drag_pos:
+    if state != Snapping:
         pre_drag_pos = self.position
     else:
+        $Tween.disconnect("tween_completed", self, "end_snap_back")
         $Tween.stop(self, "position")
     play_tween_make_opaque()
     move_to_top()
-
+    state = Dragging
 
 func move_to_top():
     var p = get_parent()
@@ -239,6 +237,7 @@ func move_to_top():
 
 
 func drop():
+    state = Default
     var min_area = null
     var min_dst = 10000000
     
@@ -275,7 +274,11 @@ func snap_back():
     var dist = (pre_drag_pos - position).length()
     state = Snapping
     $Tween.interpolate_property(self, "position", position, pre_drag_pos, dist*SNAP_BACK_SPEED, Tween.TRANS_EXPO, Tween.EASE_IN)
+    $Tween.connect("tween_completed", self, "end_snap_back", [], CONNECT_ONESHOT)
     $Tween.start()
+
+func end_snap_back(_key, _value):
+    state = Default
     
 func play_tween_make_trans():
     $Tween.interpolate_property(self, "modulate:a", 1, .65, 0.4, Tween.EASE_IN_OUT, Tween.TRANS_SINE)
