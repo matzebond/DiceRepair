@@ -33,10 +33,15 @@ func restart():
     dragging_die = false
     money = 20
     game_round = 0
-    place_tools()
+    construct_dice()
     load_scene(TutorialScene)
     
-func place_tools():
+func construct_dice():
+    var color =  Color.from_hsv(rand_range(0,0.25), rand_range(0.6, 1), rand_range(0.8, 1))
+    for die in dice:
+        die.color = color
+        color = Color.from_hsv(color.h + 1.0/len(dice), rand_range(0.6, 1), rand_range(0.8, 1))
+        
     #place tools on number faces
     var face_len = 0
     for die in dice:
