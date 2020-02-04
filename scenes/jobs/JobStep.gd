@@ -130,7 +130,7 @@ func is_done(_obj, _key):
     
     scene.active_scene.add_die(dice)
 
-    scene.add_money(money_reward)
+    scene.add_money(money_reward, position)
     
 func animate_out():
     var scene = get_tree().current_scene

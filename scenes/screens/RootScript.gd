@@ -93,18 +93,27 @@ func tween_complete(_obj, _key):
     else:
         printerr("Invalid scene name '" + next_scene_name + "'")
 
-
-func add_money(delta):
-    money += delta
+const MoneyParticles = preload("res://scenes/particles/MoneyParticles.tscn")
+func add_money(delta, position):
+    
+    add_child(MoneyParticles.instance().init(
+        position, $MoneyParticlePos.position, abs(delta), self, "coin_arrived"))
+    
+func coin_arrived():
+    money += 1
     emit_signal("money_changed", money)
 
-func try_pay(amount):
+func try_pay(amount, position, then_object, then_method):
     if money >= amount:
         money -= amount
+        add_child(MoneyParticles.instance().init(
+            $MoneyParticlePos.position, position, abs(amount), null, null, then_object, then_method))
         emit_signal("money_changed", money)
         return true
     else:
         return false
+    
+
 
 func can_pay_reroll():
     for die in dice:

@@ -138,11 +138,12 @@ func _unhandled_input(event):
             get_tree().set_input_as_handled()
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
-        if mouse_inside and state == Default and get_tree().current_scene.try_pay(viz_state.roll_cost):
-            get_tree().current_scene.active_scene.add_die(self)
+        if mouse_inside and state == Default and get_tree().current_scene.try_pay(viz_state.roll_cost, position, self, "reroll_payment_received"):
+            
             get_tree().set_input_as_handled()
 
-
+func reroll_payment_received():
+    get_tree().current_scene.active_scene.add_die(self)
 
 
 func _on_Area2D_mouse_entered():

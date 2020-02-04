@@ -3,10 +3,10 @@ extends Node2D
 var pos_end:Vector2
 var vel_explode:Vector2 = Vector2()
 
-const SPEED_EXPLODE = 80
-const SPEED_GATHER = 40
+const SPEED_EXPLODE = 30
+const SPEED_GATHER = 50
 
-const TIME_EXPLODE_TO_GATHER = 0.8
+const TIME_EXPLODE_TO_GATHER = 0.5
 
 var time = 0
 

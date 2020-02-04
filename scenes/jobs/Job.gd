@@ -50,7 +50,7 @@ func update_tool():
 func _on_JobStep_done(jobstep):
     current_step += 1
     if current_step >= steps:
-        get_tree().current_scene.add_money(money_reward)
+        get_tree().current_scene.add_money(money_reward, position)
     
     $Tween.interpolate_property(self, "position:y", position.y, position.y+JOB_STEP_SIZE.y+PADDING.y, 0.6, Tween.TRANS_EXPO, Tween.EASE_IN, 0.6)
     $Tween.start()
