@@ -15,6 +15,7 @@ export var steps_max:int = 3
 var steps:int
 var current_step = 0
 
+onready var root = get_tree().current_scene
 
 
 func _ready():
@@ -32,7 +33,8 @@ func update_tool():
     var cur_pos = Vector2(2,0)
     for i in range(steps):
         var jobStep = JobStepScene.instance()
-        jobStep.init(cur_pos, color)
+        var work = root.rng.randi_range(max(1, 4-root.game_round), 12+root.game_round)
+        jobStep.init(cur_pos, color, work)
         jobStep.connect("done", self, "_on_JobStep_done")
         $Steps.add_child(jobStep)
 

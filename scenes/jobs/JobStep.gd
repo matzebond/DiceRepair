@@ -10,9 +10,6 @@ const EXCESS_WAIT_FACTOR = 1
 
 signal done
 
-export var work_min:int = 2
-export var work_max:int = 12
-
 var work_req:int
 var cur_work_req:int
 var tools = []
@@ -21,9 +18,10 @@ var money_reward = 5
 
 var dice = []
 
-func init(pos, color):
-    position = pos
+func init(pos, color, work):
+    self.position = pos
     $Sprite.modulate = color
+    self.work_req = work
     
     for tuul in Die.TOOLS:
         if randf() > 0.82:
@@ -41,7 +39,7 @@ func init(pos, color):
         tex.scale = Vector2(0.5, 0.5)
         i += 1
     
-    work_req = rand_range(work_min, work_max+1)
+
     cur_work_req = work_req
     set_text_work_cur(cur_work_req)
     
