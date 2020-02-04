@@ -10,8 +10,8 @@ export var color:Color = Color(1, 1, 1)
 
 var money_reward = 5
 
-export var steps_min:int = 2
-export var steps_max:int = 3
+var steps_min:int = 2
+var steps_max:int = 3
 var steps:int
 var current_step = 0
 
@@ -19,6 +19,9 @@ onready var root = get_tree().current_scene
 
 
 func _ready():
+    steps_min = 2 + floor(root.game_round / 2.0)
+    steps_max = 2 + ceil(root.game_round / 2.0)
+    print(root.game_round)
     update_tool()
 
 func update_tool():
@@ -38,12 +41,11 @@ func update_tool():
         jobStep.connect("done", self, "_on_JobStep_done")
         $Steps.add_child(jobStep)
 
-    # calc next pos
+        # calc next pos
         cur_pos -= JOB_STEP_SIZE
         cur_pos -= PADDING
         
     $Sprite.position = cur_pos
-    #position.y -= cur_pos.y
     position.y -= JOB_STEP_SIZE.y/2
     current_step = 0
     enable_step(0)
