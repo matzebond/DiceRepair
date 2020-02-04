@@ -82,7 +82,7 @@ static func D12(col = null):
             "sprite_scale": 0.76})
     
 static func random_color():
-    return Color(randf(),randf(), randf(), 1)
+    return Color.from_hsv(randf(), rand_range(0.6, 1), rand_range(0.7, 1))
 
 
 
