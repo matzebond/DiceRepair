@@ -12,12 +12,13 @@ var active_scene
 var next_scene_name
 
 const TRANS_TIME = 1
+const START_MONEY = 30
 
 var rng = RandomNumberGenerator.new()
 var dice = [Die.D6(), Die.D8(), Die.D8(), Die.D12()]
 var game_running = false
 var dragging_die = false
-var money = 20
+var money = START_MONEY
 var game_round = 0
 signal money_changed(money)
 
@@ -31,10 +32,10 @@ func restart():
     dice = [Die.D6(), Die.D8(), Die.D8(), Die.D12()]
     game_running = false
     dragging_die = false
-    money = 20
+    money = START_MONEY
     game_round = 0
     construct_dice()
-    load_scene(TutorialScene)
+    load_scene(UpgradeScene)
     
 func construct_dice():
     var color =  Color.from_hsv(rand_range(0,0.25), rand_range(0.6, 1), rand_range(0.8, 1))

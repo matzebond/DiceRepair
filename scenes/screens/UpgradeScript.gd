@@ -18,10 +18,13 @@ func end_scene():
         
         
 func add_die(die):
-    var area = Rect2($DieArea.global_position, $DieArea.scale * 2 * Vector2(100,100))
+    var zone = $ToolBench/DropArea
+    var area = Rect2(zone.global_position, zone.scale * 2 * Vector2(100,100))
     area.position -= area.size / 2
     die.position = random_die_pos(area)
     self.add_child(die)
+    
+    $ToolBench._on_DropArea_drop_item(die) # instantly open preview
 
 
 func random_die_pos(area):

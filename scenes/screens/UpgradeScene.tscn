@@ -34,10 +34,12 @@ __meta__ = {
 }
 
 [node name="StartButton" type="Button" parent="."]
-margin_left = 552.0
-margin_top = 840.0
-margin_right = 710.0
-margin_bottom = 899.0
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 376.0
+margin_top = 40.0
+margin_right = 711.0
+margin_bottom = 99.0
+rect_pivot_offset = Vector2( 67.7927, 195.934 )
 custom_fonts/font = SubResource( 1 )
 text = "Start"
 __meta__ = {
@@ -45,27 +47,50 @@ __meta__ = {
 }
 
 [node name="ToolBench" type="Node2D" parent="."]
-position = Vector2( 387.456, 773.045 )
+position = Vector2( 375, 916 )
 script = ExtResource( 5 )
 
 [node name="DropArea" parent="ToolBench" instance=ExtResource( 4 )]
-position = Vector2( -99.4556, -5.04541 )
-scale = Vector2( 2, 0.8 )
+scale = Vector2( 3, 2.5 )
+
+[node name="RepairButton" type="Button" parent="ToolBench"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 0.999969
+margin_top = -477.862
+margin_right = 336.0
+margin_bottom = -418.862
+rect_pivot_offset = Vector2( 67.7927, 195.934 )
+custom_fonts/font = SubResource( 1 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SwapButton" type="Button" parent="ToolBench"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 0.999969
+margin_top = -378.533
+margin_right = 336.0
+margin_bottom = -319.533
+rect_pivot_offset = Vector2( 67.7927, 195.934 )
+custom_fonts/font = SubResource( 1 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="UpgradeButton" type="Button" parent="ToolBench"]
-margin_left = 165.0
-margin_top = -11.292
-margin_right = 323.0
-margin_bottom = 48.0
+margin_left = -273.682
+margin_top = -409.13
+margin_right = -115.682
+margin_bottom = -349.838
 custom_fonts/font = SubResource( 1 )
 text = "Upgrade"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="DieArea" parent="." instance=ExtResource( 4 )]
-position = Vector2( 375, 1065 )
-scale = Vector2( 3, 0.9 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="drop_item" from="ToolBench/DropArea" to="ToolBench" method="_on_DropArea_drop_item"]
+[connection signal="pressed" from="ToolBench/RepairButton" to="ToolBench" method="_on_RepairButton_pressed"]
+[connection signal="pressed" from="ToolBench/SwapButton" to="ToolBench" method="_on_SwapButton_pressed"]
 [connection signal="pressed" from="ToolBench/UpgradeButton" to="ToolBench" method="_on_UpgradeButton_pressed"]
