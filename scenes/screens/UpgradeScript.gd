@@ -1,7 +1,7 @@
 extends Node2D
 const Die = preload("res://scenes/die/Die.tscn")
 
-const DICE_MIN_DST = 120
+const DICE_MIN_DST = 250
 
 signal money_changed(money)
 
