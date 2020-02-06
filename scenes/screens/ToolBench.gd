@@ -53,6 +53,7 @@ func _on_UpgradeButton_pressed():
     # TODO Play sound "upgrade"
     set_face_random(face, preview)
     update_preview(preview)
+    preview.die.render_face()
 
 
 func _on_RepairButton_pressed():
@@ -76,6 +77,7 @@ func _on_RepairButton_pressed():
     # TODO Play sound "repaired"
     set_face_random(face, preview)
     update_preview(preview)
+    preview.die.render_face()
 
 
 func _on_SwapButton_pressed():
@@ -103,6 +105,8 @@ func _on_SwapButton_pressed():
     
     update_preview(selected_faces[0][1])
     update_preview(selected_faces[1][1])
+    selected_faces[0][1].die.render_face()
+    selected_faces[1][1].die.render_face()
     
 func get_selected_faces():
     var selected_faces = []
