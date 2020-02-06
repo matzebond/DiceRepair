@@ -38,7 +38,7 @@ position = Vector2( 612, 438 )
 position = Vector2( 375, 1035 )
 scale = Vector2( 3, 1.1 )
 
-[node name="Panel" type="Panel" parent="."]
+[node name="DieAreaPanel" type="Panel" parent="."]
 margin_left = 40.0
 margin_top = 874.0
 margin_right = 710.0

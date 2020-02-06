@@ -11,6 +11,8 @@ var ready = false
 func _ready():
     for job in get_tree().get_nodes_in_group("Job"):
         job.connect("completed", self, "_on_Job_completed")
+    
+    $DieAreaPanel.set('custom_styles/panel', $DieAreaPanel.theme.get_stylebox("DottedPanel", "Panel"))
 
 func end_scene():
     get_tree().current_scene.game_running = false

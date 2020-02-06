@@ -7,6 +7,10 @@ const COSTS_REPAIR = 20
 const COSTS_UPGRADE = 20
 const COSTS_SWAP = 10
 
+
+func _ready():
+    $Panel.set('custom_styles/panel', $Panel.theme.get_stylebox("DottedPanel", "Panel"))
+    
 func _on_DropArea_drop_item(item):
     
     item.taken_by_area()

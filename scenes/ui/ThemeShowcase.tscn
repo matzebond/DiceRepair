@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/ui/theme.tres" type="Theme" id=1]
+[ext_resource path="res://scenes/ui/IconLabel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/ui/ThemeShowcase.gd" type="Script" id=3]
 
-[node name="Node2D" type="Node2D"]
+[node name="ThemeShowcase" type="Node2D"]
+script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 750.0
@@ -25,9 +28,9 @@ __meta__ = {
 
 [node name="Button4" type="Button" parent="ColorRect"]
 margin_left = 290.0
-margin_top = 274.849
+margin_top = 320.183
 margin_right = 465.0
-margin_bottom = 378.849
+margin_bottom = 424.183
 rect_pivot_offset = Vector2( 64.0769, 69.9619 )
 text = "Play!"
 __meta__ = {
@@ -84,12 +87,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel3" type="Panel" parent="ColorRect"]
+[node name="PanelThin" type="Panel" parent="ColorRect"]
 margin_left = 207.456
 margin_top = 811.0
 margin_right = 359.456
 margin_bottom = 1308.0
 rect_pivot_offset = Vector2( 146.621, 365.675 )
+theme = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="PanelDotted" type="Panel" parent="ColorRect"]
+margin_left = 399.119
+margin_top = 811.0
+margin_right = 551.119
+margin_bottom = 1308.0
+rect_pivot_offset = Vector2( 146.621, 365.675 )
+theme = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IconLabel" parent="." instance=ExtResource( 2 )]
+position = Vector2( 455.505, 192.543 )
