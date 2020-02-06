@@ -34,10 +34,9 @@ func add_die(dice):
     for die in dice:
         var area = Rect2($DieArea.global_position, 2 * $DieArea.scale * Vector2(100,100))
         area.position -= area.size / 2
-        die.position = get_tree().current_scene.random_die_pos(area)
         if die.get_parent() == null:
             self.add_child(die)
-        die.roll()
+        die.roll(area)
     
     if ready:
         finish_possible()

@@ -102,6 +102,7 @@ var mouse_inside = false
 var last_mouse_pos = Vector2()
 var last_mouse_time = 0
 var mouse_pos_avg = 10
+
 var preview = null
 var HOVER_MOUSE_THRESHOLD = 0.1
 var HOVER_TIME_THRESHOLD = 0.75
@@ -146,6 +147,7 @@ func _unhandled_input(event):
     if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
         if !event.pressed and state == Dragging:
             get_tree().current_scene.dragging_die = false
+            last_roll_target_pos = position
             #drop()
             change_state(Default)
         if event.pressed and mouse_inside and (state == Default or state == Taken or state == Snapping or state == Preview) and !get_tree().current_scene.dragging_die:
@@ -159,7 +161,7 @@ func _unhandled_input(event):
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
         if mouse_inside and (state == Default or state == Preview):
             if get_tree().current_scene.try_pay(viz_state.roll_cost, position, self, "reroll_payment_received"):
-                change_state(Rolling)
+                roll(last_roll_area)
             get_tree().set_input_as_handled()
 
 func reroll_payment_received():
@@ -173,9 +175,15 @@ func _on_Area2D_mouse_entered():
 func _on_Area2D_mouse_exited():
     mouse_inside = false
 
+var last_roll_area = null
+var roll_start_pos
+var roll_target_pos
+var last_roll_target_pos = null
 
-func roll():
+func roll(area):
+    self.roll_target_pos = get_tree().current_scene.random_die_pos(area)
     change_state(Rolling)
+    last_roll_area = area
     
 func start_roll():
     last_roll_time = -1
@@ -186,14 +194,22 @@ func start_roll():
     
     var anim_time = 2 + randf()
     
-    $Tween.interpolate_property(self, "scale", Vector2(1.8, 1.8), Vector2(1, 1), anim_time, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
-    $Tween.interpolate_property(self, "modulate:a", 0, 1, anim_time/3, Tween.TRANS_SINE, Tween.EASE_OUT)
-    $Tween.interpolate_property(self, "rotation", (2*randf()-1)*2*PI, 0, anim_time, Tween.TRANS_SINE, Tween.EASE_OUT)
-    
-    $Tween.interpolate_property(self, "position", calc_roll_start_pos(), position, anim_time, Tween.TRANS_SINE, Tween.EASE_OUT)
+    if last_roll_target_pos == null:
+        roll_start_pos = calc_roll_start_pos(roll_target_pos)
+        $Tween.interpolate_property(self, "scale", Vector2(1.8, 1.8), Vector2(1, 1), anim_time, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+        $Tween.interpolate_property(self, "modulate:a", 0, 1, anim_time/3, Tween.TRANS_SINE, Tween.EASE_OUT)
+        $Tween.interpolate_property(self, "rotation", (2*randf()-1)*2*PI, 0, anim_time, Tween.TRANS_SINE, Tween.EASE_OUT)
+    else:
+        roll_start_pos = last_roll_target_pos
+        #$Tween.interpolate_property(self, "scale", Vector2(1.8, 1.8), Vector2(1, 1), anim_time, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+        #$Tween.interpolate_property(self, "modulate:a", 0, 1, anim_time/3, Tween.TRANS_SINE, Tween.EASE_OUT)
+        $Tween.interpolate_property(self, "rotation", 0, (2*(randi()%2)-1) * 2*PI, anim_time, Tween.TRANS_SINE, Tween.EASE_OUT)
+        
+    last_roll_target_pos = roll_target_pos
+    $Tween.interpolate_property(self, "position", roll_start_pos, roll_target_pos, anim_time, Tween.TRANS_SINE, Tween.EASE_OUT)
     $Tween.start()
     
-    $Tween.interpolate_method(self, "rolling", 0, ANIM_ROLLS, anim_time, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+    $Tween.interpolate_method(self, "interpolate_rolling", 0, ANIM_ROLLS, anim_time, Tween.TRANS_LINEAR, Tween.EASE_OUT)
     $Tween.connect("tween_completed", self, "rolling_complete")
     $Tween.start()
     
@@ -201,21 +217,20 @@ func start_roll():
     $AudioStreamPlayer.stream = ROLLS[get_tree().current_scene.rng.randi_range(0, len(ROLLS)-1)]
     $AudioStreamPlayer.play()
 
-func calc_roll_start_pos():
-    var end = position
+func calc_roll_start_pos(end_pos):
     var angle = randf()*2*PI
     var end_to_start = Vector2(ANIM_DIST, 0).rotated(angle)
-    var start = end + end_to_start
+    var start = end_pos + end_to_start
     return start
 
-func rolling(time):
+func interpolate_rolling(time):
     time = ceil(time)
     if time > last_roll_time:
         last_roll_time = time
         render_face(rng.randi_range(0, len(viz_state.faces) - 1))
         
 func rolling_complete(_key, _value):
-    if _value == ":rolling":
+    if _value == ":interpolate_rolling":
         change_state(Default)
         render_face()
         $Tween.disconnect("tween_completed", self, "rolling_complete")
@@ -279,6 +294,7 @@ func drop():
         snap_back()
 
 func block():
+    last_roll_target_pos = position
     next_change_state(Blocked)
 
 func dummy():

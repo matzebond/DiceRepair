@@ -71,11 +71,13 @@ func update_work():
     $Tween.interpolate_method(self, "set_text_work_cur", last_work_req, cur_work_req, abs(work_dif)*WORK_TIME_FACTOR)
     $Tween.start()
     
+    if cur_work_req <= 0:
+        for die in dice:
+            die.block()
+            
     # start excess
     if cur_work_req < 0:
         $Tween.connect("tween_completed", self, "start_excess", [cur_work_req], CONNECT_ONESHOT)
-        for die in dice:
-            die.block()
         $DropArea.is_active = false
     elif cur_work_req == 0:
         $Tween.connect("tween_completed", self, "is_done", [], CONNECT_ONESHOT)

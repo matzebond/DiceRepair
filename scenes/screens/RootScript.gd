@@ -103,18 +103,21 @@ func tween_complete(_obj, _key):
 func random_die_pos(area, dice_min_dst=DICE_MIN_DST):
     var iter = 0
     var pos
+    
     while iter < 1000:
         var x = area.position.x + rand_range(0, area.size.x)
         var y = area.position.y + rand_range(0, area.size.y)
         pos = Vector2(x,y)
         var pos_ok = true
-
+    
         for die in get_tree().get_nodes_in_group("die"):
-            if die.position.distance_to(pos) < dice_min_dst:
+            if die.last_roll_target_pos and die.last_roll_target_pos.distance_to(pos) < dice_min_dst:
                 pos_ok = false
         if pos_ok:
             return pos
         iter += 1
+    if iter >= 1000:
+        print("Could not find free position")
     return pos
     
 const MoneyParticles = preload("res://scenes/particles/MoneyParticles.tscn")
