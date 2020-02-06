@@ -1,8 +1,6 @@
 extends Node2D
 const Die = preload("res://scenes/die/Die.tscn")
 
-const DICE_MIN_DST = 250
-
 signal money_changed(money)
 
 func _on_StartButton_pressed():
@@ -21,7 +19,7 @@ func add_die(die):
     var zone = $ToolBench/DropArea
     var area = Rect2(zone.global_position, zone.scale * 2 * Vector2(100,100))
     area.position -= area.size / 2
-    die.position = get_tree().current_scene.random_die_pos(area)
+    die.position = get_tree().current_scene.random_die_pos(area, 260)
     self.add_child(die)
     
     $ToolBench._on_DropArea_drop_item(die) # instantly open preview
