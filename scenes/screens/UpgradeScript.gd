@@ -21,29 +21,10 @@ func add_die(die):
     var zone = $ToolBench/DropArea
     var area = Rect2(zone.global_position, zone.scale * 2 * Vector2(100,100))
     area.position -= area.size / 2
-    die.position = random_die_pos(area)
+    die.position = get_tree().current_scene.random_die_pos(area)
     self.add_child(die)
     
     $ToolBench._on_DropArea_drop_item(die) # instantly open preview
-
-
-func random_die_pos(area):
-    var iter = 0
-    var pos
-    while iter < 1000:
-        var x = area.position.x + rand_range(0, area.size.x)
-        var y = area.position.y + rand_range(0, area.size.y)
-        pos = Vector2(x,y)
-        var pos_ok = true
-
-        for die in get_tree().get_nodes_in_group("die"):
-            if die.position.distance_to(pos) < DICE_MIN_DST:
-                pos_ok = false
-        if pos_ok:
-            return pos
-        iter += 1
-    return pos
-
 
 func get_next_scene():
     return "Game"

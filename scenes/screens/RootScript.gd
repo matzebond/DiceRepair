@@ -11,6 +11,7 @@ const scene_map = {
 var active_scene
 var next_scene_name
 
+const DICE_MIN_DST = 120
 const TRANS_TIME = 1
 const START_MONEY = 30
 
@@ -35,7 +36,7 @@ func restart():
     money = START_MONEY
     game_round = 0
     construct_dice()
-    load_scene(UpgradeScene)
+    load_scene(TutorialScene)
     
 func construct_dice():
     var color =  Color.from_hsv(rand_range(0,0.25), rand_range(0.6, 1), rand_range(0.8, 1))
@@ -99,9 +100,25 @@ func tween_complete(_obj, _key):
     else:
         printerr("Invalid scene name '" + next_scene_name + "'")
 
+func random_die_pos(area, dice_min_dst=DICE_MIN_DST):
+    var iter = 0
+    var pos
+    while iter < 1000:
+        var x = area.position.x + rand_range(0, area.size.x)
+        var y = area.position.y + rand_range(0, area.size.y)
+        pos = Vector2(x,y)
+        var pos_ok = true
+
+        for die in get_tree().get_nodes_in_group("die"):
+            if die.position.distance_to(pos) < dice_min_dst:
+                pos_ok = false
+        if pos_ok:
+            return pos
+        iter += 1
+    return pos
+    
 const MoneyParticles = preload("res://scenes/particles/MoneyParticles.tscn")
 func add_money(delta, position):
-    
     add_child(MoneyParticles.instance().init(
         position, $MoneyParticlePos.position, abs(delta), self, "coin_arrived"))
     

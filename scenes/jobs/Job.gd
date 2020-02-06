@@ -21,7 +21,6 @@ onready var root = get_tree().current_scene
 func _ready():
     steps_min = 2 + floor(root.game_round / 2.0)
     steps_max = 2 + ceil(root.game_round / 2.0)
-    print(root.game_round)
     update_tool()
 
 func update_tool():
