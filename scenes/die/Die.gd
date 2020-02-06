@@ -58,7 +58,7 @@ static func D6(col = null):
     return DieState.new({
             "sprite": load("res://assets/img/dice/dice_quad.png"), 
             "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6)],
-            "roll_cost":  6, 
+            "roll_cost":  10, 
             "color": col,
             "sprite_scale": 0.73})
     
@@ -68,7 +68,7 @@ static func D8(col = null):
     return DieState.new({
             "sprite": load("res://assets/img/dice/dice_tri.png"), 
             "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6),Face.new(Number, 7),Face.new(Number, 8)],
-            "roll_cost":  8, 
+            "roll_cost":  10, 
             "color": col,
             "sprite_scale": 0.47})
     
@@ -78,7 +78,7 @@ static func D12(col = null):
     return DieState.new({
             "sprite": load("res://assets/img/dice/dice_quint.png"), 
             "faces": [Face.new(Number, 1),Face.new(Number, 2),Face.new(Number, 3),Face.new(Number, 4),Face.new(Number, 5),Face.new(Number, 6),Face.new(Number, 7),Face.new(Number, 8),Face.new(Number, 9),Face.new(Number, 10),Face.new(Number, 11),Face.new(Number, 12)],
-            "roll_cost":  12, 
+            "roll_cost":  10, 
             "color": col,
             "sprite_scale": 0.76})
     
