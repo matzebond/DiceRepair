@@ -6,8 +6,6 @@ signal completed
 const PADDING = Vector2(0, -8)
 const JOB_STEP_SIZE = Vector2(0, 164)
 
-export var color:Color = Color(1, 1, 1)
-
 var money_reward = 5
 
 var steps_min:int = 2
@@ -24,7 +22,6 @@ func _ready():
     update_tool()
 
 func update_tool():
-    $Sprite.modulate = color
     
     # remove all JobSteps
     for child in $Steps.get_children():
@@ -36,7 +33,7 @@ func update_tool():
     for i in range(steps):
         var jobStep = JobStepScene.instance()
         var work = root.rng.randi_range(max(1, 4-root.game_round), 12+root.game_round)
-        jobStep.init(cur_pos, color, work)
+        jobStep.init(cur_pos, work)
         jobStep.connect("done", self, "_on_JobStep_done")
         $Steps.add_child(jobStep)
 

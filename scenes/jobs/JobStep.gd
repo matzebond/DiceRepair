@@ -1,10 +1,6 @@
 extends Node2D
 const Die = preload("res://scenes/die/Die.gd")
 
-const sprite_inactive = preload("res://assets/img/jobs/jobstep_inactive.png")
-const sprite_default = preload("res://assets/img/jobs/jobstep.png")
-const sprite_active = preload("res://assets/img/jobs/jobstep_active.png")
-
 const WORK_TIME_FACTOR = 0.1
 const EXCESS_WAIT_FACTOR = 1
 
@@ -18,9 +14,8 @@ var money_reward = 5
 
 var dice = []
 
-func init(pos, color, work):
+func init(pos, work):
     self.position = pos
-    $Sprite.modulate = color
     self.work_req = work
     
     for tuul in Die.TOOLS:
@@ -44,7 +39,6 @@ func init(pos, color, work):
     set_text_work_cur(cur_work_req)
     
     return self
-
 
 func _process(delta):
     pass
@@ -90,9 +84,15 @@ func update_work():
 func set_text_work_cur(val):
     $Label.text = str(floor(val))
     
+const A_INACTIVE = 0.35
+const A_ACTIVE = 0.0
 func enable(enable):
+    # Fuctionality
     $DropArea.is_active = enable
-    $Sprite.texture = sprite_default if enable else sprite_inactive
+    # Looks
+    var a = A_ACTIVE if enable else A_INACTIVE
+    $Tween.interpolate_property($Inactive, "color:a", $Inactive.color.a, a, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+    $Tween.start()
         
 func start_excess(_obj, _key, excess):
     for i in range(abs(excess)):
@@ -119,7 +119,6 @@ func break_face():
                     break
 
 func is_done(_obj, _key):
-    $Sprite.texture = sprite_default
     var scene = get_tree().current_scene
     
     animate_out()
