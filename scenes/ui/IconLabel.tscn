@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/img/ui/theme.png" type="Texture" id=1]
+[ext_resource path="res://scenes/ui/IconLabel.gd" type="Script" id=2]
+[ext_resource path="res://scenes/ui/theme.tres" type="Theme" id=3]
+[ext_resource path="res://assets/img/ui/icon_coin.png" type="Texture" id=4]
+
+[node name="IconLabel" type="Node2D"]
+script = ExtResource( 2 )
+text = "30"
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_right = 280.0
+margin_bottom = 60.0
+texture = ExtResource( 1 )
+region_rect = Rect2( 80, 14, 60, 56 )
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="NinePatchRect/HBoxContainer"]
+margin_right = 60.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 60, 60 )
+mouse_filter = 2
+texture = ExtResource( 4 )
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="NinePatchRect/HBoxContainer"]
+margin_left = 64.0
+margin_right = 144.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+theme = ExtResource( 3 )
+custom_colors/font_color = Color( 0.521569, 0.596078, 0.843137, 1 )
+text = "000"
+valign = 1

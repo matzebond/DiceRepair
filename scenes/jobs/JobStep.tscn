@@ -16,9 +16,9 @@ texture = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -97.0
-margin_top = -61.6953
+margin_top = -62.0
 margin_right = 97.0
-margin_bottom = 9.3047
+margin_bottom = 9.0
 custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "12"
@@ -28,7 +28,7 @@ __meta__ = {
 }
 
 [node name="Tools" type="Node2D" parent="."]
-position = Vector2( 0, 43.7366 )
+position = Vector2( 0, 44 )
 
 [node name="Tween" type="Tween" parent="."]
 
