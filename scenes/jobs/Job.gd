@@ -58,7 +58,13 @@ func _on_JobStep_done(jobstep):
     if $Steps.get_child_count() > 0:
         $Steps.get_child(0).enable(true)
     else:
-        emit_signal("completed")
+        done()
+    
+    
+func done():
+    emit_signal("completed")
+    $Tween.interpolate_property($Sprite/Inactive, "color:a", $Sprite/Inactive.color.a, 0, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+    $Tween.start()
         
 func can_finish_step(dice):
     if $Steps.get_child_count() > 0:

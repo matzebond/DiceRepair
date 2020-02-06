@@ -25,7 +25,7 @@ position = Vector2( 373, 835 )
 position = Vector2( 610, 835 )
 
 [node name="jobmask" type="Sprite" parent="."]
-position = Vector2( 375, 438 )
+position = Vector2( 375, 336 )
 texture = ExtResource( 2 )
 
 [node name="Round" type="Label" parent="."]
