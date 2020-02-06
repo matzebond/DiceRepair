@@ -1,0 +1,95 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/ui/theme.tres" type="Theme" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 750.0
+margin_bottom = 1334.0
+theme = ExtResource( 1 )
+color = Color( 0.521569, 0.596078, 0.843137, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="ColorRect"]
+margin_left = 399.0
+margin_top = 83.5137
+margin_right = 737.0
+margin_bottom = 146.514
+text = "Click Me"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button4" type="Button" parent="ColorRect"]
+margin_left = 290.0
+margin_top = 274.849
+margin_right = 465.0
+margin_bottom = 378.849
+rect_pivot_offset = Vector2( 64.0769, 69.9619 )
+text = "Play!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="ColorRect"]
+margin_left = 18.0
+margin_top = 85.0268
+margin_right = 190.0
+margin_bottom = 148.027
+text = "Repair"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button3" type="Button" parent="ColorRect"]
+margin_left = 18.0
+margin_top = 179.0
+margin_right = 190.0
+margin_bottom = 263.0
+disabled = true
+text = "Swap"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="ColorRect"]
+margin_left = 18.0
+margin_top = 471.493
+margin_right = 738.0
+margin_bottom = 776.493
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button5" type="Button" parent="ColorRect/Panel"]
+margin_left = 276.355
+margin_top = 100.366
+margin_right = 451.355
+margin_bottom = 204.366
+rect_pivot_offset = Vector2( 64.0769, 69.9619 )
+text = "Play!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="ColorRect"]
+margin_left = 18.0
+margin_top = 811.0
+margin_right = 170.0
+margin_bottom = 1308.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel3" type="Panel" parent="ColorRect"]
+margin_left = 207.456
+margin_top = 811.0
+margin_right = 359.456
+margin_bottom = 1308.0
+rect_pivot_offset = Vector2( 146.621, 365.675 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
