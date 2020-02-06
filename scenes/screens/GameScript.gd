@@ -44,16 +44,17 @@ func add_die(dice):
 func finish_possible():
     if not is_finish_possible():
         print("impossible")
-        is_finish_possible()
-        #get_tree().current_scene.restart()
+        yield(get_tree().create_timer(10.0), "timeout")
+        get_tree().current_scene.restart()
 
 func is_finish_possible():
     if get_tree().current_scene.can_pay_reroll():
         return true
+    var impossible_job = true
     for job in get_tree().get_nodes_in_group("Job"):
-        if job.can_finish_step(get_tree().current_scene.dice):
-            return true
-    return false
+        if not job.is_done() and not job.can_finish_step(get_tree().current_scene.dice):
+            return false
+    return true
     
 var game_ending = false
 var time_to_end

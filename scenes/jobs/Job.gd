@@ -66,12 +66,15 @@ func done():
     emit_signal("completed")
     $Tween.interpolate_property($Steps/JobHead/Inactive, "color:a", $Steps/JobHead/Inactive.color.a, 0, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
     $Tween.start()
+    
+func is_done():
+    return current_step >= steps
         
 func can_finish_step(dice):
-    if $Steps.get_child_count() > 0:
+    if current_step < steps:
         return step_scenes[current_step].can_finish(dice)
     else:
-        return true
+        return false
     
 func enable_step(id):
     for i in range(current_step, len(step_scenes)):

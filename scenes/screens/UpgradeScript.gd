@@ -1,8 +1,6 @@
 extends Node2D
 const Die = preload("res://scenes/die/Die.tscn")
 
-const DICE_MIN_DST = 200
-
 signal money_changed(money)
 
 func _on_StartButton_pressed():
@@ -23,7 +21,7 @@ func add_die(die):
     
     # following lines important, since roll() not called
     die.last_roll_area = area
-    die.position = get_tree().current_scene.random_die_pos(area)
+    die.position = get_tree().current_scene.random_die_pos(area, 200)
     die.last_roll_target_pos = die.position
     
     self.add_child(die)
