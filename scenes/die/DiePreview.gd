@@ -20,8 +20,9 @@ func init(die, selectable = false):
     self.selectable = selectable
     faces = len(die.viz_state.faces)
     var angle = 2*PI / faces
-    var cur_angle = 0
+    var cur_angle = -PI/2.0
     dummy_dice = []
+    var index = die.viz_state.face_index
     for i in range(faces):
         var dupl = Die.instance()
         dupl.init(die.viz_state)
@@ -36,6 +37,7 @@ func init(die, selectable = false):
         $Tween.interpolate_property(dupl, "position", Vector2(), target_pos, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
         $Tween.interpolate_property(dupl, "modulate:a", 0, 1, EXTRACT_TIME, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
     $Tween.start()
+    die.viz_state.face_index = index
     return self
     
     
