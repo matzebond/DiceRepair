@@ -9,6 +9,7 @@
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
+light_mask = 1024
 texture = ExtResource( 1 )
 
 [node name="Label" type="Label" parent="."]
@@ -35,6 +36,7 @@ position = Vector2( 0, 43.7366 )
 scale = Vector2( 0.95, 0.8 )
 
 [node name="Inactive" type="ColorRect" parent="."]
+light_mask = 1024
 margin_left = -98.0
 margin_top = -82.0
 margin_right = 98.0

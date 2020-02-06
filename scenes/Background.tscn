@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://assets/img/ui/bg.png" type="Texture" id=1]
+[ext_resource path="res://assets/img/ui/fader.png" type="Texture" id=1]
 
 [node name="Background" type="Sprite"]
-position = Vector2( 640, 398.237 )
+position = Vector2( 375, 667 )
 texture = ExtResource( 1 )

@@ -1,16 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scenes/Background.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/screens/TutorialScript.gd" type="Script" id=2]
 [ext_resource path="res://scenes/drop_area/DropArea.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/img/ui/fader.png" type="Texture" id=7]
 
 [node name="TutorialScene" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Background" parent="." instance=ExtResource( 1 )]
-position = Vector2( 375, 666.758 )
-texture = ExtResource( 7 )
 
 [node name="DieArea" parent="." instance=ExtResource( 4 )]
 position = Vector2( 375, 900 )
