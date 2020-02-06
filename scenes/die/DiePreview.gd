@@ -27,7 +27,7 @@ func init(die, selectable = false):
         var dupl = Die.instance()
         dupl.init(die.viz_state)
         dupl.viz_state.face_index = i
-        dupl.dummy()
+        dupl.dummy = true
         add_child(dupl)
         dummy_dice.push_back(dupl)
         dupl.modulate.a = 0

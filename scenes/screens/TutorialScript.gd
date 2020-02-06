@@ -21,7 +21,7 @@ func start_scene(dice):
 
     for die in dice_inst:
         var preview = DiePreview.instance()
-        die.state = DieScript.Blocked
+        die.block()
         die.add_child(preview)
         preview.init(die)
         previews[die.name] = preview

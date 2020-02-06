@@ -87,7 +87,8 @@ static func random_color():
 
 
 
-enum { Default, Taken, Blocked, Snapping, Dragging, Rolling, Preview, Dummy }
+enum { Default, Rolling, Dragging, Snapping, Preview, Taken, Blocked }
+var dummy = false
 var state = Default
 var viz_state: DieState
 
@@ -139,28 +140,37 @@ func _process(delta):
         if mouse_inside:
             last_mouse_time = OS.get_ticks_msec()
     last_mouse_pos = get_viewport().get_mouse_position()
+    
 
-func _unhandled_input(event):
-    if event is InputEventMouseMotion and state == Dragging:
-        self.position = event.position + drag_offset
+func can_be_dragged():
+    return state == Default or state == Taken or state == Snapping or state == Preview
+
+func can_be_rolled():
+    return state == Default or state == Preview
+
+func _input(event):
+    if event is InputEventMouseMotion:
+        
+        if state == Dragging:
+            self.position = event.position + drag_offset
 
     if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
         if !event.pressed and state == Dragging:
             get_tree().current_scene.dragging_die = false
             last_roll_target_pos = position
-            #drop()
             change_state(Default)
-        if event.pressed and mouse_inside and (state == Default or state == Taken or state == Snapping or state == Preview) and !get_tree().current_scene.dragging_die:
+
+        if event.pressed and mouse_inside and can_be_dragged() and !get_tree().current_scene.dragging_die:
             get_tree().current_scene.dragging_die = true
             change_state(Dragging)
-            
-        if event.pressed and mouse_inside and state == Dummy:
+
+        if event.pressed and mouse_inside and self.dummy:
             get_parent().select(self)
             get_tree().set_input_as_handled()
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
-        if mouse_inside and (state == Default or state == Preview):
-            if get_tree().current_scene.try_pay(viz_state.roll_cost, position, self, "reroll_payment_received"):
+        if mouse_inside and can_be_rolled():
+            if not get_tree().current_scene.game_running or get_tree().current_scene.try_pay(viz_state.roll_cost, position, self, "reroll_payment_received"):
                 roll(last_roll_area)
             get_tree().set_input_as_handled()
 
@@ -171,9 +181,14 @@ func reroll_payment_received():
 func _on_Area2D_mouse_entered():
     mouse_inside = true
 
-
 func _on_Area2D_mouse_exited():
     mouse_inside = false
+
+func _on_Area2D_area_entered(area):
+    pass
+
+func _on_Area2D_area_exited(area):
+    pass
 
 var last_roll_area = null
 var roll_start_pos
@@ -277,7 +292,7 @@ func move_to_top():
 func drop():
     var min_area = null
     var min_dst = 10000000
-    
+
     for candidate in $Area2D.get_overlapping_areas():
         if not candidate.is_in_group("DropArea"):
             continue
@@ -290,15 +305,13 @@ func drop():
         
     if not min_area == null:
         min_area.drop_into(self)
+        return Default
     else:
-        snap_back()
+        return Snapping
 
 func block():
     last_roll_target_pos = position
     next_change_state(Blocked)
-
-func dummy():
-    change_state(Dummy)
     
 # dropped into & used by a drop area
 # DieArea does not "take" die
@@ -310,13 +323,12 @@ func taken_by_area(make_trans = true):
 
 func snap_back():
     var dist = (pre_drag_pos - position).length()
-    next_change_state(Snapping)
     $Tween.interpolate_property(self, "position", position, pre_drag_pos, dist*SNAP_BACK_SPEED, Tween.TRANS_EXPO, Tween.EASE_IN)
     $Tween.connect("tween_completed", self, "end_snap_back", [], CONNECT_ONESHOT)
     $Tween.start()
 
 func end_snap_back(_key, _value):
-    change_state(Default)
+    next_change_state(Default) # next needed b/c waiting for Area2D update
     
 func play_tween_make_trans():
     $Tween.interpolate_property(self, "modulate:a", 1, .65, 0.4, Tween.EASE_IN_OUT, Tween.TRANS_SINE)
@@ -341,19 +353,24 @@ func next_change_state(next_state):
     change_state(next_state)
     
 func change_state(next_state):
-    if state == next_state or state == Dummy:
+    if self.state == next_state or self.dummy:
         return
 
     var old_state = state
 
-    match state:
+    match old_state:
         Preview:
             stop_hover()
         Dragging:
             get_tree().current_scene.dragging_die = false
-            drop()
-            
-    state = next_state
+            next_state = drop()
+        Snapping:
+            next_state = drop()
+    
+    if self.state != old_state:
+        return
+
+    self.state = next_state
     
     match next_state:
         Preview:
@@ -362,3 +379,5 @@ func change_state(next_state):
             start_drag()
         Rolling:
             start_roll()
+        Snapping:
+            snap_back()
