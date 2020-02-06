@@ -2,8 +2,8 @@ extends Node2D
 
 const Die = preload("res://scenes/die/Die.tscn")
 const DIE_DST = 50
-const EXTRACT_TIME = 0.4
-const CONTRACT_TIME = 0.2
+const EXTRACT_TIME = 0.3
+const CONTRACT_TIME = 0.15
 
 var faces = 0
 var dummy_dice = []
