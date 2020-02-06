@@ -101,8 +101,6 @@ var rng = RandomNumberGenerator.new()
 var mouse_inside = false
 var last_mouse_pos = Vector2()
 var last_mouse_time = 0
-var mouse_pos_avg = 10
-
 var preview = null
 var HOVER_MOUSE_THRESHOLD = 0.1
 var HOVER_TIME_THRESHOLD = 0.75
@@ -127,16 +125,18 @@ func _ready():
     render_face()
 
 func _process(delta):
-    if mouse_inside:
-        var mouse_diff = (get_viewport().get_mouse_position() - last_mouse_pos).length() * delta
-        if mouse_diff < HOVER_MOUSE_THRESHOLD:
+    var mouse_diff = (get_viewport().get_mouse_position() - last_mouse_pos).length() * delta
+
+    if mouse_diff < HOVER_MOUSE_THRESHOLD:
+        if mouse_inside:
             var time_diff = OS.get_ticks_msec() - last_mouse_time
             if time_diff/1000.0 > HOVER_TIME_THRESHOLD:
                 if state == Default:
                     change_state(Preview)
-        else:
-            if state == Preview:
-                change_state(Default)
+    else:
+        if state == Preview:
+            change_state(Default)
+        if mouse_inside:
             last_mouse_time = OS.get_ticks_msec()
     last_mouse_pos = get_viewport().get_mouse_position()
 
