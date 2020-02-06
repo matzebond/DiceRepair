@@ -49,7 +49,6 @@ class DieState:
         
     func cur_face():
         return faces[face_index]
-        
 
 
 static func D6(col = null):
@@ -86,14 +85,10 @@ static func random_color():
     return Color.from_hsv(randf(), rand_range(0.6, 1), rand_range(0.7, 1))
 
 
-
 enum { Default, Rolling, Dragging, Snapping, Preview, Taken, Blocked }
 var dummy = false
 var state = Default
 var viz_state: DieState
-
-onready var number = $Number
-onready var tools = $Tool
 
 signal undrop_item(die)
 
@@ -143,10 +138,10 @@ func _process(delta):
     
 
 func can_be_dragged():
-    return state == Default or state == Taken or state == Snapping or state == Preview
+    return not dummy and (state == Default or state == Taken or state == Snapping or state == Preview)
 
 func can_be_rolled():
-    return state == Default or state == Preview
+    return not dummy and (state == Default or state == Preview)
 
 func _input(event):
     if event is InputEventMouseMotion:
@@ -160,17 +155,17 @@ func _input(event):
             last_roll_target_pos = position
             change_state(Default)
 
-        if event.pressed and mouse_inside and can_be_dragged() and !get_tree().current_scene.dragging_die:
+        if event.pressed and mouse_inside and can_be_dragged() and not get_tree().current_scene.dragging_die:
             get_tree().current_scene.dragging_die = true
             change_state(Dragging)
 
-        if event.pressed and mouse_inside and self.dummy:
+        if event.pressed and mouse_inside and dummy:
             get_parent().select(self)
             get_tree().set_input_as_handled()
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
-        if mouse_inside and can_be_rolled():
-            if not get_tree().current_scene.game_running or get_tree().current_scene.try_pay(viz_state.roll_cost, position, self, "reroll_payment_received"):
+        if mouse_inside and not dummy:
+            if can_be_rolled() and (not get_tree().current_scene.game_running or get_tree().current_scene.try_pay(viz_state.roll_cost, position, self, "reroll_payment_received")):
                 roll(last_roll_area)
             get_tree().set_input_as_handled()
 
@@ -258,17 +253,17 @@ func render_face(index=null):
         index = viz_state.face_index
     var face = viz_state.faces[index]
     if face.type == Number:
-        number.text = str(face.value)
-        number.visible = true
-        tools.visible = false
+        $Number.text = str(face.value)
+        $Number.visible = true
+        $Tool.visible = false
     elif face.type == Tool:
-        tools.texture = tool_sprite(face.value)
-        tools.visible = true
-        number.visible = false
+        $Tool.texture = tool_sprite(face.value)
+        $Tool.visible = true
+        $Number.visible = false
     else:
-        number.text = "X"
-        number.visible = true
-        tools.visible = false
+        $Number.text = "X"
+        $Number.visible = true
+        $Tool.visible = false
         
 func start_drag():
     emit_signal("undrop_item", self)
