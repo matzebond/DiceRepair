@@ -9,7 +9,7 @@ onready var ICON_PATHS = {
 
 
 export var icon = ICON_MONEY
-export var text = ""
+export var text = "" setget _set_text
 export var update_on_signal = ""
 
 func _ready():
@@ -19,7 +19,7 @@ func _ready():
     
 func _set_text(v):
     text = str(v)
-    update_viz()
+    call_deferred("update_viz")
     
 func update_viz():
     $NinePatchRect/HBoxContainer/TextureRect.texture = ICON_PATHS[icon]
