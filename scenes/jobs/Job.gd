@@ -52,12 +52,14 @@ func add_jobs():
     
 func _on_JobStep_done(jobstep):
 
+    $Tween.connect("tween_completed", self, "after_JobStep_anim_done", [], CONNECT_ONESHOT)
     $Tween.interpolate_property($Steps, "position:y", $Steps.position.y, $Steps.position.y+JOB_STEP_SIZE.y+PADDING.y, 0.6, Tween.TRANS_EXPO, Tween.EASE_IN, 0.6)
     $Tween.start()
-    
+
+func after_JobStep_anim_done(obj, _key):
     current_step += 1
     if current_step >= steps:
-        get_tree().current_scene.add_money(money_reward, position)
+        get_tree().current_scene.add_money(money_reward, $Steps/JobHead.global_position)
         done()
     else:
         enable_step(current_step)
