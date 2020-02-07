@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/ui/theme.tres" type="Theme" id=1]
 [ext_resource path="res://scenes/ui/IconLabel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/ui/ThemeShowcase.gd" type="Script" id=3]
+[ext_resource path="res://scenes/ugrades/UpgradeButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/ugrades/PayButton.tscn" type="PackedScene" id=5]
 
 [node name="ThemeShowcase" type="Node2D"]
 script = ExtResource( 3 )
@@ -58,26 +60,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="ColorRect"]
-margin_left = 18.0
-margin_top = 471.493
-margin_right = 738.0
-margin_bottom = 776.493
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Button5" type="Button" parent="ColorRect/Panel"]
-margin_left = 276.355
-margin_top = 100.366
-margin_right = 451.355
-margin_bottom = 204.366
-rect_pivot_offset = Vector2( 64.0769, 69.9619 )
-text = "Play!"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Panel2" type="Panel" parent="ColorRect"]
 margin_left = 18.0
 margin_top = 811.0
@@ -111,3 +93,17 @@ __meta__ = {
 
 [node name="IconLabel" parent="." instance=ExtResource( 2 )]
 position = Vector2( 455.505, 192.543 )
+
+[node name="PayButton" parent="." instance=ExtResource( 5 )]
+margin_left = 18.0
+margin_top = 536.0
+margin_right = 220.0
+margin_bottom = 640.0
+text = "BUY ME!"
+price = 100
+
+[node name="UpgradeButton" parent="." instance=ExtResource( 4 )]
+margin_left = 263.901
+margin_top = 536.74
+margin_right = 367.901
+margin_bottom = 640.74

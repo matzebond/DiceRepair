@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/ugrades/PayButton.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/ugrades/UpgradeButton.gd" type="Script" id=2]
+[ext_resource path="res://assets/img/ui/upgrade_icons.png" type="Texture" id=3]
+[ext_resource path="res://scenes/die/DieFont.tres" type="DynamicFont" id=4]
+
+[node name="UpgradeButton" instance=ExtResource( 1 )]
+margin_right = 104.0
+text = ""
+script = ExtResource( 2 )
+
+[node name="Icon" type="Sprite" parent="." index="0"]
+position = Vector2( 52.964, 39.4741 )
+scale = Vector2( 0.700197, 0.700197 )
+texture = ExtResource( 3 )
+hframes = 10
+
+[node name="Label" type="Label" parent="." index="1"]
+margin_top = 2.0
+margin_right = 129.0
+margin_bottom = 92.0
+rect_scale = Vector2( 0.8, 0.8 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" parent="VBoxContainer" index="0"]
+margin_right = 104.0
+
+[node name="CenterContainer" parent="VBoxContainer" index="1"]
+margin_right = 104.0
+
+[node name="Label" parent="VBoxContainer/CenterContainer" index="0"]
+margin_left = 48.0
+margin_right = 56.0
+text = ""
+
+[node name="HBoxContainer" parent="VBoxContainer" index="2"]
+margin_right = 104.0
+
+[node name="MoneyIcon" parent="VBoxContainer/HBoxContainer" index="0"]
+margin_left = 25.0
+margin_right = 54.0
+
+[node name="Price" parent="VBoxContainer/HBoxContainer" index="1"]
+margin_left = 58.0
+margin_right = 79.0
+[connection signal="pressed" from="." to="." method="_on_UpgradeButton_pressed"]
