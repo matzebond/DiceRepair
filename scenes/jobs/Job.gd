@@ -51,10 +51,10 @@ func add_jobs():
         var jobStep = JobStepScene.instance()
         var work = root.rng.randi_range(max(1, 4-root.game_round), 12+root.game_round)
 
-        $Steps.add_child_below_node($Steps/FirstElem, jobStep)
-        $Steps.position.y -= JOB_STEP_SIZE.y + PADDING.y
         
+        $Steps.position.y -= JOB_STEP_SIZE.y + PADDING.y
         jobStep.init(cur_pos, work)
+        $Steps.add_child_below_node($Steps/FirstElem, jobStep)
         jobStep.connect("done", self, "_on_JobStep_done")
         jobStep.global_position = next_job_pos
         step_scenes[steps-1-i] = jobStep

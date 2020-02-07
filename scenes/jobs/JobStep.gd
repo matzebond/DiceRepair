@@ -14,10 +14,13 @@ var money_reward = 5
 
 var dice = []
 
+onready var nodes_to_mask = [$Sprite, $Label, $Inactive]
+
 func init(pos, work):
     self.position = pos
     self.work_req = work
     
+func _ready():
     for tuul in Die.TOOLS:
         if randf() > 0.82:
             tools.append(tuul)
@@ -29,16 +32,21 @@ func init(pos, work):
         tex.texture = Die.tool_sprite(tuul)
 
         $Tools.add_child(tex)
+        nodes_to_mask.append(tex)
     
         tex.position.x =  -width/2 + (width/len(tools)/2.0) + i * (width / len(tools))
         tex.scale = Vector2(0.5, 0.5)
         i += 1
     
-
+    mask(true)
     cur_work_req = work_req
     set_text_work_cur(cur_work_req)
     
     return self
+    
+func mask(enable):
+    for node in nodes_to_mask:
+        node.light_mask = 1024 if enable else 1
 
 func _process(delta):
     pass
@@ -121,6 +129,7 @@ func break_face():
                     break
 
 func is_done(_obj, _key):
+    mask(false)
     var scene = get_tree().current_scene
     
     animate_out()
