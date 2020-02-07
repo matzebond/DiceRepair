@@ -31,7 +31,7 @@ class SetNumberUpgrade extends Upgrade:
     var value
     func _init(value):
         self.value = value
-        .set_params(10, 4, str(value))
+        .set_params(20, 4, str(value))
     func can_use_on(face):
         return face.type != Die.Broken
     func use_on(face):
