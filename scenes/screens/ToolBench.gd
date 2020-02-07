@@ -15,6 +15,7 @@ func _ready():
     for upgrade in get_tree().current_scene.upgrades:
         var inst = UpgradeButton.instance()
         inst.upgrade = upgrade
+        inst.toolbench = self
         $CenterContainer/Upgrades.add_child(inst)
     
 func _on_DropArea_drop_item(item):
