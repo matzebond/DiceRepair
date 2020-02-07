@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/img/ui/fader.png" type="Texture" id=1]
 [ext_resource path="res://scenes/ui/IconLabel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/ugrades/PayButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/drop_area/DropArea.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/screens/ToolBench.gd" type="Script" id=5]
 [ext_resource path="res://scenes/screens/UpgradeScript.gd" type="Script" id=6]
@@ -67,29 +68,21 @@ __meta__ = {
 position = Vector2( 0, -9.83521 )
 scale = Vector2( 3, 2.5 )
 
-[node name="RepairButton" type="Button" parent="ToolBench"]
+[node name="SwapButton" parent="ToolBench" instance=ExtResource( 3 )]
 margin_left = 69.0
-margin_top = -534.0
+margin_top = -435.0
 margin_right = 335.0
-margin_bottom = -450.0
-rect_pivot_offset = Vector2( 67.7927, 195.934 )
-theme = ExtResource( 7 )
-text = "Repair"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SwapButton" type="Button" parent="ToolBench"]
-margin_left = 69.0
-margin_top = -414.0
-margin_right = 335.0
-margin_bottom = -330.0
-rect_pivot_offset = Vector2( 67.7927, 195.934 )
-theme = ExtResource( 7 )
+margin_bottom = -331.0
 text = "Swap"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+price = 10
+
+[node name="RepairButton" parent="ToolBench" instance=ExtResource( 3 )]
+margin_left = 69.0
+margin_top = -574.681
+margin_right = 335.0
+margin_bottom = -470.681
+text = "Repair"
+price = 20
 
 [node name="UpgradeButton" type="Button" parent="ToolBench"]
 margin_left = -293.082
@@ -107,6 +100,6 @@ position = Vector2( 430, 1234 )
 update_on_signal = "money_changed"
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="drop_item" from="ToolBench/DropArea" to="ToolBench" method="_on_DropArea_drop_item"]
-[connection signal="pressed" from="ToolBench/RepairButton" to="ToolBench" method="_on_RepairButton_pressed"]
 [connection signal="pressed" from="ToolBench/SwapButton" to="ToolBench" method="_on_SwapButton_pressed"]
+[connection signal="pressed" from="ToolBench/RepairButton" to="ToolBench" method="_on_RepairButton_pressed"]
 [connection signal="pressed" from="ToolBench/UpgradeButton" to="ToolBench" method="_on_UpgradeButton_pressed"]
