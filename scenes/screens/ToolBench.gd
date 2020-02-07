@@ -1,6 +1,7 @@
 extends Node2D
 const Die = preload("res://scenes/die/Die.gd")
 const DiePreview = preload("res://scenes/die/DiePreview.tscn")
+const UpgradeButton = preload("res://scenes/ugrades/UpgradeButton.tscn")
 var previews = {}
 
 const COSTS_REPAIR = 20
@@ -10,6 +11,11 @@ const COSTS_SWAP = 10
 
 func _ready():
     $Panel.set('custom_styles/panel', $Panel.theme.get_stylebox("DottedPanel", "Panel"))
+    
+    for upgrade in get_tree().current_scene.upgrades:
+        var inst = UpgradeButton.instance()
+        inst.upgrade = upgrade
+        $CenterContainer/Upgrades.add_child(inst)
     
 func _on_DropArea_drop_item(item):
     

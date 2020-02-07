@@ -7,6 +7,7 @@
 
 [node name="UpgradeButton" instance=ExtResource( 1 )]
 margin_right = 104.0
+rect_min_size = Vector2( 104, 104 )
 text = ""
 script = ExtResource( 2 )
 

@@ -84,13 +84,26 @@ margin_bottom = -470.681
 text = "Repair"
 price = 20
 
-[node name="UpgradeButton" type="Button" parent="ToolBench"]
-margin_left = -293.082
-margin_top = -449.694
-margin_right = -16.0817
-margin_bottom = -365.694
+[node name="CenterContainer" type="CenterContainer" parent="ToolBench"]
+margin_left = -317.0
+margin_top = -858.0
+margin_right = 7.0
+margin_bottom = -349.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Upgrades" type="GridContainer" parent="ToolBench/CenterContainer"]
+margin_left = 162.0
+margin_top = 254.0
+margin_right = 162.0
+margin_bottom = 254.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
 theme = ExtResource( 7 )
-text = "Upgrade"
+columns = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -102,4 +115,3 @@ update_on_signal = "money_changed"
 [connection signal="drop_item" from="ToolBench/DropArea" to="ToolBench" method="_on_DropArea_drop_item"]
 [connection signal="pressed" from="ToolBench/SwapButton" to="ToolBench" method="_on_SwapButton_pressed"]
 [connection signal="pressed" from="ToolBench/RepairButton" to="ToolBench" method="_on_RepairButton_pressed"]
-[connection signal="pressed" from="ToolBench/UpgradeButton" to="ToolBench" method="_on_UpgradeButton_pressed"]

@@ -15,12 +15,9 @@ class Upgrade:
         return false
     func use_on(face): # only use when can_use_on() returned true
         pass
-    func inst_button():
-        var inst = get_script().new()
-        inst.upgrade = self
         
         
-class UpgradePlusDelta extends Upgrade:
+class PlusDeltaUpgrade extends Upgrade:
     var delta
     func _init(delta):
         .set_params(3 * delta, 5, str(delta))
@@ -32,7 +29,7 @@ class UpgradePlusDelta extends Upgrade:
 
 var upgrade
 func _ready():
-    upgrade = UpgradePlusDelta.new(2) # delete this
+    upgrade = PlusDeltaUpgrade.new(2) # delete this
 
     _set_price(upgrade.price)
     $Icon.frame = upgrade.icon_id
