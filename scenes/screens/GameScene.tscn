@@ -30,9 +30,11 @@ position = Vector2( 138, 438 )
 
 [node name="Job2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 373, 438 )
+initial_anim_delay = 0.6
 
 [node name="Job3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 612, 438 )
+initial_anim_delay = 1.2
 
 [node name="DieArea" parent="." instance=ExtResource( 4 )]
 position = Vector2( 375, 1035 )
