@@ -10,11 +10,7 @@ margin_right = 202.0
 margin_bottom = 104.0
 rect_min_size = Vector2( 0, 104 )
 theme = ExtResource( 1 )
-custom_colors/font_color_disabled = Color( 0, 0, 0, 0 )
-custom_colors/font_color = Color( 0, 0, 0, 0 )
-custom_colors/font_color_hover = Color( 0, 0, 0, 0 )
-custom_colors/font_color_pressed = Color( 0, 0, 0, 0 )
-text = "Invisible"
+text = "Text"
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -28,26 +24,6 @@ alignment = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Container" type="Container" parent="VBoxContainer"]
-margin_right = 202.0
-margin_bottom = 10.0
-rect_min_size = Vector2( 0, 10 )
-mouse_filter = 2
-
-[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
-margin_top = 14.0
-margin_right = 202.0
-margin_bottom = 67.0
-mouse_filter = 2
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="VBoxContainer/CenterContainer"]
-margin_left = 28.0
-margin_right = 173.0
-margin_bottom = 52.0
-custom_colors/font_color = Color( 0.521569, 0.596078, 0.843137, 1 )
-text = "Invisible"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 71.0

@@ -12,16 +12,17 @@ text = ""
 script = ExtResource( 2 )
 
 [node name="Icon" type="Sprite" parent="." index="0"]
-position = Vector2( 52.964, 39.4741 )
-scale = Vector2( 0.700197, 0.700197 )
+position = Vector2( 53, 36 )
+scale = Vector2( 0.65, 0.65 )
 texture = ExtResource( 3 )
 hframes = 10
 
 [node name="Label" type="Label" parent="." index="1"]
-margin_top = 2.0
-margin_right = 129.0
-margin_bottom = 92.0
-rect_scale = Vector2( 0.8, 0.8 )
+margin_left = 2.0
+margin_top = -3.0
+margin_right = 131.0
+margin_bottom = 87.0
+rect_scale = Vector2( 0.75, 0.75 )
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 align = 1
@@ -30,25 +31,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Container" parent="VBoxContainer" index="0"]
-margin_right = 104.0
-
-[node name="CenterContainer" parent="VBoxContainer" index="1"]
-margin_right = 104.0
-
-[node name="Label" parent="VBoxContainer/CenterContainer" index="0"]
-margin_left = 48.0
-margin_right = 56.0
-text = ""
-
-[node name="HBoxContainer" parent="VBoxContainer" index="2"]
+[node name="HBoxContainer" parent="VBoxContainer" index="0"]
+margin_top = 64.0
 margin_right = 104.0
 
 [node name="MoneyIcon" parent="VBoxContainer/HBoxContainer" index="0"]
-margin_left = 25.0
-margin_right = 54.0
+margin_left = 23.0
+margin_right = 52.0
+margin_bottom = 40.0
 
 [node name="Price" parent="VBoxContainer/HBoxContainer" index="1"]
-margin_left = 58.0
-margin_right = 79.0
+margin_left = 56.0
+margin_right = 81.0
+margin_bottom = 40.0
 [connection signal="pressed" from="." to="." method="_on_UpgradeButton_pressed"]
