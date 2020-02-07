@@ -34,7 +34,7 @@ func _ready():
     var start_y = $Steps.position.y - 600 - JOB_STEP_SIZE.y*steps
     var end_y = $Steps.position.y
     $Steps.position.y = start_y
-    $Tween.connect("tween_completed", self, "after_JobStep_anim_done", [], CONNECT_ONESHOT)
+    $Tween.connect("tween_completed", self, "initial_anim_done", [], CONNECT_ONESHOT)
     $Tween.interpolate_property($Steps, "position:y", start_y, end_y, 1.2, Tween.TRANS_EXPO, Tween.EASE_IN, initial_anim_delay)
     $Tween.start()
 
