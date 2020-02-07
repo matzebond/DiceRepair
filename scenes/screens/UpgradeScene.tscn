@@ -27,7 +27,7 @@ __meta__ = {
 }
 
 [node name="StartButton" type="Button" parent="."]
-margin_left = 444.0
+margin_left = 460.0
 margin_top = 39.536
 margin_right = 710.0
 margin_bottom = 123.536
@@ -40,7 +40,7 @@ __meta__ = {
 [node name="Upgrades" type="Panel" parent="."]
 margin_left = 40.0
 margin_top = 40.0
-margin_right = 400.0
+margin_right = 416.0
 margin_bottom = 585.0
 rect_pivot_offset = Vector2( 224.197, 284.952 )
 theme = ExtResource( 7 )
@@ -69,7 +69,7 @@ position = Vector2( 0, -9.83521 )
 scale = Vector2( 3, 2.5 )
 
 [node name="SwapButton" parent="ToolBench" instance=ExtResource( 3 )]
-margin_left = 69.0
+margin_left = 85.0
 margin_top = -435.0
 margin_right = 335.0
 margin_bottom = -331.0
@@ -77,33 +77,36 @@ text = "Swap"
 price = 10
 
 [node name="RepairButton" parent="ToolBench" instance=ExtResource( 3 )]
-margin_left = 69.0
-margin_top = -574.681
+margin_left = 85.0
+margin_top = -574.0
 margin_right = 335.0
-margin_bottom = -470.681
+margin_bottom = -470.0
 text = "Repair"
 price = 20
 
 [node name="CenterContainer" type="CenterContainer" parent="ToolBench"]
 margin_left = -317.0
 margin_top = -858.0
-margin_right = 7.0
+margin_right = 23.0
 margin_bottom = -349.0
+rect_min_size = Vector2( 324, 509 )
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Upgrades" type="GridContainer" parent="ToolBench/CenterContainer"]
-margin_left = 162.0
+margin_left = 170.0
 margin_top = 254.0
-margin_right = 162.0
+margin_right = 170.0
 margin_bottom = 254.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 theme = ExtResource( 7 )
-columns = 2
+custom_constants/vseparation = 7
+custom_constants/hseparation = 7
+columns = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -18,7 +18,12 @@ const START_MONEY = 30
 
 var rng = RandomNumberGenerator.new()
 var dice = [Die.D6(), Die.D8(), Die.D8(), Die.D12()]
-var upgrades = [UpgradeButton.PlusDeltaUpgrade.new(2), UpgradeButton.PlusDeltaUpgrade.new(4), UpgradeButton.PlusDeltaUpgrade.new(6), UpgradeButton.PlusDeltaUpgrade.new(8)]
+var upgrades = [
+    UpgradeButton.PlusDeltaUpgrade.new(2), UpgradeButton.PlusDeltaUpgrade.new(5), UpgradeButton.SetNumberUpgrade.new(10),
+    UpgradeButton.MinusDeltaUpgrade.new(2), UpgradeButton.MinusDeltaUpgrade.new(5), UpgradeButton.SetNumberUpgrade.new(1), 
+    UpgradeButton.SetToolUpgrade.new(Die.Hammer), UpgradeButton.SetToolUpgrade.new(Die.Drill), UpgradeButton.SetToolUpgrade.new(Die.Ratchet),
+    UpgradeButton.SetToolUpgrade.new(Die.Saw)
+]
 var game_running = false
 var dragging_die = false
 var money = START_MONEY

@@ -16,6 +16,27 @@ class Upgrade:
     func use_on(face): # only use when can_use_on() returned true
         pass
         
+class SetToolUpgrade extends Upgrade:
+    var tuul
+    func _init(tuul):
+        self.tuul = tuul
+        .set_params(10, 0+tuul, "")
+    func can_use_on(face):
+        return face.type != Die.Broken
+    func use_on(face):
+        face.type = Die.Tool
+        face.value = tuul
+        
+class SetNumberUpgrade extends Upgrade:
+    var value
+    func _init(value):
+        self.value = value
+        .set_params(10, 4, str(value))
+    func can_use_on(face):
+        return face.type != Die.Broken
+    func use_on(face):
+        face.type = Die.Number
+        face.value = value
         
 class PlusDeltaUpgrade extends Upgrade:
     var delta
@@ -26,6 +47,16 @@ class PlusDeltaUpgrade extends Upgrade:
         return face.type == Die.Number
     func use_on(face):
         face.value += delta
+        
+class MinusDeltaUpgrade extends Upgrade:
+    var delta
+    func _init(delta):
+        self.delta = delta
+        .set_params(3 * delta, 6, str(delta))
+    func can_use_on(face):
+        return face.type == Die.Number and (face.value - delta) >= 1
+    func use_on(face):
+        face.value -= delta
 
 var upgrade
 var toolbench
