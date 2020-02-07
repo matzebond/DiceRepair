@@ -75,7 +75,7 @@ func _on_RepairButton_pressed():
         return
     
     # TODO Play sound "repaired"
-    set_face_random(face, preview)
+    face.restore_face()
     update_preview(preview)
     preview.die.render_face()
 

@@ -114,7 +114,7 @@ func break_face():
                 if index >= len(die.viz_state.faces):
                     index -= len(die.viz_state.faces)
                 elif die.viz_state.faces[index].type != Die.Broken:
-                    die.viz_state.faces[index].type = Die.Broken
+                    die.break_face(index)
                     broken = true
                     break
                 else:
