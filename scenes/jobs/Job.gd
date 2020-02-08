@@ -6,8 +6,6 @@ signal completed
 const PADDING = Vector2(0, -8)
 const JOB_STEP_SIZE = Vector2(0, 164)
 
-var money_reward = 5
-
 var steps_min:int = 2
 var steps_max:int = 3
 var steps:int
@@ -71,14 +69,12 @@ func _on_JobStep_done(jobstep):
 func after_JobStep_anim_done(_obj, _key):
     current_step += 1
     if current_step >= steps:
-        get_tree().current_scene.add_money(money_reward, $Steps/JobHead.global_position)
         done()
     else:
         enable_step(current_step)
     
 func done():
     emit_signal("completed")
-    $Tween.interpolate_property($Steps/JobHead/Inactive, "color:a", $Steps/JobHead/Inactive.color.a, 0, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
     $Tween.start()
     
 func is_done():

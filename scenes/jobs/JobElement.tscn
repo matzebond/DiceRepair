@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/jobs/JobElement.gd" type="Script" id=1]
+[ext_resource path="res://assets/img/jobs/jobstep.png" type="Texture" id=3]
+
+[node name="JobElement" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Inactive" type="ColorRect" parent="."]
+margin_left = -98.0
+margin_top = -82.0
+margin_right = 98.0
+margin_bottom = 82.0
+mouse_filter = 2
+color = Color( 0.807843, 0.807843, 0.807843, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ColorRect" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+margin_left = -86.0
+margin_top = 63.0
+margin_right = 86.0
+margin_bottom = 71.0
+mouse_filter = 2
+color = Color( 0.858824, 0.690196, 0.52549, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
