@@ -33,11 +33,16 @@ func _ready():
         tex.scale = Vector2(0.5, 0.5)
         i += 1
     
+    nodes_to_mask.append($Label)
+    
     ._ready()
     
     cur_work_req = work_req
     set_text_work_cur(cur_work_req)
 
+func enable(enable):
+    $DropArea.is_active = enable
+    .enable(enable)
 
 func calc_work(dice):
     var work = 0

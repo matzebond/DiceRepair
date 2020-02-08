@@ -60,15 +60,24 @@ class MinusDeltaUpgrade extends Upgrade:
 
 var upgrade
 var toolbench
+var hide_button = false
 
 func _ready():
-    if not upgrade or not toolbench:
+    if not upgrade or (not hide_button and not toolbench):
         printerr("Error in UpgradeButton: upgrade and toolbench must be set before _ready()")
         upgrade = PlusDeltaUpgrade.new(2)
 
     _set_price(upgrade.price)
     $Icon.frame = upgrade.icon_id
     $Label.text = upgrade.text
+    
+    if hide_button:
+        self.disabled = true
+        self.add_stylebox_override("disabled", StyleBoxEmpty.new())
+        
+func money_changed(money): # Overrides
+    if not hide_button:
+        .money_changed(money)
 
 func _on_UpgradeButton_pressed():
     var selected_faces = toolbench.get_selected_faces()

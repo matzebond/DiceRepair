@@ -8,7 +8,6 @@ var money_reward = 0
 
 func _ready():
     nodes_to_mask.append($Sprite)
-    nodes_to_mask.append($Label)
     nodes_to_mask.append($Inactive)
     mask(true)
     
@@ -23,9 +22,6 @@ func can_finish(dice):
 const A_INACTIVE = 0.35
 const A_ACTIVE = 0.0
 func enable(enable):
-    # Fuctionality
-    $DropArea.is_active = enable
-    # Looks
     var a = A_ACTIVE if enable else A_INACTIVE
     $Tween.interpolate_property($Inactive, "color:a", $Inactive.color.a, a, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
     $Tween.start()
