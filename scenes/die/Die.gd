@@ -6,7 +6,6 @@ const roll2 = preload("res://assets/sounds/roll2.ogg")
 const roll3 = preload("res://assets/sounds/roll3.ogg")
 const ROLLS = [roll1, roll2]
 
-
 enum { Number, Tool, Broken }
 enum { Hammer, Drill, Ratchet, Saw }
 const TOOLS = [Hammer, Drill, Ratchet, Saw]
@@ -122,6 +121,11 @@ var last_roll_time = -1
 const ANIM_ROLLS = 20
 const ANIM_DIST = 250
 
+# For detecting fast drag movement
+const ROLL_MOUSE_SPEED_THRESHOLD = 300.0
+const MOUSE_MOVE_LOG_LENGTH = 5
+var mouse_move_log = []
+
 func init(state: DieState):
     viz_state = state
     self.texture = state.sprite
@@ -149,6 +153,14 @@ func _process(delta):
         if mouse_inside:
             last_mouse_time = OS.get_ticks_msec()
     last_mouse_pos = get_viewport().get_mouse_position()
+    
+
+    if state == Dragging:
+        mouse_move_log.push_back([OS.get_ticks_msec(), get_global_mouse_position()])
+        if len(mouse_move_log) > MOUSE_MOVE_LOG_LENGTH:
+            mouse_move_log.pop_front()
+    else:
+        mouse_move_log = []
     
 
 func can_be_dragged():
@@ -179,8 +191,7 @@ func _input(event):
 
     if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
         if mouse_inside and not dummy:
-            if can_be_rolled() and (not get_tree().current_scene.game_running or get_tree().current_scene.try_pay(viz_state.roll_cost, position, self, "reroll_payment_received")):
-                roll(last_roll_area)
+            try_roll(last_roll_area)
             get_tree().set_input_as_handled()
 
 func reroll_payment_received():
@@ -204,6 +215,18 @@ var roll_start_pos
 var roll_target_pos
 var last_roll_target_pos = null
 
+# only rolls if can_be_rolled() and enough money
+func try_roll(area):
+    if can_be_rolled():
+        if get_tree().current_scene.game_running:
+            if (get_tree().current_scene.try_pay(viz_state.roll_cost, position, self, "reroll_payment_received")):
+                roll(area)
+                return true
+        else:
+            roll(area)
+            return true
+    return false
+    
 func roll(area):
     self.roll_target_pos = get_tree().current_scene.random_die_pos(area)
     change_state(Rolling)
@@ -311,9 +334,13 @@ func drop():
         if min_area == null or (dst < min_dst and candidate.z_index >= min_area.z_index):
             min_area = candidate
             min_dst = dst
-        
+    
     if not min_area == null:
         min_area.drop_into(self)
+        
+        if min_area.is_in_group("RerollArea") and calc_mouse_speed() > ROLL_MOUSE_SPEED_THRESHOLD:
+            call_deferred("try_roll", last_roll_area)
+        
         return Default
     else:
         return Snapping
@@ -366,6 +393,26 @@ func break_face(face_index):
     viz_state.faces[face_index].type = Broken
     render_face()
     # TODO start destruction animation
+            
+func calc_mouse_speed():
+    
+    var n = len(mouse_move_log)
+    if n < 2: return 0
+        
+    var last = mouse_move_log[0]
+    
+    var speed = 0
+    # sum all n-1 speeds between n sample points
+    for i in range(1, n):
+        var now = mouse_move_log[i]
+        
+        var d_pos = last[1].distance_to(now[1])
+        var d_t = now[0] - last[0]
+
+        speed += d_pos / (d_t / 1000.0)
+    
+    # average of (n-1) summed speed
+    return speed / float(n-1)
     
 func change_state(next_state):
     if self.state == next_state or self.dummy:
@@ -396,3 +443,4 @@ func change_state(next_state):
             start_roll()
         Snapping:
             snap_back()
+

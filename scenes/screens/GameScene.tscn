@@ -36,7 +36,9 @@ initial_anim_delay = 0.6
 position = Vector2( 612, 438 )
 initial_anim_delay = 1.2
 
-[node name="DieArea" parent="." instance=ExtResource( 4 )]
+[node name="DieArea" parent="." groups=[
+"RerollArea",
+] instance=ExtResource( 4 )]
 position = Vector2( 375, 1035 )
 scale = Vector2( 3, 1.1 )
 
