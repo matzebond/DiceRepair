@@ -122,9 +122,12 @@ const ANIM_ROLLS = 20
 const ANIM_DIST = 250
 
 # For detecting fast drag movement
-const ROLL_MOUSE_SPEED_THRESHOLD = 300.0
-const MOUSE_MOVE_LOG_LENGTH = 5
-var mouse_move_log = []
+const ROLL_DRAG_SPEED_THRESHOLD = 500
+const ROLL_DRAG_DIST_THRESHOLD = 200
+var last_drag_speed = 0
+var dragged_dist = 0
+var last_pos = Vector2()
+
 
 func init(state: DieState):
     viz_state = state
@@ -155,14 +158,6 @@ func _process(delta):
     last_mouse_pos = get_viewport().get_mouse_position()
     
 
-    if state == Dragging:
-        mouse_move_log.push_back([OS.get_ticks_msec(), get_global_mouse_position()])
-        if len(mouse_move_log) > MOUSE_MOVE_LOG_LENGTH:
-            mouse_move_log.pop_front()
-    else:
-        mouse_move_log = []
-    
-
 func can_be_dragged():
     return not dummy and (state == Default or state == Taken or state == Snapping or state == Preview)
 
@@ -171,9 +166,11 @@ func can_be_rolled():
 
 func _input(event):
     if event is InputEventMouseMotion:
-        
         if state == Dragging:
-            self.position = event.position + drag_offset
+            position = event.position + drag_offset
+            last_drag_speed = event.speed.length()
+            dragged_dist += (last_pos - position).length()
+            last_pos = position
 
     if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
         if !event.pressed and state == Dragging:
@@ -305,6 +302,7 @@ func render_face(index=null):
 func start_drag():
     emit_signal("undrop_item", self)
     drag_offset = self.position - get_tree().root.get_mouse_position()
+    last_pos = position
     if state != Snapping:
         pre_drag_pos = self.position
     else:
@@ -337,8 +335,7 @@ func drop():
     
     if not min_area == null:
         min_area.drop_into(self)
-        
-        if min_area.is_in_group("RerollArea") and calc_mouse_speed() > ROLL_MOUSE_SPEED_THRESHOLD:
+        if min_area.is_in_group("RerollArea") and self.last_drag_speed > ROLL_DRAG_SPEED_THRESHOLD and dragged_dist > ROLL_DRAG_DIST_THRESHOLD:
             call_deferred("try_roll", last_roll_area)
         
         return Default
@@ -393,26 +390,7 @@ func break_face(face_index):
     viz_state.faces[face_index].type = Broken
     render_face()
     # TODO start destruction animation
-            
-func calc_mouse_speed():
-    
-    var n = len(mouse_move_log)
-    if n < 2: return 0
-        
-    var last = mouse_move_log[0]
-    
-    var speed = 0
-    # sum all n-1 speeds between n sample points
-    for i in range(1, n):
-        var now = mouse_move_log[i]
-        
-        var d_pos = last[1].distance_to(now[1])
-        var d_t = now[0] - last[0]
 
-        speed += d_pos / (d_t / 1000.0)
-    
-    # average of (n-1) summed speed
-    return speed / float(n-1)
     
 func change_state(next_state):
     if self.state == next_state or self.dummy:
@@ -426,6 +404,8 @@ func change_state(next_state):
         Dragging:
             get_tree().current_scene.dragging_die = false
             next_state = drop()
+            self.last_drag_speed = 0
+            self.dragged_dist = 0
         Snapping:
             next_state = drop()
     
