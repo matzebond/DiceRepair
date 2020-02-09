@@ -54,6 +54,7 @@ func calc_work(dice):
             for tuul in tools:
                 if face.value == tuul:
                     return work_req
+            work += 1
     return work
     
 func can_finish(dice):
