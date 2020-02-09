@@ -235,7 +235,7 @@ func try_roll(area):
     return false
     
 func roll(area):
-    self.roll_target_pos = get_tree().current_scene.random_die_pos(area)
+    roll_target_pos = get_tree().current_scene.random_die_pos(area)
     change_state(Rolling)
     last_roll_area = area
     
@@ -311,10 +311,10 @@ func render_face(index=null):
         
 func start_drag():
     emit_signal("undrop_item", self)
-    drag_offset = self.position - get_tree().root.get_mouse_position()
+    drag_offset = position - get_tree().root.get_mouse_position()
     last_pos = position
     if state != Snapping:
-        pre_drag_pos = self.position
+        pre_drag_pos = position
     else:
         $Tween.disconnect("tween_completed", self, "end_snap_back")
         $Tween.stop(self, "position")
@@ -345,7 +345,7 @@ func drop():
     
     if not min_area == null:
         min_area.drop_into(self)
-        if min_area.is_in_group("RerollArea") and self.last_drag_speed > ROLL_DRAG_SPEED_THRESHOLD and dragged_dist > ROLL_DRAG_DIST_THRESHOLD:
+        if min_area.is_in_group("RerollArea") and last_drag_speed > ROLL_DRAG_SPEED_THRESHOLD and dragged_dist > ROLL_DRAG_DIST_THRESHOLD:
             call_deferred("try_roll", last_roll_area)
         
         return Default
@@ -401,7 +401,7 @@ func next_change_state(next_state):
     change_state(next_state)
     
 func change_state(next_state):
-    if self.state == next_state or self.dummy:
+    if state == next_state or dummy:
         return
 
     var old_state = state
@@ -412,15 +412,15 @@ func change_state(next_state):
         Dragging:
             get_tree().current_scene.dragging_die = false
             next_state = drop()
-            self.last_drag_speed = 0
-            self.dragged_dist = 0
+            last_drag_speed = 0
+            dragged_dist = 0
         Snapping:
             next_state = drop()
     
-    if self.state != old_state:
+    if state != old_state:
         return
 
-    self.state = next_state
+    state = next_state
     
     match next_state:
         Preview:
