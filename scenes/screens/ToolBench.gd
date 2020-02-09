@@ -103,12 +103,7 @@ func _on_SwapButton_pressed():
         return
         
     # TODO Play sound "switch"
-    var type = face_a.type
-    var value = face_a.value
-    face_a.type = face_b.type
-    face_a.value = face_b.value
-    face_b.type = type
-    face_b.value = value
+    face_a.swap(face_b)
     
     update_preview(selected_faces[0][1])
     update_preview(selected_faces[1][1])

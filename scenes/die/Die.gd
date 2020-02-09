@@ -25,24 +25,34 @@ static func tool_sprite(tuul):
 class Face:
     var type = Number
     var value = 1
-    var before_break = null # instance of additional 
+    var type_pre_break = null # previous type 
     
-    func _init(type, value, before_break=null):
+    func _init(type, value):
         self.type = type
         self.value = value
-        self.before_break = before_break
-    func clone():
-        return Face.new(type, value, before_break)
-    func store_face(): # must be called before broken
-        before_break = self.clone()
+        self.type_pre_break = type
+
+    func break_face():
+        if type != Broken:
+            type_pre_break = type
+        type = Broken
+
     func restore_face(): # must be called to repair
-        if before_break == null:
-            printerr("Tried repairing face, but no previous state found"); return
         if type != Broken:
             printerr("Tried repairing face, but it is not broken"); return
-        type = before_break.type
-        value = before_break.value
-        
+        type = type_pre_break
+
+    func swap(other: Face):
+        var type = self.type
+        var value = self.value
+        var type_pre_break = self.type_pre_break
+        self.type = other.type
+        self.value = other.value
+        self.type_pre_break = other.type_pre_break
+        other.type = type
+        other.value = value
+        other.type_pre_break = type_pre_break
+
 
 class DieState:
     var sprite
@@ -380,17 +390,15 @@ func stop_hover():
     if preview:
         preview.destroy()
         preview = null
+        
+func break_face(face_index):
+    viz_state.faces[face_index].break_face()
+    render_face()
+    # TODO start destruction animation
 
 func next_change_state(next_state):
     yield(get_tree(), "idle_frame") # important do prevent dropping-taking loop
     change_state(next_state)
-    
-func break_face(face_index):
-    viz_state.faces[face_index].store_face()
-    viz_state.faces[face_index].type = Broken
-    render_face()
-    # TODO start destruction animation
-
     
 func change_state(next_state):
     if self.state == next_state or self.dummy:
@@ -423,4 +431,3 @@ func change_state(next_state):
             start_roll()
         Snapping:
             snap_back()
-
