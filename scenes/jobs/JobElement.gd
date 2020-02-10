@@ -9,7 +9,6 @@ var money_reward = 0
 func _ready():
     nodes_to_mask.append($Sprite)
     nodes_to_mask.append($Inactive)
-    mask(true)
     
 func mask(enable):
     for node in nodes_to_mask:

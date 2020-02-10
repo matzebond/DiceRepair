@@ -34,8 +34,7 @@ func _ready():
         i += 1
     
     nodes_to_mask.append($Label)
-    
-    ._ready()
+    mask(true)
     
     cur_work_req = work_req
     set_text_work_cur(cur_work_req)

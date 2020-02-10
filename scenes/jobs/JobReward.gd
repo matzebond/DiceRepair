@@ -19,7 +19,7 @@ func _ready():
     nodes_to_mask.append($UpgradeButton/Label)
     nodes_to_mask.append($UpgradeButton/VBoxContainer/HBoxContainer/MoneyIcon)
     nodes_to_mask.append($UpgradeButton/VBoxContainer/HBoxContainer/Price)
-    ._ready()
+    mask(true)
 
 func enable(enable):
     .enable(enable)
