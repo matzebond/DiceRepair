@@ -3,7 +3,8 @@ extends Node2D
 var pos_end:Vector2
 var vel_explode:Vector2 = Vector2()
 
-const SPEED_EXPLODE = 30
+const SPEED_EXPLODE = 27
+const SPEED_EXPLODE_RANDOM = 6
 const SPEED_GATHER = 50
 
 const TIME_EXPLODE_TO_GATHER = 0.5
@@ -14,7 +15,7 @@ func init(pos_start, pos_end):
     position = pos_start
     self.pos_end = pos_end
     
-    vel_explode = Vector2(SPEED_EXPLODE, 0).rotated(rand_range(0, 2*PI))
+    vel_explode = Vector2(SPEED_EXPLODE + randf()*SPEED_EXPLODE_RANDOM, 0).rotated(rand_range(0, 2*PI))
     return self
 
 

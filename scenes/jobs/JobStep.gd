@@ -94,24 +94,20 @@ func start_excess(_obj, _key, excess):
     $Tween.interpolate_method(self, "set_text_work_cur", excess, 0, -excess * EXCESS_WAIT_FACTOR)
     $Tween.connect("tween_completed", self, "is_done", [], CONNECT_ONESHOT)
     $Tween.start()
-    
-func break_face():
-    var face_len = 0
-    for die in dice:
-        face_len += len(die.viz_state.faces)
-    var broken = false
-    while not broken:
-            var index = get_tree().current_scene.rng.randi_range(0, face_len-1)
-            for die in dice:
-                if index >= len(die.viz_state.faces):
-                    index -= len(die.viz_state.faces)
-                elif die.viz_state.faces[index].type != Die.Broken:
-                    die.break_face(index)
-                    broken = true
-                    break
-                else:
-                    break
 
+func break_face():
+    # find all non-broken faces
+    var non_broken_faces = []
+    for die in dice:
+        for i in range(len(die.viz_state.faces)):
+             non_broken_faces.append([die, i])
+    # return if everything already broken
+    if len(non_broken_faces) == 0:
+        return
+    # select random face and break it
+    var i = get_tree().current_scene.rng.randi_range(0, len(non_broken_faces)-1)
+    non_broken_faces[i][0].break_face(non_broken_faces[i][1])
+    
 func is_done(_obj, _key):
     .is_done(_obj, _key)
     get_tree().current_scene.active_scene.add_die(dice)
