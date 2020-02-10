@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
+[ext_resource path="res://scenes/ui/theme_font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/img/ui/fader.png" type="Texture" id=2]
 [ext_resource path="res://scenes/jobs/Job.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/drop_area/DropArea.tscn" type="PackedScene" id=4]
@@ -29,21 +30,32 @@ __meta__ = {
 position = Vector2( 138, 438 )
 
 [node name="Job2" parent="." instance=ExtResource( 3 )]
-position = Vector2( 373, 438 )
+position = Vector2( 372, 438 )
 initial_anim_delay = 0.6
 
 [node name="Job3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 612, 438 )
 initial_anim_delay = 1.2
 
+[node name="DieAreaPanel" type="Panel" parent="."]
+margin_left = 38.0
+margin_top = 872.0
+margin_right = 470.0
+margin_bottom = 1193.0
+mouse_filter = 2
+theme = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="DieArea" parent="." groups=[
 "RerollArea",
 ] instance=ExtResource( 4 )]
-position = Vector2( 375, 1035 )
-scale = Vector2( 3, 1.1 )
+position = Vector2( 254, 1035 )
+scale = Vector2( 2, 1.2 )
 
-[node name="DieAreaPanel" type="Panel" parent="."]
-margin_left = 40.0
+[node name="DieRerollPanel" type="Panel" parent="."]
+margin_left = 516.0
 margin_top = 874.0
 margin_right = 710.0
 margin_bottom = 1195.0
@@ -53,6 +65,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="RerollArea" parent="." groups=[
+"RerollArea",
+] instance=ExtResource( 4 )]
+position = Vector2( 613, 1036 )
+scale = Vector2( 0.8, 1.2 )
+
 [node name="Round" parent="." instance=ExtResource( 9 )]
 position = Vector2( 40, 1234 )
 icon = 1
@@ -61,3 +79,16 @@ text = "1"
 [node name="Money" parent="." instance=ExtResource( 9 )]
 position = Vector2( 430, 1234 )
 update_on_signal = "money_changed"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 534.0
+margin_top = 897.0
+margin_right = 692.0
+margin_bottom = 929.0
+custom_fonts/font = ExtResource( 1 )
+text = "Reroll"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="drop_item" from="RerollArea" to="." method="_on_RerollArea_drop_item"]
