@@ -91,4 +91,4 @@ align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="drop_item" from="RerollArea" to="." method="_on_RerollArea_drop_item"]
+[connection signal="drop_item" from="RerollArea" to="." method="_on_RerollArea_drop_item" flags=3]
