@@ -50,11 +50,14 @@ func finish_possible():
 func is_finish_possible():
     if get_tree().current_scene.can_pay_reroll():
         return true
-    var impossible_job = true
+    var has_unfinishable_job = false
     for job in get_tree().get_nodes_in_group("Job"):
-        if not job.is_done() and not job.can_finish_step(get_tree().current_scene.dice):
-            return false
-    return true
+        if not job.is_done():
+            if job.can_finish_step(get_tree().current_scene.dice):
+                return true
+            else:
+                has_unfinishable_job = true
+    return not has_unfinishable_job
     
 var game_ending = false
 var time_to_end
