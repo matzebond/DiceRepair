@@ -131,14 +131,6 @@ var last_roll_time = -1
 const ANIM_ROLLS = 20
 const ANIM_DIST = 250
 
-# For detecting fast drag movement
-const ROLL_DRAG_SPEED_THRESHOLD = 500
-const ROLL_DRAG_DIST_THRESHOLD = 200
-var last_drag_speed = 0
-var dragged_dist = 0
-var last_pos = Vector2()
-
-
 func init(state: DieState):
     viz_state = state
     self.texture = state.sprite
@@ -177,9 +169,6 @@ func _input(event):
     if event is InputEventMouseMotion:
         if state == Dragging:
             position = event.position + drag_offset
-            last_drag_speed = event.speed.length()
-            dragged_dist += (last_pos - position).length()
-            last_pos = position
 
     if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
         if !event.pressed and state == Dragging:
@@ -311,7 +300,6 @@ func render_face(index=null):
 func start_drag():
     emit_signal("undrop_item", self)
     drag_offset = position - get_tree().root.get_mouse_position()
-    last_pos = position
     if state != Snapping:
         pre_drag_pos = position
     else:
@@ -344,9 +332,6 @@ func drop():
     
     if not min_area == null:
         min_area.drop_into(self)
-        if min_area.is_in_group("RerollArea") and last_drag_speed > ROLL_DRAG_SPEED_THRESHOLD and dragged_dist > ROLL_DRAG_DIST_THRESHOLD:
-            call_deferred("try_roll", last_roll_area)
-        
         return Default
     else:
         return Snapping
@@ -411,8 +396,6 @@ func change_state(next_state):
         Dragging:
             get_tree().current_scene.dragging_die = false
             next_state = drop()
-            last_drag_speed = 0
-            dragged_dist = 0
         Snapping:
             next_state = drop()
     

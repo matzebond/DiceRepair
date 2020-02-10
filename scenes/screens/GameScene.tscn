@@ -56,9 +56,9 @@ scale = Vector2( 2, 1.2 )
 
 [node name="DieRerollPanel" type="Panel" parent="."]
 margin_left = 516.0
-margin_top = 874.0
+margin_top = 872.0
 margin_right = 710.0
-margin_bottom = 1195.0
+margin_bottom = 1193.0
 mouse_filter = 2
 theme = ExtResource( 6 )
 __meta__ = {
