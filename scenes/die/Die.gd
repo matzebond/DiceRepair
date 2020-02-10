@@ -6,7 +6,7 @@ const roll2 = preload("res://assets/sounds/roll2.ogg")
 const roll3 = preload("res://assets/sounds/roll3.ogg")
 const ROLLS = [roll1, roll2]
 
-enum { Number, Tool, Broken }
+enum { Number, Tool, Joker, Broken }
 enum { Hammer, Drill, Ratchet, Saw }
 const TOOLS = [Hammer, Drill, Ratchet, Saw]
 
@@ -14,6 +14,7 @@ const hammer_sprite = preload("res://assets/img/tools/hammer.png")
 const drill_sprite = preload("res://assets/img/tools/drill.png")
 const ratchet_sprite = preload("res://assets/img/tools/ratchet.png")
 const saw_sprite = preload("res://assets/img/tools/saw.png")
+const joker_sprite = preload("res://assets/img/tools/joker.png")
 
 static func tool_sprite(tuul):
     match tuul:
@@ -290,6 +291,10 @@ func render_face(index=null):
         $Tool.visible = false
     elif face.type == Tool:
         $Tool.texture = tool_sprite(face.value)
+        $Tool.visible = true
+        $Number.visible = false
+    elif face.type == Joker:
+        $Tool.texture = joker_sprite
         $Tool.visible = true
         $Number.visible = false
     else:

@@ -54,6 +54,8 @@ func calc_work(dice):
                 if face.value == tuul:
                     return work_req
             work += 1
+        elif face.type == Die.Joker:
+            return work_req
     return work
     
 func can_finish(dice):

@@ -27,6 +27,14 @@ class SetToolUpgrade extends Upgrade:
         face.type = Die.Tool
         face.value = tuul
         
+class SetJokerUpgrade extends Upgrade:
+    func _init():
+        .set_params(60, 7, "")
+    func can_use_on(face):
+        return face.type != Die.Broken
+    func use_on(face):
+        face.type = Die.Joker
+        
 class SetNumberUpgrade extends Upgrade:
     var value
     func _init(value):
