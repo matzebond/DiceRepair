@@ -40,8 +40,9 @@ func start_scene(dice):
     get_tree().current_scene.end_scene()
     
 func _input(event):
-    if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_cancel"):
-        get_tree().current_scene.end_scene()
+    if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_cancel") \
+        or (event is InputEventKey and event.scancode == KEY_MENU):
+            get_tree().current_scene.end_scene()
 
         
 func add_die(die):
