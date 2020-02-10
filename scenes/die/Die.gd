@@ -393,11 +393,17 @@ func stop_hover():
     if preview:
         preview.destroy()
         preview = null
-        
+
+var face_to_break
 func break_face(face_index):
-    viz_state.faces[face_index].break_face()
-    render_face()
-    # TODO start destruction animation
+    render_face(face_index)
+    face_to_break = face_index
+    $Timer.start()
+    
+func on_break_face():
+    viz_state.faces[face_to_break].break_face()
+    render_face(face_to_break)
+    # TODO Play sound face broken
 
 func next_change_state(next_state):
     yield(get_tree(), "idle_frame") # important do prevent dropping-taking loop

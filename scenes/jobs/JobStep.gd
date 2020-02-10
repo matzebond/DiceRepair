@@ -88,13 +88,23 @@ func update_work():
 func set_text_work_cur(val):
     $Label.text = str(floor(val))
    
-func start_excess(_obj, _key, excess):
-    for i in range(abs(excess)):
-        break_face()
-    $Tween.interpolate_method(self, "set_text_work_cur", excess, 0, -excess * EXCESS_WAIT_FACTOR)
-    $Tween.connect("tween_completed", self, "is_done", [], CONNECT_ONESHOT)
-    $Tween.start()
+var excess_time = 0
+var excess = 0
 
+func start_excess(_obj, _key, excess):
+    self.excess = abs(excess)
+    
+func _process(delta):
+    if excess > 0:
+        excess_time += delta
+        if excess_time >= EXCESS_WAIT_FACTOR:
+            excess_time -= EXCESS_WAIT_FACTOR
+            break_face()
+            set_text_work_cur(-excess+1)
+            excess -= 1
+            if excess <= 0:
+                is_done(null, null)
+            
 func break_face():
     # find all non-broken faces
     var non_broken_faces = []
