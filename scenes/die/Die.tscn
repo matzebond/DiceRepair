@@ -48,5 +48,6 @@ shape = SubResource( 1 )
 stream = ExtResource( 5 )
 [connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]
+[connection signal="input_event" from="Area2D" to="." method="_on_Area2D_input_event"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]

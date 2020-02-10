@@ -161,32 +161,45 @@ func _process(delta):
     
 
 func can_be_dragged():
-    return not dummy and (state == Default or state == Taken or state == Snapping or state == Preview)
+    return not dummy and (state == Default or state == Taken
+        or state == Snapping or state == Preview) \
+        and not get_tree().current_scene.dragging_die
 
 func can_be_rolled():
     return not dummy and (state == Default or state == Preview)
 
 func _input(event):
-    if event is InputEventMouseMotion:
+    if event is InputEventMouseMotion or event is InputEventScreenDrag:
         if state == Dragging:
             position = event.position + drag_offset
 
-    if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
-        if !event.pressed and state == Dragging:
-            get_tree().current_scene.dragging_die = false
-            last_roll_target_pos = position
-            change_state(Default)
+    # lifting finger leaves die
+    if event is InputEventScreenTouch and not event.pressed:
+        if mouse_inside:
+            mouse_inside = false
 
-        if event.pressed and mouse_inside and can_be_dragged() and not get_tree().current_scene.dragging_die:
-            get_tree().current_scene.dragging_die = true
+    if event is InputEventMouseButton and event.button_index == BUTTON_LEFT \
+        or (event is InputEventScreenTouch):
+            if !event.pressed and state == Dragging:
+                change_state(Default)
+
+func _on_Area2D_input_event(viewport, event, shape_idx):
+    if (event is InputEventMouseButton and event.button_index == BUTTON_LEFT) \
+        or (event is InputEventScreenTouch):
+            
+        # b/c lifting finger leaves die this is needed
+        if event.pressed and not mouse_inside:
+            mouse_inside = true
+
+        if event.pressed and mouse_inside and can_be_dragged():
             change_state(Dragging)
 
         if event.pressed and mouse_inside and dummy:
             get_parent().select(self)
             get_tree().set_input_as_handled()
 
-    if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT and event.pressed:
-        if mouse_inside and not dummy:
+    if event is InputEventMouseButton and event.button_index == BUTTON_RIGHT \
+        and event.pressed and mouse_inside and not dummy:
             try_roll(last_roll_area)
             get_tree().set_input_as_handled()
 
@@ -303,8 +316,9 @@ func render_face(index=null):
         $Tool.visible = false
         
 func start_drag():
+    get_tree().current_scene.dragging_die = true
     emit_signal("undrop_item", self)
-    drag_offset = position - get_tree().root.get_mouse_position()
+    drag_offset = position - get_viewport().get_mouse_position()
     if state != Snapping:
         pre_drag_pos = position
     else:
@@ -400,6 +414,7 @@ func change_state(next_state):
             stop_hover()
         Dragging:
             get_tree().current_scene.dragging_die = false
+            last_roll_target_pos = position
             next_state = drop()
         Snapping:
             next_state = drop()
