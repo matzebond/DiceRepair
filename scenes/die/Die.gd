@@ -163,8 +163,7 @@ func _process(delta):
     else:
         if state == Preview:
             change_state(Default)
-        if mouse_inside:
-            last_mouse_time = OS.get_ticks_msec()
+        last_mouse_time = OS.get_ticks_msec()
     last_mouse_pos = get_viewport().get_mouse_position()
     
 
