@@ -66,6 +66,8 @@ class MinusDeltaUpgrade extends Upgrade:
     func use_on(face):
         face.value -= delta
 
+onready var root = get_tree().current_scene
+
 var upgrade
 var toolbench
 var hide_button = false
@@ -91,17 +93,17 @@ func _on_UpgradeButton_pressed():
     var selected_faces = toolbench.get_selected_faces()
     
     if len(selected_faces) != 1:
-        # TODO Play sound "invalid selection"
+        root.show_text("Select one Face!", self)
         return
     
     var face = selected_faces[0][0]
     var preview = selected_faces[0][1]
     
     if not upgrade.can_use_on(face):
-        # TODO Play sound "invalid selection"
+        root.show_text("Cannot use on this Face!", self)
         return
     
-    if not get_tree().current_scene.try_pay(upgrade.price, preview.global_position):
+    if not root.try_pay(upgrade.price, preview.global_position):
         # TODO Play sound "not enough money"
         return
     

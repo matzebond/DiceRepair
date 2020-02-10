@@ -151,11 +151,12 @@ func try_pay(amount, pos=null, then_object=null, then_method=null):
         return true
     else:
         return false
-    
-
 
 func can_pay_reroll():
     for die in dice:
         if money >= die.roll_cost:
             return true
     return false
+    
+func show_text(text, control_node):
+    $PopupDialog.show_text(text, control_node.rect_global_position + control_node.rect_size/2.0)

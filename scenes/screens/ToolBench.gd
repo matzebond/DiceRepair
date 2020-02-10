@@ -8,11 +8,12 @@ const COSTS_REPAIR = 20
 const COSTS_UPGRADE = 20
 const COSTS_SWAP = 10
 
+onready var root = get_tree().current_scene
 
 func _ready():
     $Panel.set('custom_styles/panel', $Panel.theme.get_stylebox("DottedPanel", "Panel"))
     
-    for upgrade in get_tree().current_scene.upgrades:
+    for upgrade in root.upgrades:
         var inst = UpgradeButton.instance()
         inst.upgrade = upgrade
         inst.toolbench = self
@@ -38,36 +39,12 @@ func _on_DropArea_undrop_item(item):
         previews.erase(item.name)
 
 
-
-func _on_UpgradeButton_pressed():
-    var selected_faces = get_selected_faces()
-    
-    if len(selected_faces) != 1:
-        # TODO Play sound "invalid selection"
-        return
-        
-    var preview = selected_faces[0][1]
-    var face = selected_faces[0][0]
-    
-    if face.type == Die.Broken:
-        # TODO Play sound "invalid selection"
-        return
-        
-    if not get_tree().current_scene.try_pay(COSTS_UPGRADE, preview.global_position):
-        # TODO Play sound "not enough money"
-        return
-        
-    # TODO Play sound "upgrade"
-    set_face_random(face, preview)
-    update_preview(preview)
-    preview.die.render_face()
-
-
 func _on_RepairButton_pressed():
     var selected_faces = get_selected_faces()
     
     if len(selected_faces) != 1:
         # TODO Play sound "invalid selection"
+        root.show_text("Select one Face!", $RepairButton)
         return
     
     var preview = selected_faces[0][1]
@@ -75,9 +52,10 @@ func _on_RepairButton_pressed():
 
     if face.type != Die.Broken:
         # TODO Play sound "invalid selection"
+        root.show_text("Nothing to repair!", $RepairButton)
         return
         
-    if not get_tree().current_scene.try_pay(COSTS_REPAIR, preview.global_position):
+    if not .try_pay(COSTS_REPAIR, preview.global_position):
         # TODO Play sound "not enough money"
         return
     
@@ -92,13 +70,13 @@ func _on_SwapButton_pressed():
     var selected_faces = get_selected_faces()
     
     if len(selected_faces) != 2:
-        # TODO Play sound "invalid selection"
+        root.show_text("Select 2 Faces!", $SwapButton)
         return
         
     var face_a = selected_faces[0][0]
     var face_b = selected_faces[1][0]
         
-    if not get_tree().current_scene.try_pay(COSTS_SWAP, selected_faces[0][1].global_position):
+    if not root.try_pay(COSTS_SWAP, selected_faces[0][1].global_position):
         # TODO Play sound "not enough money"
         return
         
@@ -127,11 +105,11 @@ func set_face_random(face, preview):
     if randf() < prob_for_tool:
         # Tool
         face.type = Die.Tool
-        face.value = Die.TOOLS[get_tree().current_scene.rng.randi_range(0, len(Die.TOOLS) - 1)]
+        face.value = Die.TOOLS[root.rng.randi_range(0, len(Die.TOOLS) - 1)]
     else:
         # Number
         face.type = Die.Number
-        face.value = get_tree().current_scene.rng.randi_range(1, len(preview.die.viz_state.faces))
+        face.value = root.rng.randi_range(1, len(preview.die.viz_state.faces))
 
 func update_preview(preview):
     preview.update()
