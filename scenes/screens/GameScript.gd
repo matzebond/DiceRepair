@@ -76,6 +76,7 @@ func get_next_scene():
     return "Upgrade"
 
 func _on_RerollArea_drop_item(item):
+    call_deferred("_on_RerollArea_drop_item_deferred", item)
+func _on_RerollArea_drop_item_deferred(item):
     if not item.try_roll($DieArea.get_area()):
         item.snap_back()
-    
