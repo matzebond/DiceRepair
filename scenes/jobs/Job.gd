@@ -6,14 +6,7 @@ signal completed
 
 const PADDING = Vector2(0, -8)
 const JOB_STEP_SIZE = Vector2(0, 164)
-const UpgradeButton = preload("res://scenes/ugrades/UpgradeButton.gd")
-const Die = preload("res://scenes/die/Die.gd")
 
-var upgrade_pool = [UpgradeButton.PlusDeltaUpgrade.new(2), UpgradeButton.PlusDeltaUpgrade.new(5), UpgradeButton.SetNumberUpgrade.new(10),
-    UpgradeButton.MinusDeltaUpgrade.new(2), UpgradeButton.MinusDeltaUpgrade.new(5), UpgradeButton.SetNumberUpgrade.new(1), 
-    UpgradeButton.SetToolUpgrade.new(Die.Hammer), UpgradeButton.SetToolUpgrade.new(Die.Drill), UpgradeButton.SetToolUpgrade.new(Die.Ratchet),
-    UpgradeButton.SetToolUpgrade.new(Die.Saw)
-]
 
 var steps_min:int = 2
 var steps_max:int = 3
@@ -58,9 +51,11 @@ func add_jobs():
         add_job_elem(jobStep)
 
 func add_reward():
-    var jobStep = JobRewardScene.instance()
-    jobStep.init(cur_pos, upgrade_pool[randi() % len(upgrade_pool)])
-    add_job_elem(jobStep)
+    var jobReward = JobRewardScene.instance()
+    var pool = root.upgrade_pool
+    var l = len(pool)
+    jobReward.init(cur_pos, pool[randi() % l] if l > 0 else null)
+    add_job_elem(jobReward)
 
 var cur_pos = Vector2(2,0)
 func add_job_elem(elem):
