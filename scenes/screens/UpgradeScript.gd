@@ -15,9 +15,7 @@ func end_scene():
     pass
         
 func add_die(die):
-    var zone = $ToolBench/DropArea
-    var area = Rect2(zone.global_position, zone.scale * 2 * Vector2(100,100))
-    area.position -= area.size / 2
+    var area = $ToolBench/DropArea.get_area()
     
     # following lines important, since roll() not called
     die.last_roll_area = area

@@ -32,11 +32,9 @@ func add_die(dice):
     if not dice is Array:
         dice = [dice]
     for die in dice:
-        var area = Rect2($DieArea.global_position, 2 * $DieArea.scale * Vector2(100,100))
-        area.position -= area.size / 2
         if die.get_parent() == null:
             self.add_child(die)
-        die.roll(area)
+        die.roll($DieArea.get_area())
     
     if ready:
         finish_possible()

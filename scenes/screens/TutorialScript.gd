@@ -46,12 +46,10 @@ func _input(event):
 
         
 func add_die(die):
-    var area = Rect2($DieArea.global_position, $DieArea.scale * 2 * Vector2(100,100))
-    area.position -= area.size / 2
     yield(get_tree(), "idle_frame")
     if die.get_parent() == null:
         self.add_child(die)        
-    die.roll(area)
+    die.roll($DieArea.get_area())
     
 
     
