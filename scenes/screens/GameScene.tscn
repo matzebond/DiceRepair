@@ -30,7 +30,7 @@ __meta__ = {
 position = Vector2( 138, 438 )
 
 [node name="Job2" parent="." instance=ExtResource( 3 )]
-position = Vector2( 372, 438 )
+position = Vector2( 375, 438 )
 initial_anim_delay = 0.6
 
 [node name="Job3" parent="." instance=ExtResource( 3 )]
@@ -51,8 +51,8 @@ __meta__ = {
 [node name="DieArea" parent="." groups=[
 "RerollArea",
 ] instance=ExtResource( 4 )]
-position = Vector2( 254, 1035 )
-scale = Vector2( 2, 1.2 )
+position = Vector2( 254, 1032 )
+scale = Vector2( 1.8, 1.2 )
 
 [node name="DieRerollPanel" type="Panel" parent="."]
 margin_left = 516.0
@@ -68,8 +68,8 @@ __meta__ = {
 [node name="RerollArea" parent="." groups=[
 "RerollArea",
 ] instance=ExtResource( 4 )]
-position = Vector2( 613, 1036 )
-scale = Vector2( 0.8, 1.2 )
+position = Vector2( 613, 1032 )
+scale = Vector2( 0.5, 1.15 )
 
 [node name="Round" parent="." instance=ExtResource( 9 )]
 position = Vector2( 40, 1234 )
