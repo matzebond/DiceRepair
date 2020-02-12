@@ -1,5 +1,7 @@
 extends Node2D
 
+signal arrived
+
 var pos_end:Vector2
 var vel_explode:Vector2 = Vector2()
 
@@ -33,7 +35,7 @@ func _process(delta):
     
     var dst = position.distance_squared_to(pos_end)
     if mix_b == 1 and dst >= last_dst:
-        get_parent().freed()
+        emit_signal("arrived")
         queue_free()
     last_dst = dst
     

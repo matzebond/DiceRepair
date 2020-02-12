@@ -4,6 +4,7 @@ const TutorialScene = preload("TutorialScene.tscn")
 const GameScene = preload("GameScene.tscn")
 const UpgradeScene = preload("UpgradeScene.tscn")
 const UpgradeButton = preload("res://scenes/ugrades/UpgradeButton.gd")
+const MoneyParticles = preload("res://scenes/particles/MoneyParticles.tscn")
 
 const scene_map = {
     "Tutorial": TutorialScene,
@@ -132,21 +133,26 @@ func random_die_pos(area, dice_min_dst=DICE_MIN_DST):
         print("Could not find free position")
     return pos
     
-const MoneyParticles = preload("res://scenes/particles/MoneyParticles.tscn")
-func add_money(delta, position):
-    add_child(MoneyParticles.instance().init(
-        position, $MoneyParticlePos.position, abs(delta), self, "coin_arrived"))
+func add_money(amount, position, done_obj=null, done_method=null):
+    assert(amount >= 0)
+    var particles = MoneyParticles.instance()
+    particles = particles.init(position, $MoneyParticlePos.position, 
+                            amount, self, "coin_arrived", done_obj, done_method)
+    add_child(particles)
     
 func coin_arrived():
     money += 1
     emit_signal("money_changed", money)
 
 func try_pay(amount, pos=null, then_object=null, then_method=null):
+    assert(amount >= 0)
     if money >= amount:
         money -= amount
         if pos:
-            add_child(MoneyParticles.instance().init(
-                $MoneyParticlePos.position, pos, abs(amount), null, null, then_object, then_method))
+            var particles = MoneyParticles.instance()
+            particles = particles.init($MoneyParticlePos.position, pos,
+                                    amount, null, null, then_object, then_method)
+            add_child(particles)
         emit_signal("money_changed", money)
         return true
     else:
