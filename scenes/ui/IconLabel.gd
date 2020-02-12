@@ -1,14 +1,14 @@
 extends Node2D
 
-enum {ICON_TIME, ICON_LEVEL, ICON_MONEY}
-onready var ICON_PATHS = {
-    ICON_TIME : preload("res://assets/img/ui/icon_time.png"),
-    ICON_LEVEL : preload("res://assets/img/ui/icon_level.png"),
-    ICON_MONEY : preload("res://assets/img/ui/icon_coin.png")
+enum Icons {ICON_TIME, ICON_LEVEL, ICON_MONEY}
+const ICON_PATHS = {
+    Icons.ICON_TIME : preload("res://assets/img/ui/icon_time.png"),
+    Icons.ICON_LEVEL : preload("res://assets/img/ui/icon_level.png"),
+    Icons.ICON_MONEY : preload("res://assets/img/ui/icon_coin.png")
 }
 
 
-export var icon = ICON_MONEY
+export(Icons) var icon = Icons.ICON_MONEY
 export var text = "" setget _set_text
 export var update_on_signal = ""
 
