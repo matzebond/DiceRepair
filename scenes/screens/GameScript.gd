@@ -43,8 +43,11 @@ func add_die(dice):
 func finish_possible():
     if not is_finish_possible():
         print("impossible")
-        yield(get_tree().create_timer(10.0), "timeout")
-        get_tree().current_scene.restart()
+        yield(get_tree().create_timer(10.0), "timeout") # hacky AF
+        if not is_finish_possible():
+            get_tree().current_scene.restart()
+        else:
+            print("now possible")
 
 func is_finish_possible():
     if get_tree().current_scene.can_pay_reroll():
