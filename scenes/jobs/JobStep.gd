@@ -118,7 +118,7 @@ func break_face():
     var i = get_tree().current_scene.rng.randi_range(0, len(non_broken_faces)-1)
     non_broken_faces[i][0].break_face(non_broken_faces[i][1])
     
-func is_done(_obj, _key):
+func is_done(_obj=null, _key=null):
     .is_done(_obj, _key)
     get_tree().current_scene.active_scene.add_die(dice)
     

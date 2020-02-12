@@ -51,4 +51,4 @@ func reward_expired():
     $Tween.start()
         
 func upgrade_unlock_tween_done(_x, _y):
-    is_done(null, null)
+    is_done()

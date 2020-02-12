@@ -25,12 +25,12 @@ func enable(enable):
     $Tween.interpolate_property($Inactive, "color:a", $Inactive.color.a, a, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
     $Tween.start()
 
-func is_done(_obj, _key):
+func is_done(_obj=null, _key=null):
     mask(false)
     animate_out()
-    emit_signal("done", self)
     get_tree().current_scene.add_money(money_reward, position)
-    
+    emit_signal("done", self)
+
 func animate_out():
     var scene = get_tree().current_scene
     var pos = global_position

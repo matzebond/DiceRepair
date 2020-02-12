@@ -64,15 +64,15 @@ func add_job_elem(elem):
     $Steps.add_child_below_node($Steps/FirstElem, elem)
     job_elems.push_front(elem)
     
-    elem.connect("done", self, "_on_JobStep_done")
+    elem.connect("done", self, "_on_JobElement_done")
     elem.global_position = next_job_pos
     
-func _on_JobStep_done(jobstep):
-    $Tween.connect("tween_completed", self, "after_JobStep_anim_done", [], CONNECT_ONESHOT)
+func _on_JobElement_done(jobstep):
+    $Tween.connect("tween_completed", self, "after_JobElements_drop_anim", [], CONNECT_ONESHOT)
     $Tween.interpolate_property($Steps, "position:y", $Steps.position.y, $Steps.position.y+JOB_STEP_SIZE.y+PADDING.y, 0.6, Tween.TRANS_EXPO, Tween.EASE_IN, 0.6)
     $Tween.start()
 
-func after_JobStep_anim_done(_obj, _key):
+func after_JobElements_drop_anim(_obj, _key):
     current_step += 1
     if current_step >= len(job_elems):
         done()
