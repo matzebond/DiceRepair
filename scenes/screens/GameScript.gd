@@ -3,6 +3,7 @@ const Die = preload("res://scenes/die/Die.tscn")
 
 const DICE_MIN_DST = 120
 const NUM_JOBS = 3
+const ROUND_DONE_WAIT = 1.5
 
 var cur_num_jobs = NUM_JOBS
 
@@ -57,20 +58,12 @@ func is_finish_possible():
                 has_unfinishable_job = true
     return not has_unfinishable_job
     
-var game_ending = false
-var time_to_end
+
 func _on_Job_completed():
     cur_num_jobs -= 1
     if cur_num_jobs <= 0:
-        game_ending = true
-        time_to_end = 1.5
-        
-func _process(delta):
-    if game_ending:
-        time_to_end -= delta
-        if time_to_end <= 0:
-            get_tree().current_scene.end_scene()
-            game_ending = false
+        yield(get_tree().create_timer(ROUND_DONE_WAIT), "timeout")
+        get_tree().current_scene.end_scene()
 
 func get_next_scene():
     return "Upgrade"
