@@ -17,7 +17,7 @@ func init(pos, work):
     
 func _ready():
     for tuul in Die.TOOLS:
-        if randf() > 0.82:
+        if get_tree().current_scene.rng.randf() > 0.82:
             tools.append(tuul)
     
     var i = 0

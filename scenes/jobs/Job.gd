@@ -24,7 +24,7 @@ export var initial_anim_delay = 0.0
 func _ready():
     steps_min = 2 + floor(root.game_round / 2.0)
     steps_max = 2 + ceil(root.game_round / 2.0)
-    steps = rand_range(steps_min, steps_max+1)
+    steps = root.rng.randi_range(steps_min, steps_max+1)
     
     next_job_pos = $Steps.global_position
     add_reward()
